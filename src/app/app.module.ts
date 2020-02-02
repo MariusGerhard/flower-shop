@@ -18,7 +18,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
-import { HeaderComponent } from './header/header.component';
+import { SidenavComponent } from './navigation/sidenav/sidenav.component';
+import {HeaderComponent} from './navigation/header/header.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HeaderComponent } from './header/header.component';
     HomeComponent,
     MainMenuComponent,
     LegalNoticeComponent,
+    SidenavComponent,
     HeaderComponent
   ],
   imports: [
