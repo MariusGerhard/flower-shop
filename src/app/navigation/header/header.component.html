@@ -1,15 +1,15 @@
 <mat-toolbar color="warn">
-  <div fxHide.gt-xs>
-    <button (click)="onToggle()" mat-icon-button fxLayout fxFlex fxLayoutAlign="flex-start" fxLayoutGap="10px">
-      <mat-icon>
-        menu
-      </mat-icon>
-    </button>
-  </div>
   <div fxLayout fxFlex fxLayoutAlign="flex-start" fxLayoutGap="10px">
     <a routerLink="/">
       <div class="brand"></div>
     </a>
+    <div fxHide.gt-xs  fxLayout fxLayoutAlign="center center" >
+      <button (click)="onToggle()" mat-icon-button fxLayoutGap="10px">
+        <mat-icon>
+          menu
+        </mat-icon>
+      </button>
+    </div>
   </div>
   <div class="logo">
   </div>
