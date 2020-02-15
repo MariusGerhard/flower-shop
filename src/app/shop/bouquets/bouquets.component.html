@@ -1,0 +1,10 @@
+<p>bouquets works!</p>
+<ul>
+  <li *ngFor="let bouquet of bouquets | async">
+    <h1>{{ bouquet.name }}</h1>
+    {{ bouquet.price }}
+    {{ bouquet.seasonStart}}
+    {{ bouquet.seasonEnd}}
+    {{ bouquet.flower}}
+  </li>
+</ul>

@@ -8,8 +8,20 @@
     <span class="nav-item">&nbsp; Login</span>
   </a>
   <a mat-list-item routerLink="/register" (click)="onToggle()">
-    <mat-icon>assignment</mat-icon>
-    <span class="nav-item">&nbsp; Register</span>
+  <mat-icon>assignment</mat-icon>
+  <span class="nav-item">&nbsp; Register</span>
+  </a>
+  <a mat-list-item routerLink="/notice" (click)="onToggle()">
+    <mat-icon>contact_mail</mat-icon>
+    <span class="nav-item">&nbsp; Legal Notice</span>
+  </a>
+  <a mat-list-item routerLink="/bouquets" (click)="onToggle()">
+    <mat-icon svgIcon="bouquet"></mat-icon>
+    <span class="nav-item">&nbsp; Bouquets</span>
+  </a>
+  <a mat-list-item routerLink="/register" (click)="onToggle()">
+    <mat-icon svgIcon="flower"></mat-icon>
+    <span class="nav-item">&nbsp; Custom Bouquets</span>
   </a>
   <mat-list-item>
     <button mat-icon-button (click)="onToggle()">

@@ -1,23 +1,27 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="warn">
   <div fxHide.gt-xs>
-    <button (click)="onToggle()" mat-icon-button>
+    <button (click)="onToggle()" mat-icon-button fxLayout fxFlex fxLayoutAlign="flex-start" fxLayoutGap="10px">
       <mat-icon>
         menu
       </mat-icon>
     </button>
   </div>
-  <div>
-    <a routerLink="/">Home</a>
+  <div fxLayout fxFlex fxLayoutAlign="flex-start" fxLayoutGap="10px">
+    <a routerLink="/">
+      <div class="brand"></div>
+    </a>
   </div>
-  <div>
-    <p>Picture here</p>
+  <div class="logo">
   </div>
   <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.xs>
     <ul class="navigationBar" fxLayout fxLayoutGap="10px">
       <li><a routerLink="/menu">Menu</a></li>
+      <li><a routerLink="/flowers">Custom</a></li>
+      <li><a routerLink="/bouquets">Bouquets</a></li>
       <li><a routerLink="/login">Login</a></li>
       <li><a routerLink="/register">Register</a></li>
-      <li><a><mat-icon>logout</mat-icon></a></li>
+      <li><a routerLink="/notice">Legal Notice</a> </li>
+      <li><a>Logout</a></li>
     </ul>
   </div>
 </mat-toolbar>
