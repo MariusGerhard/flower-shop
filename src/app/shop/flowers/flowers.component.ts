@@ -11,7 +11,7 @@ export class FlowersComponent implements OnInit {
   constructor(private headerTitleService: HeaderTitleService) { }
 
   ngOnInit() {
-    this.headerTitleService.setTitle('Custom Bouquets');
+    this.headerTitleService.setTitle('Custom');
   }
 
 }

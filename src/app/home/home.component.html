@@ -1,32 +1,26 @@
-<div fxLayout
-     fxLayoutAlign="center center">
-  <div class="logo-big"
-       fxShow.gt-xs
-       fxHide.lt-sm >
+<section [@fallIn]="state">
+  <div fxLayout
+       fxLayoutAlign="center center">
+    <div class="logo-big"
+         fxShow.gt-xs
+         fxHide.lt-sm >
+    </div>
+    <div class="logo-medium"
+         fxShow.lt-sm
+         fxHide.gt-xs>
+    </div>
   </div>
-  <div class="logo-medium"
-       fxShow.lt-sm
-       fxHide.gt-xs>
-  </div>
-</div>
-<div>
-  <div fxLayout="column"
-       fxLayoutAlign="center center"
-       fxLayout.gt-md="row"
-       fxLayoutGap.gt-md="50px"
-       fxLayoutGap.lt-lg="0px"
-       class="home-text-layout">
-    <section>
-      <h1>Header 1</h1>
-        <p>Text1</p>
-      </section>
+  <div>
+    <div fxLayout="column"
+         fxLayoutAlign="center center"
+         fxLayout.gt-md="row"
+         fxLayoutGap.gt-md="50px"
+         fxLayoutGap.lt-lg="0px"
+         class="home-text-layout">
       <section>
-        <h1>Header 2</h1>
-        <p>Text2</p>
-      </section>
-      <section>
-        <h1>Header 3</h1>
-        <p>Text3</p>
-      </section>
+        <h1>Header 1</h1>
+          <p>Text1</p>
+        </section>
+    </div>
   </div>
-</div>
+</section>
