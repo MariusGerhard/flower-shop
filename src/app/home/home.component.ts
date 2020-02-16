@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HeaderTitleService} from '../services/header-title.service';
 
 @Component({
   selector: 'app-home',
@@ -6,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  title = 'Flower-Shop';
-  constructor() {}
-  ngOnInit() {
+  constructor(private headerTitleService: HeaderTitleService) {
   }
-
+  ngOnInit() {
+    this.headerTitleService.setTitle('Home');
+  }
 }

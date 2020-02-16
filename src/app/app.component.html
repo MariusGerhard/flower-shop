@@ -6,6 +6,7 @@
     <main>
       <app-header (toggleEvent)="sidenav.toggle()"></app-header>
       <router-outlet></router-outlet>
+      <app-footer fxShow.gt-xs fxHide.lt-sm></app-footer>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

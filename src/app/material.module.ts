@@ -4,7 +4,7 @@ All Angular Material Components
 import {NgModule} from '@angular/core';
 
 import {
-  MatButtonModule, MatCheckboxModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule,
   MatDatepickerModule,
   MatFormFieldModule, MatIconModule,
   MatInputModule, MatListModule,
@@ -23,6 +23,7 @@ const MaterialModules = [
   MatToolbarModule,
   MatIconModule,
   MatListModule,
+  MatCardModule
 ];
 @NgModule({
   imports: [MaterialModules],

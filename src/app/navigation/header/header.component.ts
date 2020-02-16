@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {HeaderTitleService} from '../../services/header-title.service';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,13 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
   @Output() toggleEvent = new EventEmitter();
-
-  constructor() { }
+  title = '';
+  constructor(private headerTitleService: HeaderTitleService) {
+    this.headerTitleService.title.subscribe(updatedTitle => {
+      this.title = updatedTitle;
+    });
+  }
 
   ngOnInit() {
   }

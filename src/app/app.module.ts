@@ -28,6 +28,8 @@ import {FlowersComponent} from './shop/flowers/flowers.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MatIconRegistry} from '@angular/material';
 import { environment } from '../environments/environment';
+import { FooterComponent } from './navigation/footer/footer.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { environment } from '../environments/environment';
     HeaderComponent,
     BouquetsComponent,
     FlowersComponent,
+    FooterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
