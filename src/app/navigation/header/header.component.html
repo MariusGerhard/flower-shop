@@ -1,22 +1,22 @@
 <mat-toolbar color="warn">
-  <div fxLayout fxFlex fxLayoutAlign="flex-start" fxLayoutGap="10px">
+  <div fxLayout fxFlex fxLayoutAlign="flex-start">
     <a routerLink="/">
       <div class="brand"></div>
     </a>
-    <div fxHide.gt-xs  fxLayout fxLayoutAlign="center center" >
-      <button (click)="onToggle()" mat-icon-button fxLayoutGap="10px">
+    <div fxHide.gt-sm  fxLayout fxLayoutAlign="center center" >
+      <button (click)="onToggle()" mat-icon-button>
         <mat-icon>
           menu
         </mat-icon>
       </button>
     </div>
-    <div fxLayout fxLayoutAlign="center center">
+    <div fxLayout fxLayoutAlign="center center" class="nav-item">
       {{title}}
     </div>
   </div>
   <div class="logo">
   </div>
-  <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.xs>
+  <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.lt-md>
     <ul class="navigationBar" fxLayout fxLayoutGap="10px">
       <li><a routerLink="/menu">Shop</a></li>
       <li><a routerLink="/flowers">Custom</a></li>
