@@ -2,7 +2,7 @@ a{
   text-decoration: none;
   color: white;
 }
-a:hover, a:active{
+a:hover{
   opacity: 65%;
 }
 .navigationBar{

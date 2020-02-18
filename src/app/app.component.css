@@ -4,12 +4,15 @@ mat-sidenav-container, mat-sidenav, mat-sidenav-content{
 mat-sidenav{
   width: 200px;
 }
+main{
+  min-height: 96.7445%;
+}
+.container{
+  overflow: auto;
+  padding-bottom: 30px;
+}
 app-footer{
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 25px;
-  text-align: center;
-  background-color: aqua;
+  position: relative;
+  margin-top: -30px;
+  clear: both;
 }
