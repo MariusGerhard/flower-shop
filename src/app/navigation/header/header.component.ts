@@ -7,6 +7,7 @@ import {HeaderTitleService} from '../../services/header-title.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  selectedIndex = -1;
   @Output() toggleEvent = new EventEmitter();
   title = '';
   constructor(private headerTitleService: HeaderTitleService) {
@@ -19,6 +20,9 @@ export class HeaderComponent implements OnInit {
   }
   onToggle() {
     this.toggleEvent.emit();
+  }
+  setSelected(id: number) {
+    this.selectedIndex = id;
   }
 
 }

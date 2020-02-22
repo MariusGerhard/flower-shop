@@ -1,7 +1,7 @@
 <mat-toolbar color="warn">
   <div fxLayout fxFlex fxLayoutAlign="flex-start">
     <a routerLink="/">
-      <div class="brand"></div>
+      <div class="brand" (click)="setSelected(0)"></div>
     </a>
     <div fxHide.gt-sm  fxLayout fxLayoutAlign="center center" >
       <button (click)="onToggle()" mat-icon-button>
@@ -18,11 +18,11 @@
   </div>
   <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.lt-md>
     <ul class="navigationBar" fxLayout fxLayoutGap="10px">
-      <li><a routerLink="/menu">Shop</a></li>
-      <li><a routerLink="/flowers">Custom</a></li>
-      <li><a routerLink="/bouquets">Bouquets</a></li>
-      <li><a routerLink="/login">Login</a></li>
-      <li><a routerLink="/register">Register</a></li>
+      <li><a routerLink="/menu" [ngClass]="{'highlight': selectedIndex == 1}" (click)="setSelected(1)">Shop</a></li>
+      <li><a routerLink="/flowers" [ngClass]="{'highlight': selectedIndex == 2}" (click)="setSelected(2)">Custom</a></li>
+      <li><a routerLink="/bouquets" [ngClass]="{'highlight': selectedIndex == 3}" (click)="setSelected(3)">Bouquets</a></li>
+      <li><a routerLink="/login" [ngClass]="{'highlight': selectedIndex == 4}" (click)="setSelected(4)">Login</a></li>
+      <li><a routerLink="/register" [ngClass]="{'highlight': selectedIndex == 5}" (click)="setSelected(5)">Register</a></li>
       <li><a>Logout</a></li>
     </ul>
   </div>
