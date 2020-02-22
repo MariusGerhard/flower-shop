@@ -1,0 +1,12 @@
+<section [@fallIn]="state">
+  <h1 fxLayoutAlign="center center">Welcome Menu</h1>
+  <div fxLayoutAlign="center center">
+    <mat-card>
+      <div fxLayoutGap="15px" fxLayout="column" fxLayoutAlign="center center">
+        <button mat-raised-button color="warn" (click)="onBouquets()">All Bouquets</button>
+        <button mat-raised-button color="warn" (click)="onCustoms()">Create custom Bouquet</button>
+        <button mat-raised-button color="accent" (click)="onOrders()">Last Orders</button>
+      </div>
+    </mat-card>
+  </div>
+</section>

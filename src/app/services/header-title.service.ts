@@ -13,7 +13,4 @@ export class HeaderTitleService {
   setTitle(title: string) {
     this.title.next(title);
   }
-  getTitle() {
-    return this.title.getValue();
-  }
 }

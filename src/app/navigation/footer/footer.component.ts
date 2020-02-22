@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {HeaderTitleService} from '../../services/header-title.service';
 
 @Component({
   selector: 'app-footer',
@@ -6,8 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-
-  constructor() { }
+  isNotice = false;
+  constructor(private headerTitleService: HeaderTitleService) {
+    this.headerTitleService.title.subscribe(updatedTitle => {
+     if (updatedTitle === 'Legal-Notice') {
+       this.isNotice = true;
+     } else {
+       this.isNotice = false;
+     }
+    });
+  }
 
   ngOnInit() {
   }

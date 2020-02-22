@@ -1,19 +1,15 @@
-<mat-nav-list>
-  <a mat-list-item routerLink="/menu" (click)="onToggle()">
+<mat-nav-list class="accent-background">
+  <a mat-list-item routerLink="/shop" (click)="onToggle()">
     <mat-icon>shop</mat-icon>
-    <span class="nav-item">&nbsp; Menu</span>
+    <span class="nav-item">&nbsp; Shop</span>
   </a>
-  <a mat-list-item routerLink="/login" (click)="onToggle()">
+  <a mat-list-item routerLink="/login" (click)="onToggle()" *ngIf="!userStatus">
     <mat-icon>input</mat-icon>
     <span class="nav-item">&nbsp; Login</span>
   </a>
-  <a mat-list-item routerLink="/register" (click)="onToggle()">
+  <a mat-list-item routerLink="/register" (click)="onToggle()" *ngIf="!userStatus">
   <mat-icon>assignment</mat-icon>
   <span class="nav-item">&nbsp; Register</span>
-  </a>
-  <a mat-list-item routerLink="/notice" (click)="onToggle()">
-    <mat-icon>contact_mail</mat-icon>
-    <span class="nav-item">&nbsp; Legal Notice</span>
   </a>
   <a mat-list-item routerLink="/bouquets" (click)="onToggle()">
     <mat-icon svgIcon="bouquet"></mat-icon>
@@ -23,7 +19,7 @@
     <mat-icon svgIcon="flower"></mat-icon>
     <span class="nav-item">&nbsp; Custom Bouquets</span>
   </a>
-  <mat-list-item>
+  <mat-list-item *ngIf="userStatus">
     <button mat-icon-button (click)="onToggle()">
       <mat-icon>logout</mat-icon>
       <span class="nav-item">&nbsp; Logout</span>

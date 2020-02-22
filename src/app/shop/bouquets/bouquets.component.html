@@ -1,11 +1,22 @@
-<section fxLayout fxLayoutAlign="center center">
-  <ul [@fallIn]="state">
-    <li *ngFor="let bouquet of bouquets | async">
-      <h1>{{ bouquet.name }}</h1>
-      {{ bouquet.price }}
-      {{ bouquet.seasonStart}}
-      {{ bouquet.seasonEnd}}
-      {{ bouquet.flower}}
-    </li>
-  </ul>
+<section [@fallIn]="state" >
+  <h1 fxLayout fxLayoutAlign="center center" >Bouquets</h1>
+  <div fxLayoutAlign="column center" fxLayoutGap="15px" fxLayout="column">
+    <mat-card *ngFor="let bouquet of bouquets | async" fxLayout>
+      <mat-card-header>
+        <mat-card-title>{{bouquet.name}}</mat-card-title>
+        <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Price: {{ bouquet.price }}
+        </p>
+        <p>
+          Season Start: {{ bouquet.seasonStart}}
+        </p>
+        <p>
+          Season End: {{ bouquet.seasonEnd}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </section>

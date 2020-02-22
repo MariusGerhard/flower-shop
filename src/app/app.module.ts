@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
-import { MainMenuComponent } from './main-menu/main-menu.component';
+import { MainMenuComponent } from './shop/main-menu/main-menu.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import {HeaderComponent} from './navigation/header/header.component';

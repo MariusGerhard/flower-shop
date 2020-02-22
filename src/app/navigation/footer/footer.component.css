@@ -5,3 +5,7 @@ a{
 a:hover, a:active{
   opacity: 65%;
 }
+.container-layout{
+  display: block;
+  width: 75%;
+}

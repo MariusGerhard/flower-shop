@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {HeaderTitleService} from '../../services/header-title.service';
+import {FirebaseService} from '../../services/firebase.service';
 
 @Component({
   selector: 'app-header',
@@ -7,22 +8,32 @@ import {HeaderTitleService} from '../../services/header-title.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  userStatus = false;
   selectedIndex = -1;
   @Output() toggleEvent = new EventEmitter();
   title = '';
-  constructor(private headerTitleService: HeaderTitleService) {
+  constructor(private headerTitleService: HeaderTitleService, private firebaseService: FirebaseService) {
     this.headerTitleService.title.subscribe(updatedTitle => {
       this.title = updatedTitle;
     });
   }
 
   ngOnInit() {
+    this.firebaseService.getUserStatus().subscribe(
+      (res) => {
+        this.userStatus = res;
+      }
+    );
   }
   onToggle() {
     this.toggleEvent.emit();
   }
   setSelected(id: number) {
     this.selectedIndex = id;
+  }
+  onLogout() {
+    this.firebaseService.logoutUser();
+    this.userStatus = false;
   }
 
 }

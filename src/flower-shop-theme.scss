@@ -7,5 +7,9 @@
   $flower-shop-warn: mat-palette($mat-indigo);
   $flower-shop-theme: mat-light-theme($flower-shop-primary, $flower-shop-accent, $flower-shop-warn);
 
+.accent-background{
+  background-color: mat-color($flower-shop-primary);
+  height: 100%;
+}
   @include angular-material-theme($flower-shop-theme);
 

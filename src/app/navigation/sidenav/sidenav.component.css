@@ -5,3 +5,10 @@ a{
 a:hover, a:active{
   opacity: 65%;
 }
+span{
+  color: white;
+}
+mat-icon{
+  color: white;
+}
+
