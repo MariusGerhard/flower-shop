@@ -30,6 +30,7 @@ import {MatIconRegistry} from '@angular/material';
 import { environment } from '../environments/environment';
 import { FooterComponent } from './navigation/footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ProfileComponent } from './profile/profile.component';
     FlowersComponent,
     FooterComponent,
     ProfileComponent,
+    AutofocusDirective,
   ],
   imports: [
     BrowserModule,

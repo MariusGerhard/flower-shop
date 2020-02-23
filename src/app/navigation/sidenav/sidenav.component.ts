@@ -12,13 +12,21 @@ export class SidenavComponent implements OnInit {
   constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit() {
+    this.updateUserStatus();
+  }
+  onToggle() {
+    this.toggleNavEvent.emit();
+  }
+  onLogout() {
+    this.firebaseService.logoutUser();
+    this.userStatus = false;
+    this.onToggle();
+  }
+  updateUserStatus() {
     this.firebaseService.getUserStatus().subscribe(
       (res) => {
         this.userStatus = res;
       }
     );
-  }
-  onToggle() {
-    this.toggleNavEvent.emit();
   }
 }

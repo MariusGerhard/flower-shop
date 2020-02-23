@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {HeaderTitleService} from '../../services/header-title.service';
 import {fallIn, moveIn} from '../../router.animations';
 
@@ -10,12 +10,16 @@ import {fallIn, moveIn} from '../../router.animations';
   // tslint:disable-next-line:no-host-metadata-property
   host: {'@moveIn': ''},
 })
-export class FlowersComponent implements OnInit {
+export class FlowersComponent implements OnInit, OnChanges {
   state: string;
   constructor(private headerTitleService: HeaderTitleService) { }
 
   ngOnInit() {
     this.headerTitleService.setTitle('Custom');
+    window.scroll(0, 0);
+  }
+  ngOnChanges() {
+    window.scroll(0, 0);
   }
 
 }

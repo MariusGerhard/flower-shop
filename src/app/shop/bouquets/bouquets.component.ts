@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import {HeaderTitleService} from '../../services/header-title.service';
   // tslint:disable-next-line:no-host-metadata-property
   host: {'@moveIn': ''},
 })
-export class BouquetsComponent implements OnInit {
+export class BouquetsComponent implements OnInit, OnChanges {
   state: string;
   bouquets: Observable<any[]>;
 
@@ -22,6 +22,10 @@ export class BouquetsComponent implements OnInit {
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Bouquets');
+    window.scroll(0, 0);
+  }
+  ngOnChanges() {
+    window.scroll(0, 0);
   }
 
 }

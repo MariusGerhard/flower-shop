@@ -1,5 +1,6 @@
 <section [@fallIn]="state" >
   <h1 fxLayout fxLayoutAlign="center center" >Bouquets</h1>
+  <input autofocus [hidden]="true" appAutofocus>
   <div fxLayoutAlign="column center" fxLayoutGap="15px" fxLayout="column">
     <mat-card *ngFor="let bouquet of bouquets | async" fxLayout>
       <mat-card-header>
