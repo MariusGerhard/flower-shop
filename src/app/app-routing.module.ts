@@ -9,6 +9,7 @@ import {LegalNoticeComponent} from './legal-notice/legal-notice.component';
 import {FlowersComponent} from './shop/flowers/flowers.component';
 import {BouquetsComponent} from './shop/bouquets/bouquets.component';
 import {ProfileComponent} from './profile/profile.component';
+import {TermsConditionsComponent} from './terms-conditions/terms-conditions.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'flowers', component: FlowersComponent},
   {path: 'bouquets', component: BouquetsComponent},
   {path: 'profile', component: ProfileComponent},
+  {path: 'terms', component: TermsConditionsComponent},
   {path: '**', component: HomeComponent},
 ];
 

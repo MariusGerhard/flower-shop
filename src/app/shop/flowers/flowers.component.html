@@ -1,12 +1,17 @@
 <section [@fallIn]="state">
   <h1 fxLayout fxLayoutAlign="center center" autofocus>Custom Bouquets</h1>
   <input autofocus [hidden]="true" appAutofocus>
-  <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci porta non pulvinar neque. Felis bibendum ut tristique et egestas quis ipsum. Amet purus gravida quis blandit turpis cursus in. Et sollicitudin ac orci phasellus egestas. Risus quis varius quam quisque id diam. Feugiat pretium nibh ipsum consequat nisl. Nisl nunc mi ipsum faucibus vitae. Tempus iaculis urna id volutpat lacus laoreet non curabitur. Accumsan lacus vel facilisis volutpat est velit egestas. At augue eget arcu dictum varius duis at consectetur lorem. Nibh tellus molestie nunc non blandit massa enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Felis bibendum ut tristique et egestas quis. Elementum integer enim neque volutpat ac tincidunt vitae semper. Adipiscing at in tellus integer feugiat scelerisque. Vehicula ipsum a arcu cursus. Blandit volutpat maecenas volutpat blandit aliquam etiam. Vitae congue eu consequat ac felis.
-
-  Diam in arcu cursus euismod quis viverra nibh cras pulvinar. In egestas erat imperdiet sed. Auctor elit sed vulputate mi sit. Lectus mauris ultrices eros in cursus turpis. Sed nisi lacus sed viverra tellus in hac. Gravida arcu ac tortor dignissim convallis aenean. Vitae tempus quam pellentesque nec nam aliquam. In vitae turpis massa sed elementum. Et pharetra pharetra massa massa ultricies mi quis hendrerit. In fermentum et sollicitudin ac. Hendrerit dolor magna eget est lorem ipsum dolor sit amet. Feugiat in ante metus dictum. Dictumst quisque sagittis purus sit amet volutpat. Quam pellentesque nec nam aliquam. Amet nisl purus in mollis nunc sed id semper. Sit amet nisl suscipit adipiscing bibendum est ultricies. At auctor urna nunc id cursus.
-
-  Enim facilisis gravida neque convallis a. Dictumst quisque sagittis purus In egestas erat imperdiet sed euismod nisi porta lorem. Consequat mauris nunc congue nisi vitae suscipit tellus mauris a. Neque gravida in fermentum et. Malesuada fames ac turpis egestas maecenas pharetra. Sed risus pretium quam vulputate dignissim suspendisse in est. Rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar. Blandit cursus risus at ultrices mi tempus. At lectus urna duis convallis convallis. Amet consectetur adipiscing elit pellentesque habitant morbi. Aliquet nec ullamcorper sit amet risus nullam eget felis eget. Ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget gravida. Tellus cras adipiscing enim eu turpis.
-
-  Tortor at risus viverra adipiscing at in. Viverra nam libero justo laoreet sit. Maecenas sed enim ut sem viverra aliquet eget sit. Ut aliquam purus sit amet luctus venenatis lectus magna fringilla. Nibh tellus molestie nunc non blandit massa enim nec dui. Nibh sed pulvinar proin gravida hendrerit lectus. Euismod lacinia at quis risus sed. Eget nunc scelerisque viverra mauris in aliquam sem. Tellus molestie nunc non blandit massa enim nec dui. Mattis enim ut tellus elementum sagittis vitae et leo duis. Tincidunt vitae semper quis lectus nulla at volutpat diam ut. Massa tempor nec feugiat nisl pretium fusce id velit ut. Posuere morbi leo urna molestie at elementum.</p>
+  <div fxLayoutAlign="column center" fxLayoutGap="15px" fxLayout="column">
+    <mat-card *ngFor="let flower of flowers | async" fxLayout>
+      <mat-card-header>
+        <mat-card-title>{{flower.name}}</mat-card-title>
+        <mat-card-subtitle>{{flower.color}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Price: {{ flower.price }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </section>

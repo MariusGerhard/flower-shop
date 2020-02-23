@@ -1,6 +1,8 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
 import {HeaderTitleService} from '../../services/header-title.service';
 import {fallIn, moveIn} from '../../router.animations';
+import {Observable} from 'rxjs';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-flowers',
@@ -12,14 +14,15 @@ import {fallIn, moveIn} from '../../router.animations';
 })
 export class FlowersComponent implements OnInit, OnChanges {
   state: string;
-  constructor(private headerTitleService: HeaderTitleService) { }
+  flowers: Observable<any[]>;
+  constructor(db: AngularFirestore, private headerTitleService: HeaderTitleService) {
+    this.flowers = db.collection('flowers').valueChanges();
+  }
 
   ngOnInit() {
     this.headerTitleService.setTitle('Custom');
-    window.scroll(0, 0);
   }
   ngOnChanges() {
-    window.scroll(0, 0);
   }
 
 }

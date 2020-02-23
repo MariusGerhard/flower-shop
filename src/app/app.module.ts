@@ -31,6 +31,7 @@ import { environment } from '../environments/environment';
 import { FooterComponent } from './navigation/footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     FooterComponent,
     ProfileComponent,
     AutofocusDirective,
+    TermsConditionsComponent,
   ],
   imports: [
     BrowserModule,

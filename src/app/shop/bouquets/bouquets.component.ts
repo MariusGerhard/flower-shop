@@ -22,10 +22,8 @@ export class BouquetsComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Bouquets');
-    window.scroll(0, 0);
   }
   ngOnChanges() {
-    window.scroll(0, 0);
   }
 
 }

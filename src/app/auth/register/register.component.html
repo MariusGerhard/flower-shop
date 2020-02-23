@@ -59,14 +59,14 @@
     </mat-form-field>
     <mat-checkbox ngModel
                   name="conditions"
-                  color="primary"
+                  color="warn"
                   required
     >
-      Agree to <a>Terms and Conditions</a>.
+      Agree to <a routerLink="/terms">Terms and Conditions</a>.
     </mat-checkbox>
     <button mat-raised-button
             type="submit"
-            color="primary"
+            color="accent"
             [disabled]="f.invalid"
     >Submit</button>
   </form>
