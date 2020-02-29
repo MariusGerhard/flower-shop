@@ -44,11 +44,16 @@ export class FirebaseService {
     );
   }
   getBouquet(columnType, id) {
-    const fakeResponse = [{
-      name: 'wurst',
-      price: 'wurst',
-      seasonStart: '5'
-    }];
+    const fakeResponse = {
+      _id: 123,
+      name: 'Schinkenwurst',
+      category: 'Wurst',
+      price: 12,
+      seasonStart: 5,
+      seasonEnd: 8,
+      flower: 'rose',
+      description: 'roses are are red'
+    };
     return Observable.create(
       observer => {
         setTimeout(() => {

@@ -125,8 +125,8 @@ export class BouquetsComponent implements OnInit, AfterViewInit, OnDestroy {
   updateData(formData) {
     this.isLoading = true;
     this.queryConnection = this.firebaseService.updateBouquets('bouquets', formData)
-      .subscribe(members => {
-          if (members) {
+      .subscribe(res => {
+          if (res) {
             this.savedChanges = true;
           }
           this.isLoading = false;
@@ -148,6 +148,8 @@ export class BouquetsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (res) {
             this.myDocData = res;
             this.toggle('editMode');
+            console.log('document');
+            console.log(this.myDocData);
           }
           this.isLoading = false;
         },

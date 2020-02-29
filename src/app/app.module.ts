@@ -1,7 +1,7 @@
 /*
 Modules import app
  */
-import {BrowserModule, DomSanitizer} from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
@@ -26,7 +26,6 @@ import {HeaderComponent} from './navigation/header/header.component';
 import {BouquetsComponent} from './shop/bouquets/bouquets.component';
 import {FlowersComponent} from './shop/flowers/flowers.component';
 import {HttpClientModule} from '@angular/common/http';
-import {MatIconRegistry} from '@angular/material';
 import { environment } from '../environments/environment';
 import { FooterComponent } from './navigation/footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -69,16 +68,4 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(private matIconRegistry: MatIconRegistry,
-              private domSanitizer: DomSanitizer) {
-    this.matIconRegistry.addSvgIcon(
-      `flower`,
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/flower.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
-      `bouquet`,
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/bouquet.svg')
-    );
-  }
-}
+export class AppModule {}

@@ -6,11 +6,12 @@ import {NgModule} from '@angular/core';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule,
   MatDatepickerModule,
-  MatFormFieldModule, MatIconModule,
+  MatFormFieldModule, MatIconModule, MatIconRegistry,
   MatInputModule, MatListModule,
   MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatSidenavModule, MatSortModule, MatTableModule,
   MatToolbarModule, MatTooltipModule
 } from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
 
 const MaterialModules = [
   MatFormFieldModule,
@@ -35,5 +36,16 @@ const MaterialModules = [
   exports: [MaterialModules]
 })
 
-export class MaterialModule {}
+export class MaterialModule {
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+    this.matIconRegistry.addSvgIcon(
+      `flower`,
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/flower.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      `bouquet`,
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/bouquet.svg')
+    );
+  }
+}
 
