@@ -1,13 +1,22 @@
 mat-card{
   width: 75%;
-  min-width: 50%;
   margin-bottom: 10px;
 }
-mat-card-header{
-  width: 25%;
-  display: block;
+mat-progress-bar{
+  width: 80%;
+  margin-top: 1.5%;
+  margin-bottom: 1.5%;
 }
-
-mat-card-content{
+.search-button{
+  width: 250px
+}
+table {
+  width: 100%;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+td, th {
   width: 25%;
 }

@@ -8,8 +8,8 @@ import {
   MatDatepickerModule,
   MatFormFieldModule, MatIconModule,
   MatInputModule, MatListModule,
-  MatNativeDateModule, MatSidenavModule,
-  MatToolbarModule
+  MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatSidenavModule, MatSortModule, MatTableModule,
+  MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 
 const MaterialModules = [
@@ -23,7 +23,12 @@ const MaterialModules = [
   MatToolbarModule,
   MatIconModule,
   MatListModule,
-  MatCardModule
+  MatCardModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatTooltipModule
 ];
 @NgModule({
   imports: [MaterialModules],

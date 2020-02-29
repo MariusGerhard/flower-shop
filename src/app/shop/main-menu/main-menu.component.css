@@ -1,7 +1,13 @@
 mat-card{
-  width: 75%;
+  width: 50%;
 }
 button{
   width: 250px;
 }
-
+.card-styling{
+  margin-top: 25%;
+  margin-bottom: 1.5%;
+}
+section{
+  margin-bottom: 1%;
+}

@@ -14,6 +14,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 })
 export class FlowersComponent implements OnInit, OnChanges {
   state: string;
+  isLoading = true;
   flowers: Observable<any[]>;
   constructor(db: AngularFirestore, private headerTitleService: HeaderTitleService) {
     this.flowers = db.collection('flowers').valueChanges();

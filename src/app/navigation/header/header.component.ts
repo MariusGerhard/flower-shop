@@ -8,9 +8,9 @@ import {FirebaseService} from '../../services/firebase.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  @Output() toggleEvent = new EventEmitter();
   userStatus = false;
   selectedIndex = -1;
-  @Output() toggleEvent = new EventEmitter();
   title = '';
   constructor(private headerTitleService: HeaderTitleService, private firebaseService: FirebaseService) {
     this.headerTitleService.title.subscribe(updatedTitle => {

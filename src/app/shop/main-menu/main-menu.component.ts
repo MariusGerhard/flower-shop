@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {HeaderTitleService} from '../../services/header-title.service';
 import {fallIn, moveIn} from '../../router.animations';
 
@@ -11,17 +11,14 @@ import {fallIn, moveIn} from '../../router.animations';
   host: {'@moveIn': ''},
 })
 export class MainMenuComponent implements OnInit {
+  @Output() toggleHeader = new EventEmitter();
   state: string;
   constructor(private headerTitleService: HeaderTitleService) { }
 
   ngOnInit() {
     this.headerTitleService.setTitle('Shop');
   }
-  onOrders() {
+  onToggleHeader() {
+    this.toggleHeader.emit();
   }
-  onBouquets() {
-  }
-  onCustoms() {
-  }
-
 }

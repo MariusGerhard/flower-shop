@@ -6,6 +6,7 @@
         fxLayoutGap="10px"
   >
     <h1>Register to Flower Shop</h1>
+    <mat-progress-bar mode="indeterminate" *ngIf="!isLoading"></mat-progress-bar>
     <mat-form-field>
       <input type="email"
              matInput

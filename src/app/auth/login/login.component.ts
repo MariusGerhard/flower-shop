@@ -13,6 +13,7 @@ import {fallIn, moveIn} from '../../router.animations';
 })
 export class LoginComponent implements OnInit {
   state: string;
+  isLoading = false;
   constructor(private headerTitleService: HeaderTitleService) { }
 
   ngOnInit() {

@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
   max: Date;
   min: Date;
   state: string;
+  isLoading: false;
   constructor(private headerTitleService: HeaderTitleService) { }
 
   ngOnInit() {
