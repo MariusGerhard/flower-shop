@@ -1,5 +1,5 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
-import {HeaderTitleService} from '../../services/header-title.service';
+import {HeaderTitleService} from '../../shared/services/header-title.service';
 import {fallIn, moveIn} from '../../router.animations';
 import {Observable} from 'rxjs';
 import {AngularFirestore} from '@angular/fire/firestore';
@@ -14,7 +14,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 })
 export class FlowersComponent implements OnInit, OnChanges {
   state: string;
-  isLoading = true;
+  isLoading = false;
   flowers: Observable<any[]>;
   constructor(db: AngularFirestore, private headerTitleService: HeaderTitleService) {
     this.flowers = db.collection('flowers').valueChanges();

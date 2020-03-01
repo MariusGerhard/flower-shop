@@ -29,7 +29,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { FooterComponent } from './navigation/footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
-import { AutofocusDirective } from './directives/autofocus.directive';
+import { AutofocusDirective } from './shared/directives/autofocus.directive';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';

@@ -8,7 +8,7 @@ import {
   MatDatepickerModule,
   MatFormFieldModule, MatIconModule, MatIconRegistry,
   MatInputModule, MatListModule,
-  MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatSidenavModule, MatSortModule, MatTableModule,
+  MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatSidenavModule, MatSnackBarModule, MatSortModule, MatTableModule,
   MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -29,7 +29,8 @@ const MaterialModules = [
   MatSortModule,
   MatPaginatorModule,
   MatProgressBarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSnackBarModule
 ];
 @NgModule({
   imports: [MaterialModules],

@@ -2,8 +2,8 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/c
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Observable} from 'rxjs';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {HeaderTitleService} from '../../services/header-title.service';
-import {FirebaseService} from '../../services/firebase.service';
+import {HeaderTitleService} from '../../shared/services/header-title.service';
+import {FirebaseService} from '../../shared/services/firebase.service';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {fallIn, moveIn} from '../../router.animations';
 

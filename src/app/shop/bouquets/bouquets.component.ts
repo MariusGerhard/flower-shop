@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import {fallIn, moveIn} from '../../router.animations';
-import {HeaderTitleService} from '../../services/header-title.service';
+import {HeaderTitleService} from '../../shared/services/header-title.service';
 
 
 @Component({

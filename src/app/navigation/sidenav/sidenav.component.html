@@ -12,7 +12,7 @@
   <span class="nav-item">&nbsp; Register</span>
   </a>
   <a mat-list-item routerLink="/bouquets" (click)="onToggle()">
-    <mat-icon svgIcon="bouquet"></mat-icon>
+    <mat-icon svgIcon="bouquet" ></mat-icon>
     <span class="nav-item">&nbsp; Bouquets</span>
   </a>
   <a mat-list-item routerLink="/flowers" (click)="onToggle()">
@@ -20,7 +20,7 @@
     <span class="nav-item">&nbsp; Custom Bouquets</span>
   </a>
   <a mat-list-item routerLink="/settings" (click)="onToggle()">
-    <mat-icon>settings</mat-icon>
+    <mat-icon color="warn">settings</mat-icon>
     <span class="nav-item">&nbsp; Settings</span>
   </a>
   <mat-list-item *ngIf="userStatus">

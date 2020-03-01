@@ -53,7 +53,7 @@
         <mat-label>Please enter your Birthdate</mat-label>
         <label>
           <input matInput
-                 [matDatepicker]="birthdate"
+                 [matDatepicker]="picker"
                  [max]="max"
                  [min]="min"
                  ngModel
@@ -62,8 +62,8 @@
           >
         </label>
         <mat-error>Field should not be empty</mat-error>
-        <mat-datepicker-toggle [for]="birthdate" matSuffix></mat-datepicker-toggle>
-        <mat-datepicker #birthdate></mat-datepicker>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
       <mat-checkbox ngModel
                     name="conditions"

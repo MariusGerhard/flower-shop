@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Router} from '@angular/router';
+
+import {UIService} from './ui.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +10,12 @@ import {Router} from '@angular/router';
 export class FirebaseService {
   fakeResponse = false;
   userStatus = false;
-  constructor(private router: Router) { }
-
+  authChanged = new Subject<boolean>();
+  constructor(private router: Router,
+              private uiService: UIService) { }
+  isAuth() {
+    return this.userStatus;
+  }
   getUserStatus() {
     this.fakeResponse = true;
     return Observable.create(
@@ -26,7 +32,8 @@ export class FirebaseService {
       observer => {
         setTimeout(() => {
           observer.next(this.fakeResponse);
-          this.router.navigate(['/login']).then(r => console.log('Go to Login'));
+          this.router.navigate(['/login']).then(
+            r => this.uiService.showSnackbar('Registration completed', null, 2500));
         }, 3000);
       }
     );
@@ -38,23 +45,30 @@ export class FirebaseService {
         setTimeout(() => {
           observer.next(this.fakeResponse);
           this.userStatus = true;
-          console.log(this.userStatus);
-          this.router.navigate(['/shop']).then(r => console.log('Go to Shop'));
+          this.authChanged.next(this.userStatus);
+          this.router.navigate(['/shop']).then(
+            r => this.uiService.showSnackbar('Login completed', null, 2500));
         }, 1500);
       }
     );
   }
   logoutUser() {
+    this.userStatus = false;
+    this.authChanged.next(false);
+    this.router.navigate(['']).then(r => console.log('Logout'));
+    /*
     this.fakeResponse = true;
     return Observable.create(
       observer => {
         setTimeout(() => {
           observer.next(this.fakeResponse);
           this.userStatus = false;
+          this.authChanged.next(this.userStatus);
           console.log(this.userStatus);
         }, 100);
       }
     );
+    */
   }
   setBouquets(columnType, wurst) {
     this.fakeResponse = true;
