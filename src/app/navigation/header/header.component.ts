@@ -17,11 +17,11 @@ export class HeaderComponent implements OnInit {
       this.title = updatedTitle;
     });
   }
-
   ngOnInit() {
     this.firebaseService.getUserStatus().subscribe(
       (res) => {
         this.userStatus = res;
+        console.log('Header userstatus:' + this.userStatus);
       }
     );
   }

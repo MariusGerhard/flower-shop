@@ -1,27 +1,60 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
   fakeResponse = false;
-  constructor() { }
+  userStatus = false;
+  constructor(private router: Router) { }
 
   getUserStatus() {
     this.fakeResponse = true;
     return Observable.create(
       observer => {
         setTimeout(() => {
+          observer.next(this.userStatus);
+        }, 5);
+      }
+    );
+  }
+  registerUser(formUser) {
+    this.fakeResponse = true;
+    return Observable.create(
+      observer => {
+        setTimeout(() => {
           observer.next(this.fakeResponse);
-        }, 2000);
+          this.router.navigate(['/login']).then(r => console.log('Go to Login'));
+        }, 3000);
+      }
+    );
+  }
+  loginUser(userForm) {
+    this.fakeResponse = true;
+    return Observable.create(
+      observer => {
+        setTimeout(() => {
+          observer.next(this.fakeResponse);
+          this.userStatus = true;
+          console.log(this.userStatus);
+          this.router.navigate(['/shop']).then(r => console.log('Go to Shop'));
+        }, 1500);
       }
     );
   }
   logoutUser() {
-    console.log('Logout');
-    this.fakeResponse = false;
-    return true;
+    this.fakeResponse = true;
+    return Observable.create(
+      observer => {
+        setTimeout(() => {
+          observer.next(this.fakeResponse);
+          this.userStatus = false;
+          console.log(this.userStatus);
+        }, 100);
+      }
+    );
   }
   setBouquets(columnType, wurst) {
     this.fakeResponse = true;
@@ -85,6 +118,7 @@ export class FirebaseService {
   getFilterBouquets(columnType, filters) {
     const fakeResponse = [{
       name: 'filter',
+      category: 'filtercat',
       price: 'filter2',
       seasonStart: '2'
     }];
@@ -99,6 +133,7 @@ export class FirebaseService {
   getBouquets(columnType) {
     const fakeResponse = [{
       name: 'testName',
+      category: 'testcat',
       price: 'testPrice',
       seasonStart: '1'
     }];

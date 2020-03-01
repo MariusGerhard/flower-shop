@@ -6,41 +6,49 @@
         fxLayoutGap="10px"
   >
     <h1>Login to Flower Shop</h1>
-    <mat-progress-bar mode="indeterminate" *ngIf="!isLoading"></mat-progress-bar>
-    <mat-form-field>
-      <input type="email"
-             matInput
-             ngModel
-             name="email"
-             placeholder="Please enter your Email"
-             email
-             required
-             #email="ngModel"
-      >
-      <mat-error *ngIf="!email.hasError('required')">
-        Email is Invalid
-      </mat-error>
-      <mat-error *ngIf="email.hasError('required')">
-        Field should not be empty
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input type="password"
-             matInput
-             ngModel
-             name="password"
-             placeholder="Please enter your Password "
-             required
-             #pw="ngModel"
-      >
-      <mat-error>
-        Field should not be empty
-      </mat-error>
-    </mat-form-field>
-    <button mat-raised-button
-            type="submit"
-            color="accent"
-            [disabled]="f.invalid"
-    >Submit</button>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+      <mat-form-field>
+        <mat-label>Please enter your Email</mat-label>
+        <label>
+          <input type="email"
+                 matInput
+                 ngModel
+                 name="email"
+                 email
+                 required
+                 #email="ngModel"
+          >
+        </label>
+        <mat-error *ngIf="!email.hasError('required')">
+          Email is Invalid
+        </mat-error>
+        <mat-error *ngIf="email.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Please enter your Password</mat-label>
+        <label>
+          <input type="password"
+                 matInput
+                 ngModel
+                 name="password"
+                 required
+                 #pw="ngModel"
+          >
+        </label>
+        <mat-error>
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button
+              type="submit"
+              color="accent"
+              [disabled]="f.invalid"
+              >
+        Submit
+      </button>
+      </mat-card>
   </form>
 </section>

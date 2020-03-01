@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {HeaderTitleService} from '../../services/header-title.service';
 import {fallIn, moveIn} from '../../router.animations';
+import {FirebaseService} from '../../services/firebase.service';
 
 @Component({
   selector: 'app-register',
@@ -15,8 +16,12 @@ export class RegisterComponent implements OnInit {
   max: Date;
   min: Date;
   state: string;
-  isLoading: false;
-  constructor(private headerTitleService: HeaderTitleService) { }
+  error = false;
+  errorMessage = 'registration failed please try again';
+  isLoading = false;
+  private queryConnection;
+  constructor(private headerTitleService: HeaderTitleService,
+              private firebaseService: FirebaseService) { }
 
   ngOnInit() {
     this.max = new Date();
@@ -28,5 +33,20 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     console.log(form);
+    this.isLoading = true;
+    this.queryConnection = this.firebaseService.registerUser(form)
+      .subscribe(res => {
+         console.log(res);
+         this.isLoading = false;
+        },
+        (error) => {
+          this.error = true;
+          this.errorMessage = error.message;
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
+          this.error = false;
+        });
   }
 }

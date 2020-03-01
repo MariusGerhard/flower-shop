@@ -1,8 +1,16 @@
-mat-form-field{
-  width:300px;
-}
 mat-progress-bar{
   width: 80%;
   margin-top: 1.5%;
   margin-bottom: 1.5%;
+}
+mat-card{
+  width: 90%;
+  margin-bottom: 10px;
+  max-width: 500px;
+}
+mat-form-field{
+  width: 90%;
+}
+button{
+  width: 75%;
 }

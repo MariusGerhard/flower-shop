@@ -33,6 +33,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';
+import { SettingsComponent } from './admin/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
     ProfileComponent,
     AutofocusDirective,
     TermsConditionsComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

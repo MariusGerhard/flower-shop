@@ -18,7 +18,8 @@
   </div>
   <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.lt-md>
     <ul class="navigationBar" fxLayout fxLayoutGap="10px">
-      <li><a routerLink="/shop"  [ngClass]="{'highlight': title === 'Shop'}"(click)="setSelected(1)">Shop</a></li>
+      <li><a routerLink="/shop"  [ngClass]="{'highlight': title === 'Shop'}" (click)="setSelected(1)">Shop</a></li>
+      <li><a routerLink="/settings"  [ngClass]="{'highlight': title === 'Settings'}" (click)="setSelected(6)">Settings</a></li>
       <li><a routerLink="/flowers"   [ngClass]="{'highlight': title === 'Custom'}" (click)="setSelected(2)">Custom</a></li>
       <li><a routerLink="/bouquets"  [ngClass]="{'highlight': title === 'Bouquets'}" (click)="setSelected(3)">Bouquets</a></li>
       <li *ngIf="!userStatus"><a routerLink="/login" [ngClass]="{'highlight': selectedIndex == 4}" (click)="setSelected(4)">Login</a></li>

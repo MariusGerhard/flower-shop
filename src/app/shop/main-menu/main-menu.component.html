@@ -1,11 +1,14 @@
 <section [@fallIn]="state">
-  <input autofocus [hidden]="true" appAutofocus>
+  <label>
+    <input autofocus [hidden]="true" appAutofocus>
+  </label>
   <h1 fxLayoutAlign="center center">Welcome Menu</h1>
   <div fxLayoutAlign="center center">
     <mat-card>
       <div fxLayoutGap="15px" fxLayout="column" fxLayoutAlign="center center">
-        <button mat-raised-button color="warn" routerLink="/bouquets" (click)="onToggleHeader()">All Bouquets</button>
+        <button mat-raised-button color="primary" routerLink="/bouquets" (click)="onToggleHeader()">All Bouquets</button>
         <button mat-raised-button color="primary" routerLink="/flowers" (click)="onToggleHeader()">Create custom Bouquet</button>
+        <button mat-raised-button color="warn" routerLink="/settings" (click)="onToggleHeader()">Settings</button>
         <button mat-raised-button color="accent" routerLink="/orders" (click)="onToggleHeader()" class="card-styling">Last Orders</button>
       </div>
     </mat-card>

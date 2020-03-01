@@ -10,6 +10,7 @@ import {FlowersComponent} from './shop/flowers/flowers.component';
 import {BouquetsComponent} from './shop/bouquets/bouquets.component';
 import {ProfileComponent} from './profile/profile.component';
 import {TermsConditionsComponent} from './terms-conditions/terms-conditions.component';
+import {SettingsComponent} from './admin/settings/settings.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'bouquets', component: BouquetsComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'terms', component: TermsConditionsComponent},
+  {path: 'settings', component: SettingsComponent},
   {path: '**', component: HomeComponent},
 ];
 
