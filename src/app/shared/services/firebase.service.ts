@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 
 import {UIService} from './ui.service';
 import {AngularFireAuth} from '@angular/fire/auth';
-import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 import * as firebase from 'firebase/app';
 import {User} from 'firebase';
 
@@ -62,7 +61,7 @@ export class FirebaseService {
       });
   }
   async loginGoogle() {
-    await this.afAuth.auth.signInWithPopup(new GoogleAuthProvider());
+    await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
 }
   async loginFacebook() {
     await this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
