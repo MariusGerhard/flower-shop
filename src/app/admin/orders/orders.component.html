@@ -1,0 +1,10 @@
+<section>
+  <h1 fxLayout fxLayoutAlign="center center" >Order History</h1>
+  <mat-label [hidden]="true">hidden</mat-label>
+  <label>
+    <input matInput autofocus [hidden]="true" appAutofocus>
+  </label>
+  <div fxLayoutAlign="column center" fxLayoutGap="15px" fxLayout="column">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  </div>
+</section>

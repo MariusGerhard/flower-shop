@@ -17,7 +17,6 @@ export class RegisterComponent implements OnInit {
   min: Date;
   state: string;
   error = false;
-  errorMessage = 'registration failed please try again';
   isLoading = false;
   private queryConnection;
   constructor(private headerTitleService: HeaderTitleService,
@@ -34,8 +33,12 @@ export class RegisterComponent implements OnInit {
   onSubmit(form: NgForm) {
     this.isLoading = true;
     this.firebaseService.registerUser({
-     email: form.value.email,
-     password: form.value.password
-   });
+      email: form.value.email,
+      password: form.value.password
+    }).then(()  => {
+      this.isLoading = false;
+    }).catch(() => {
+      this.isLoading = false;
+    });
   }
 }

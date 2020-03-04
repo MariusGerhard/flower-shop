@@ -15,6 +15,6 @@ export class AuthGuard implements CanActivate {
     if (this.firebaseService.isAuth()) {
       return true;
     }
-    this.router.navigate(['']).then(r => console.log('Need to login'));
+    this.router.navigate(['']).then(() => console.log('Need to login'));
   }
 }

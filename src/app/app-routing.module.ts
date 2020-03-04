@@ -14,6 +14,7 @@ import {SettingsComponent} from './admin/settings/settings.component';
 
 import {AuthGuard} from './auth/auth.guard';
 import {ControlComponent} from './admin/control/control.component';
+import {ResetComponent} from './auth/reset/reset.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -21,12 +22,13 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'notice', component: LegalNoticeComponent, canActivate: [AuthGuard]},
   {path: 'shop', component: MainMenuComponent},
-  {path: 'flowers', component: FlowersComponent,},
+  {path: 'flowers', component: FlowersComponent},
   {path: 'bouquets', component: BouquetsComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'terms', component: TermsConditionsComponent},
   {path: 'control', component: ControlComponent},
   {path: 'settings', component: SettingsComponent},
+  {path: 'reset', component: ResetComponent},
   {path: '**', component: HomeComponent},
 ];
 

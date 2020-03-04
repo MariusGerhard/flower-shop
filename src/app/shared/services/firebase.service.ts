@@ -4,7 +4,9 @@ import {Router} from '@angular/router';
 
 import {UIService} from './ui.service';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {error} from 'util';
+import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
+import * as firebase from 'firebase/app';
+import {User} from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ import {error} from 'util';
 export class FirebaseService {
   fakeResponse = false;
   userStatus = false;
+  user: User;
   authChanged = new Subject<boolean>();
   constructor(private router: Router,
               private uiService: UIService,
@@ -19,28 +22,37 @@ export class FirebaseService {
   isAuth() {
     return this.userStatus;
   }
-  initAuthListener() {
-    this.afAuth.authState.subscribe(user => {
+  async initAuthListener() {
+     this.afAuth.authState.subscribe(user => {
       if ( user) {
+        this.user = user;
         this.userStatus = true;
         this.authChanged.next(true);
+        this.uiService.showSnackbar('Login successful', null, 1500);
         this.router.navigate(['/shop']).then(r => console.log('rooted to shop'));
+        localStorage.setItem('user', JSON.stringify(this.user));
       } else {
         this.userStatus = false;
         this.authChanged.next(false);
         this.router.navigate(['']).then(r => console.log('Logout'));
+        localStorage.setItem('user', null);
       }
     });
   }
-  registerUser(authData) {
+  async registerUser(authData) {
     this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).then(
       () => {
+        this.uiService.showSnackbar('Account created. Login successful', null, 1500);
       })
       .catch(err => {
         console.log(err);
       });
   }
-  loginUser(loginData) {
+  async sendPasswordResetEmail(passwordResetEmail: string) {
+    await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
+    this.router.navigate(['login']).then(() => console.log('Password reset success'));
+  }
+  async loginUser(loginData) {
     this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password).then(
       () => {
       })
@@ -48,6 +60,16 @@ export class FirebaseService {
         this.userStatus = false;
         console.log(err);
       });
+  }
+  async loginGoogle() {
+    await this.afAuth.auth.signInWithPopup(new GoogleAuthProvider());
+}
+  async loginFacebook() {
+    await this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+  }
+  async sendEmailVerification() {
+    await this.afAuth.auth.currentUser.sendEmailVerification();
+    await this.router.navigate(['admin/verify-email']);
   }
   logoutUser() {
     this.afAuth.auth.signOut().then(() => console.log('Logout'));

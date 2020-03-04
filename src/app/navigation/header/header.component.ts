@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {HeaderTitleService} from '../../shared/services/header-title.service';
 import {FirebaseService} from '../../shared/services/firebase.service';
 import {Subscription} from 'rxjs';
+import {UIService} from '../../shared/services/ui.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   selectedIndex = -1;
   title = '';
   authSubscription: Subscription;
-  constructor(private headerTitleService: HeaderTitleService, private firebaseService: FirebaseService) {
+  constructor(private headerTitleService: HeaderTitleService,
+              private firebaseService: FirebaseService,
+              private uiService: UIService) {
     this.headerTitleService.title.subscribe(updatedTitle => {
       this.title = updatedTitle;
     //  console.log(this.title);
@@ -41,6 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   onLogout() {
     this.firebaseService.logoutUser();
+    this.uiService.showSnackbar('Logout successful', null, 1500);
     this.userStatus = false;
   }
   ngOnDestroy(): void {

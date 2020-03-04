@@ -16,8 +16,6 @@ export class LoginComponent implements OnInit {
   state: string;
   isLoading = false;
   error = false;
-  errorMessage = 'Login incorrect';
-  private queryConnection;
   constructor(private headerTitleService: HeaderTitleService, private firebaseService: FirebaseService) { }
 
   ngOnInit() {
@@ -26,16 +24,35 @@ export class LoginComponent implements OnInit {
   onSubmit(form: NgForm) {
       this.isLoading = true;
       this.firebaseService.loginUser({
-        email: form.value.email,
-        password: form.value.password}
-      )
-      console.log(form);
+          email: form.value.email,
+          password: form.value.password
+        }
+       ).then(
+         () => {
+           this.isLoading = false;
+         }).catch(() => {
+           console.log('Mail Error');
+           this.isLoading = false;
+      });
   }
   onLogin(select) {
-    if ('Google') {
-      console.log('Google');
+    this.isLoading = true;
+    if (select === 'Google') {
+      this.firebaseService.loginGoogle().then(
+        () => {
+          this.isLoading = false;
+        }).catch(err => {
+          this.isLoading = false;
+          console.log(err);
+      } );
     } else {
-      console.log('Facebook');
+      this.firebaseService.loginFacebook().then(
+        () => {
+          this.isLoading = false;
+        }).catch(err => {
+        this.isLoading = false;
+        console.log(err);
+      });
     }
   }
 }
