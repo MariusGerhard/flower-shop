@@ -4,12 +4,25 @@ All Angular Material Components
 import {NgModule} from '@angular/core';
 
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule,
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
   MatDatepickerModule,
-  MatFormFieldModule, MatIconModule, MatIconRegistry,
-  MatInputModule, MatListModule,
-  MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatSidenavModule, MatSnackBarModule, MatSortModule, MatTableModule,
-  MatToolbarModule, MatTooltipModule
+  MatFormFieldModule,
+  MatIconModule,
+  MatIconRegistry,
+  MatInputModule,
+  MatListModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -30,7 +43,8 @@ const MaterialModules = [
   MatPaginatorModule,
   MatProgressBarModule,
   MatTooltipModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatTabsModule,
 ];
 @NgModule({
   imports: [MaterialModules],

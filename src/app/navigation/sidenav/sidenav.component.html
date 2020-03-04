@@ -19,9 +19,13 @@
     <mat-icon svgIcon="flower"></mat-icon>
     <span class="nav-item">&nbsp; Custom Bouquets</span>
   </a>
-  <a mat-list-item routerLink="/settings" (click)="onToggle()">
-    <mat-icon color="warn">settings</mat-icon>
-    <span class="nav-item">&nbsp; Settings</span>
+  <a mat-list-item routerLink="/profile" (click)="onToggle()">
+    <mat-icon color="warn">account_box</mat-icon>
+    <span class="nav-item">&nbsp; Profile</span>
+  </a>
+  <a mat-list-item routerLink="/control" (click)="onToggle()">
+  <mat-icon color="warn">settings</mat-icon>
+  <span class="nav-item">&nbsp; Control</span>
   </a>
   <mat-list-item *ngIf="userStatus">
     <button mat-icon-button (click)="onLogout()">

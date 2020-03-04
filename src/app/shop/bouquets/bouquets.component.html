@@ -1,10 +1,51 @@
 <section [@fallIn]="state" >
   <h1 fxLayout fxLayoutAlign="center center" >Bouquets</h1>
-  <mat-label [hidden]="true">hidden</mat-label>
+  <mat-label [hidden]="true"></mat-label>
   <label>
     <input matInput autofocus [hidden]="true" appAutofocus>
   </label>
   <div fxLayoutAlign="column center" fxLayoutGap="15px" fxLayout="column">
+    <mat-card>
+      <mat-card-actions>
+        <form #searchForm="ngForm">
+          <mat-form-field class="example-form">
+            <label for="search"></label>
+            <input matInput type="text" placeholder="Search" #search="ngModel" ngModel id="search" name="search" minlength="3" maxlength="50">
+          </mat-form-field>
+          <mat-icon color="primary" (click)="this.searchForm.reset();">clear</mat-icon>
+          <mat-icon color="primary" (click)="getFilterData(search.value)">search</mat-icon>
+        </form>
+      </mat-card-actions>
+      <mat-card-content *ngIf="toggle else showProductDetails">
+        <mat-list>
+          <mat-list-item *ngFor="let item of members | async" (click)="showDetails(item);toggle=!toggle">
+            <h5 mat-line>{{item.name}}
+              <mat-icon mat-list-icon>pageview</mat-icon>
+            </h5>
+            <p mat-line> {{item.category }} </p>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+<ng-template #showProductDetails>
+  <b>{{ myDocData.name }}</b>
+  <mat-icon color="primary" (click)="toggle=!toggle">backspace</mat-icon>
+
+  <p  mat-line> {{myDocData.name }}  {{myDocData.category }}</p>
+  <p  mat-line> {{myDocData.flower }}</p>
+  <p  mat-line> Price: {{myDocData.price }} </p>
+
+  <mat-icon (click)="countProd('add')" color="primary">add</mat-icon>
+
+</ng-template>
+<!--
+  <mat-error *ngIf="savedChanges">
+    Shopping cart is updated.
+    <mat-icon (click)="savedChanges=!savedChanges" color="primary">close</mat-icon>
+  </mat-error>
+<img [src]="profileUrl | async" width="300" height="300" />
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card *ngFor="let bouquet of bouquets | async" fxLayout>
       <mat-card-header>
@@ -23,5 +64,4 @@
         </p>
       </mat-card-content>
     </mat-card>
-  </div>
-</section>
+   -->

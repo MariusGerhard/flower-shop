@@ -3,6 +3,8 @@ import {Observable, Subject} from 'rxjs';
 import {Router} from '@angular/router';
 
 import {UIService} from './ui.service';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {error} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -12,63 +14,43 @@ export class FirebaseService {
   userStatus = false;
   authChanged = new Subject<boolean>();
   constructor(private router: Router,
-              private uiService: UIService) { }
+              private uiService: UIService,
+              private afAuth: AngularFireAuth) { }
   isAuth() {
     return this.userStatus;
   }
-  getUserStatus() {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.userStatus);
-        }, 5);
+  initAuthListener() {
+    this.afAuth.authState.subscribe(user => {
+      if ( user) {
+        this.userStatus = true;
+        this.authChanged.next(true);
+        this.router.navigate(['/shop']).then(r => console.log('rooted to shop'));
+      } else {
+        this.userStatus = false;
+        this.authChanged.next(false);
+        this.router.navigate(['']).then(r => console.log('Logout'));
       }
-    );
+    });
   }
-  registerUser(formUser) {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-          this.router.navigate(['/login']).then(
-            r => this.uiService.showSnackbar('Registration completed', null, 2500));
-        }, 3000);
-      }
-    );
+  registerUser(authData) {
+    this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).then(
+      () => {
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
-  loginUser(userForm) {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-          this.userStatus = true;
-          this.authChanged.next(this.userStatus);
-          this.router.navigate(['/shop']).then(
-            r => this.uiService.showSnackbar('Login completed', null, 2500));
-        }, 1500);
-      }
-    );
+  loginUser(loginData) {
+    this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password).then(
+      () => {
+      })
+      .catch(err => {
+        this.userStatus = false;
+        console.log(err);
+      });
   }
   logoutUser() {
-    this.userStatus = false;
-    this.authChanged.next(false);
-    this.router.navigate(['']).then(r => console.log('Logout'));
-    /*
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-          this.userStatus = false;
-          this.authChanged.next(this.userStatus);
-          console.log(this.userStatus);
-        }, 100);
-      }
-    );
-    */
+    this.afAuth.auth.signOut().then(() => console.log('Logout'));
   }
   setBouquets(columnType, wurst) {
     this.fakeResponse = true;

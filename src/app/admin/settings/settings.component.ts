@@ -47,7 +47,7 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
     this.toggleMode = 'searchMode';
   }
   ngOnInit() {
-    this.headerTitleService.setTitle('Settings');
+    this.headerTitleService.setTitle('Control');
     this.dataSource = new MatTableDataSource(this.members);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

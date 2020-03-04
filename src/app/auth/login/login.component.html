@@ -51,4 +51,15 @@
       </button>
       </mat-card>
   </form>
+  <div  fxLayout="column"
+        fxLayoutAlign="center center"
+        fxLayoutGap="10px">
+      <h1>Social Media</h1>
+      <mat-card fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="center center">
+        <button mat-raised-button color="warn" (click)="onLogin('Google')"> Login with Google</button>
+        <button mat-raised-button color="primary" (click)="onLogin('Facebook')"> Login with Facebook</button>
+      </mat-card>
+    <p> No Account? You can create one with your E-Mail <a routerLink="/register">here</a>
+    </p>
+  </div>
 </section>

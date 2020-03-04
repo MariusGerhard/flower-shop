@@ -25,20 +25,17 @@ export class LoginComponent implements OnInit {
   }
   onSubmit(form: NgForm) {
       this.isLoading = true;
-      this.queryConnection = this.firebaseService.loginUser(form)
-        .subscribe(res => {
-            console.log(res);
-            this.isLoading = false;
-          },
-          (error) => {
-            this.error = true;
-            this.errorMessage = error.message;
-            this.isLoading = false;
-          },
-          () => {
-            this.isLoading = false;
-            this.error = false;
-          });
+      this.firebaseService.loginUser({
+        email: form.value.email,
+        password: form.value.password}
+      )
       console.log(form);
+  }
+  onLogin(select) {
+    if ('Google') {
+      console.log('Google');
+    } else {
+      console.log('Facebook');
+    }
   }
 }

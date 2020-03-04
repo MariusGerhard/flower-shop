@@ -9,6 +9,36 @@
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
       <mat-form-field>
+        <mat-label>Please enter your first name</mat-label>
+        <label>
+          <input type="text"
+                 matInput
+                 ngModel
+                 name="firstName"
+                 required
+                 #firstName="ngModel"
+          >
+        </label>
+        <mat-error *ngIf="firstName.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Please enter your last name</mat-label>
+        <label>
+          <input type="text"
+                 matInput
+                 ngModel
+                 name="lastName"
+                 required
+                 #lastName="ngModel"
+          >
+        </label>
+        <mat-error *ngIf="lastName.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
         <mat-label>Please enter your Email</mat-label>
         <label>
           <input type="email"

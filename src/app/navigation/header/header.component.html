@@ -19,11 +19,12 @@
   <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.lt-md>
     <ul class="navigationBar" fxLayout fxLayoutGap="10px">
       <li><a routerLink="/shop"  [ngClass]="{'highlight': title === 'Shop'}" (click)="setSelected(1)">Shop</a></li>
-      <li><a routerLink="/settings"  [ngClass]="{'highlight': title === 'Settings'}" (click)="setSelected(6)">Settings</a></li>
       <li><a routerLink="/flowers"   [ngClass]="{'highlight': title === 'Custom'}" (click)="setSelected(2)">Custom</a></li>
       <li><a routerLink="/bouquets"  [ngClass]="{'highlight': title === 'Bouquets'}" (click)="setSelected(3)">Bouquets</a></li>
-      <li *ngIf="!userStatus"><a routerLink="/login" [ngClass]="{'highlight': selectedIndex == 4}" (click)="setSelected(4)">Login</a></li>
-      <li *ngIf="!userStatus"><a routerLink="/register" [ngClass]="{'highlight': selectedIndex == 5}" (click)="setSelected(5)">Register</a></li>
+      <li><a routerLink="/control"  [ngClass]="{'highlight': title == 'Control'}" (click)="setSelected(9)">Control</a></li>
+      <li><a routerLink="/profile"  [ngClass]="{'highlight': title == 'Profile'}" (click)="setSelected(11)">Profile</a></li>
+      <li *ngIf="!userStatus"><a routerLink="/login" [ngClass]="{'highlight': title == 'Login'}" (click)="setSelected(4)">Login</a></li>
+      <li *ngIf="!userStatus"><a routerLink="/register" [ngClass]="{'highlight': title == 'Register'}" (click)="setSelected(5)">Register</a></li>
       <li *ngIf="userStatus" (click)="onLogout()"><a>Logout</a></li>
     </ul>
   </div>

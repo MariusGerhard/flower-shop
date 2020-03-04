@@ -12,5 +12,8 @@ mat-form-field{
   width: 90%;
 }
 button{
-  width: 75%;
+  width: 50%;
+}
+.social-media{
+  margin-top: 20%;
 }

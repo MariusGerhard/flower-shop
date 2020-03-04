@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private headerTitleService: HeaderTitleService, private firebaseService: FirebaseService) {
     this.headerTitleService.title.subscribe(updatedTitle => {
       this.title = updatedTitle;
+    //  console.log(this.title);
     });
   }
   ngOnInit() {

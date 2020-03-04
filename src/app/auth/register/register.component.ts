@@ -32,21 +32,10 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form);
     this.isLoading = true;
-    this.queryConnection = this.firebaseService.registerUser(form)
-      .subscribe(res => {
-         console.log(res);
-         this.isLoading = false;
-        },
-        (error) => {
-          this.error = true;
-          this.errorMessage = error.message;
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-          this.error = false;
-        });
+    this.firebaseService.registerUser({
+     email: form.value.email,
+     password: form.value.password
+   });
   }
 }

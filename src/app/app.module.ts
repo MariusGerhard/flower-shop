@@ -3,14 +3,13 @@ Modules import app
  */
 import {BrowserModule} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
 import {AppRoutingModule} from './app-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import { AngularFireModule } from '@angular/fire';
-// import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import {HttpClientModule} from '@angular/common/http';
 
 /*
 Component import app
@@ -25,15 +24,20 @@ import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import {HeaderComponent} from './navigation/header/header.component';
 import {BouquetsComponent} from './shop/bouquets/bouquets.component';
 import {FlowersComponent} from './shop/flowers/flowers.component';
-import {HttpClientModule} from '@angular/common/http';
-import { environment } from '../environments/environment';
 import { FooterComponent } from './navigation/footer/footer.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AutofocusDirective } from './shared/directives/autofocus.directive';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
+import { SettingsComponent } from './admin/settings/settings.component';
+import { ControlComponent } from './admin/control/control.component';
+import { UsersComponent } from './admin/users/users.component';
+import { OrdersComponent } from './admin/orders/orders.component';
+
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import { SettingsComponent } from './admin/settings/settings.component';
+import { AngularFireModule } from '@angular/fire';
+// import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -52,6 +56,9 @@ import { SettingsComponent } from './admin/settings/settings.component';
     AutofocusDirective,
     TermsConditionsComponent,
     SettingsComponent,
+    ControlComponent,
+    UsersComponent,
+    OrdersComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +69,7 @@ import { SettingsComponent } from './admin/settings/settings.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebase, 'Flower-Shop'),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,

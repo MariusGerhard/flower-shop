@@ -1,6 +1,5 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {ViewportScroller} from '@angular/common';
+import {FirebaseService} from './shared/services/firebase.service';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +7,10 @@ import {ViewportScroller} from '@angular/common';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnChanges {
-  constructor(private router: Router, private viewportScroller: ViewportScroller) { }
+  constructor(private firebaseService: FirebaseService) { }
   ngOnInit() {
-    const element = document.querySelector('div') || window;
-    element.scrollTo(0, 0);
+    this.firebaseService.initAuthListener();
   }
   ngOnChanges() {
-    const element = document.querySelector('div') || window;
-    element.scrollTo(0, 0);
   }
 }
