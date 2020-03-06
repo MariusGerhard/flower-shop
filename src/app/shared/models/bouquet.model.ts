@@ -1,6 +1,7 @@
-export class FlowerModel {
+export class Bouquet {
+  // tslint:disable-next-line:variable-name
+  _id: number;
   name: string;
-  id: number;
   category: string;
   description: string | null;
   flower: string;

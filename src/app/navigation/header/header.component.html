@@ -16,13 +16,13 @@
   </div>
   <div class="logo">
   </div>
-  <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.lt-md>
-    <ul class="navigationBar" fxLayout fxLayoutGap="10px">
+  <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.lt-md class="link-list">
+    <ul class="navigationBar" fxLayout fxLayoutGap="15px">
+      <li><a routerLink="/flowers"   [ngClass]="{'highlight': title === 'Custom'}" (click)="setSelected(2)" [hidden]="!userStatus">Custom</a></li>
+      <li><a routerLink="/bouquets"  [ngClass]="{'highlight': title === 'Bouquets'}" (click)="setSelected(3)" [hidden]="!userStatus">Bouquets</a></li>
+      <li><a routerLink="/control"  [ngClass]="{'highlight': title == 'Control'}" (click)="setSelected(9)" [hidden]="!userStatus">Control</a></li>
+      <li><a routerLink="/profile"  [ngClass]="{'highlight': title == 'Profile'}" (click)="setSelected(11)" [hidden]="!userStatus">Profile</a></li>
       <li><a routerLink="/shop"  [ngClass]="{'highlight': title === 'Shop'}" (click)="setSelected(1)">Shop</a></li>
-      <li><a routerLink="/flowers"   [ngClass]="{'highlight': title === 'Custom'}" (click)="setSelected(2)">Custom</a></li>
-      <li><a routerLink="/bouquets"  [ngClass]="{'highlight': title === 'Bouquets'}" (click)="setSelected(3)">Bouquets</a></li>
-      <li><a routerLink="/control"  [ngClass]="{'highlight': title == 'Control'}" (click)="setSelected(9)">Control</a></li>
-      <li><a routerLink="/profile"  [ngClass]="{'highlight': title == 'Profile'}" (click)="setSelected(11)">Profile</a></li>
       <li *ngIf="!userStatus"><a routerLink="/login" [ngClass]="{'highlight': title == 'Login'}" (click)="setSelected(4)">Login</a></li>
       <li *ngIf="!userStatus"><a routerLink="/register" [ngClass]="{'highlight': title == 'Register'}" (click)="setSelected(5)">Register</a></li>
       <li *ngIf="userStatus" (click)="onLogout()"><a>Logout</a></li>

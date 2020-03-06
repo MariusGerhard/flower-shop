@@ -25,7 +25,7 @@ import {HeaderComponent} from './navigation/header/header.component';
 import {BouquetsComponent} from './shop/bouquets/bouquets.component';
 import {FlowersComponent} from './shop/flowers/flowers.component';
 import { FooterComponent } from './navigation/footer/footer.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './auth/profile/profile.component';
 import { AutofocusDirective } from './shared/directives/autofocus.directive';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 import { SettingsComponent } from './admin/settings/settings.component';
@@ -39,6 +39,7 @@ import { AngularFireModule } from '@angular/fire';
 // import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import {ResetComponent} from './auth/reset/reset.component';
+import { BouquetDetailsComponent } from './shop/bouquet-details/bouquet-details.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {ResetComponent} from './auth/reset/reset.component';
     ControlComponent,
     UsersComponent,
     OrdersComponent,
-    ResetComponent
+    ResetComponent,
+    BouquetDetailsComponent
   ],
   imports: [
     BrowserModule,

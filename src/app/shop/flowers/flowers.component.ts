@@ -9,8 +9,6 @@ import {AngularFirestore} from '@angular/fire/firestore';
   templateUrl: './flowers.component.html',
   styleUrls: ['./flowers.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class FlowersComponent implements OnInit, OnChanges {
   state: string;

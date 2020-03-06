@@ -6,6 +6,8 @@ import {HeaderTitleService} from '../../shared/services/header-title.service';
 import {FirebaseService} from '../../shared/services/firebase.service';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {fallIn, moveIn} from '../../router.animations';
+import {Bouquet} from '../../shared/models/bouquet.model';
+import {UIService} from '../../shared/services/ui.service';
 
 @Component({
   selector: 'app-settings',
@@ -22,7 +24,6 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   // Datatable
   dataSource: MatTableDataSource<any>;
   myDocData: any;
-  members: any[];
   displayedColumns = ['name', 'category', '_id'];
   // Our datatable variables
   savedChanges = false;
@@ -36,19 +37,20 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   myDocId;
   // database
   private queryConnection;
-  bouquets: Observable<any[]>;
-
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  bouquets: Bouquet[];
+  bouquet: Bouquet;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
   constructor(db: AngularFirestore,
               private headerTitleService: HeaderTitleService,
+              private uiService: UIService,
               private firebaseService: FirebaseService,
               private storage: AngularFireStorage) {
     this.toggleMode = 'searchMode';
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Control');
-    this.dataSource = new MatTableDataSource(this.members);
+    this.dataSource = new MatTableDataSource(this.bouquets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -58,125 +60,99 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
     }
     this.toggleMode = filter;
   }
-  getFilterData(filter: string) {
+  getFilterData(filter: any) {
     this.isLoading = true;
-    this.queryConnection = this.firebaseService.getFilterBouquets('bouquets', filter)
-      .subscribe(members => {
-          this.members = members;
-          this.dataSource = new MatTableDataSource(members);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.isLoading = false;
-        },
-        (error) => {
-          this.error = true;
-          this.errorMessage = error.message;
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-          this.error = false;
+    console.log(filter);
+    if ( filter === '') {
+      filter = 'a';
+    }
+    console.log(filter);
+    this.queryConnection = this.firebaseService.getFilterBouquets('bouquets', filter).subscribe(
+      data => {
+        this.bouquets = data.map(e => {
+          return {
+            id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Bouquet;
         });
+        this.dataSource = new MatTableDataSource(this.bouquets);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+      },
+      (err) => {
+        this.isLoading = false;
+        console.log(err);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
   }
   getData() {
     this.isLoading = true;
-    this.queryConnection = this.firebaseService.getBouquets('bouquets')
-      .subscribe(members => {
-          this.members = members;
-          this.dataSource = new MatTableDataSource(members);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.isLoading = false;
-        },
-        (error) => {
-          this.error = true;
-          this.errorMessage = error.message;
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-          this.error = false;
+    this.queryConnection = this.firebaseService.getBouquets('bouquets').subscribe(
+      data => {
+        this.bouquets = data.map(e => {
+          return {
+            _id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Bouquet;
         });
+        this.dataSource = new MatTableDataSource(this.bouquets);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+      },
+      (err) => {
+        this.isLoading = false;
+        console.log(err);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
   }
-  setData(formData: string) {
+  setData(formData: Bouquet) {
     this.isLoading = true;
-    this.queryConnection = this.firebaseService.setBouquets('bouquets', formData)
-      .subscribe(members => {
-          if (members) {
-            this.savedChanges = true;
-          }
-          this.isLoading = false;
-        },
-        (error) => {
-          this.error = true;
-          this.errorMessage = error.message;
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-          this.error = false;
-        });
+    this.firebaseService.setBouquets('bouquets', formData).then(
+      () => {
+        this.isLoading = false;
+        this.uiService.showSnackbar(formData.name + ' was added', null, 2500);
+      },
+      (err) => {
+        console.log(err);
+        this.isLoading = false;
+      });
   }
   updateData(formData) {
     this.isLoading = true;
-    this.queryConnection = this.firebaseService.updateBouquets('bouquets', formData)
-      .subscribe(res => {
-          if (res) {
-            this.savedChanges = true;
-          }
-          this.isLoading = false;
-        },
-        (error) => {
-          this.error = true;
-          this.errorMessage = error.message;
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-          this.error = false;
-        });
+    this.firebaseService.updateBouquets('bouquets', formData._id, formData).then(
+      () => {
+      this.isLoading = false;
+      this.toggle('searchMode');
+      this.uiService.showSnackbar(formData.name + ' was updated', null, 2500);
+    },
+      (err) => {
+      console.log(err);
+    });
   }
   getDoc(id) {
-    this.isLoading = true;
-    this.queryConnection = this.firebaseService.getBouquet('bouquets', id)
-      .subscribe(res => {
-          if (res) {
-            this.myDocData = res;
-            this.toggle('editMode');
-            console.log('document');
-            console.log(this.myDocData);
-          }
-          this.isLoading = false;
-        },
-        (error) => {
-          this.error = true;
-          this.errorMessage = error.message;
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-          this.error = false;
-        });
+    this.bouquet = this.bouquets.find(x => x._id === id);
+    this.myDocData = this.bouquet;
+    this.toggle('editMode');
   }
   deleteDoc(id) {
+    this.isLoading = true;
     if (confirm('Are you sure to delete this bouquet?')) {
-      this.isLoading = true;
-      this.queryConnection = this.firebaseService.delBouquet('bouquets', id)
-        .subscribe(res => {
-            if (res) {
-              this.toggle('searchMode');
-            }
-            this.isLoading = false;
-          },
-          (error) => {
-            this.error = true;
-            this.errorMessage = error.message;
-            this.isLoading = false;
-          },
-          () => {
-            this.isLoading = false;
-            this.error = false;
-          });
+       this.firebaseService.delBouquet('bouquets', id).then(
+         () => {
+           this.isLoading = false;
+           this.uiService.showSnackbar('Bouquet was deleted', null, 2500);
+         });
+       this.toggle('searchMode');
+    } else {
+      this.isLoading = false;
     }
   }
   // pictures
@@ -193,14 +169,11 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.dataSource.paginator.firstPage();
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
   }
   ngOnDestroy() {
     if (this.queryConnection) {

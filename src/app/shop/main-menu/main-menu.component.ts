@@ -7,8 +7,6 @@ import {fallIn, moveIn} from '../../router.animations';
   templateUrl: './main-menu.component.html',
   styleUrls: ['./main-menu.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class MainMenuComponent implements OnInit {
   @Output() toggleHeader = new EventEmitter();

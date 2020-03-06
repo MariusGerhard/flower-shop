@@ -10,5 +10,8 @@ mat-form-field{
   width: 90%;
 }
 button{
-  width: 75%;
+  width: 50%;
+}
+.edit-button{
+  width: 25%;
 }

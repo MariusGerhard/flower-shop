@@ -1,10 +1,11 @@
-<section [@fallIn]="state" >
-  <h1 fxLayout fxLayoutAlign="center center" >Bouquets</h1>
-  <mat-label [hidden]="true"></mat-label>
-  <label>
-    <input matInput autofocus [hidden]="true" appAutofocus>
-  </label>
-  <div fxLayoutAlign="column center" fxLayoutGap="15px" fxLayout="column">
+<section [@fallIn]="state">
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <h1>All Bouquets</h1>
+    <mat-progress-bar mode="indeterminate" *ngIf="!isLoading"></mat-progress-bar>
+    <mat-label [hidden]="true"></mat-label>
+    <label>
+      <input matInput autofocus [hidden]="true" appAutofocus>
+    </label>
     <mat-card>
       <mat-card-actions>
         <form #searchForm="ngForm">
@@ -16,52 +17,30 @@
           <mat-icon color="primary" (click)="getFilterData(search.value)">search</mat-icon>
         </form>
       </mat-card-actions>
-      <mat-card-content *ngIf="toggle else showProductDetails">
-        <mat-list>
-          <mat-list-item *ngFor="let item of members | async" (click)="showDetails(item);toggle=!toggle">
-            <h5 mat-line>{{item.name}}
-              <mat-icon mat-list-icon>pageview</mat-icon>
-            </h5>
-            <p mat-line> {{item.category }} </p>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
     </mat-card>
-  </div>
-</section>
-<ng-template #showProductDetails>
-  <b>{{ myDocData.name }}</b>
-  <mat-icon color="primary" (click)="toggle=!toggle">backspace</mat-icon>
-
-  <p  mat-line> {{myDocData.name }}  {{myDocData.category }}</p>
-  <p  mat-line> {{myDocData.flower }}</p>
-  <p  mat-line> Price: {{myDocData.price }} </p>
-
-  <mat-icon (click)="countProd('add')" color="primary">add</mat-icon>
-
-</ng-template>
-<!--
-  <mat-error *ngIf="savedChanges">
-    Shopping cart is updated.
-    <mat-icon (click)="savedChanges=!savedChanges" color="primary">close</mat-icon>
-  </mat-error>
-<img [src]="profileUrl | async" width="300" height="300" />
-    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-    <mat-card *ngFor="let bouquet of bouquets | async" fxLayout>
+    <mat-card *ngFor="let bouquet of bouquets">
       <mat-card-header>
         <mat-card-title>{{bouquet.name}}</mat-card-title>
         <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>
-          Price: {{ bouquet.price }}
+        <p class="category-class">
+          {{ bouquet.category }}´s love this bouquet!
         </p>
         <p>
-          Season Start: {{ bouquet.seasonStart}}
+          <span>Description:</span> {{ bouquet.description}}
         </p>
         <p>
-          Season End: {{ bouquet.seasonEnd}}
+          <span>Price:</span> {{ bouquet.price}} &euro;
         </p>
       </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary">Buy</button>
+        <button mat-raised-button color="accent">Details</button>
+      </mat-card-actions>
     </mat-card>
-   -->
+  </div>
+</section>
+
+
+

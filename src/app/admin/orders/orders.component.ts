@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import {fallIn, moveIn} from '../../router.animations';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css']
+  styleUrls: ['./orders.component.css'],
+  animations: [moveIn(), fallIn()],
 })
 export class OrdersComponent implements OnInit {
   isLoading = false;

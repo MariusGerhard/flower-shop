@@ -7,8 +7,6 @@ import {fallIn, moveIn} from '../router.animations';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class HomeComponent implements OnInit {
   state: string;

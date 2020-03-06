@@ -8,7 +8,7 @@ import {MainMenuComponent} from './shop/main-menu/main-menu.component';
 import {LegalNoticeComponent} from './legal-notice/legal-notice.component';
 import {FlowersComponent} from './shop/flowers/flowers.component';
 import {BouquetsComponent} from './shop/bouquets/bouquets.component';
-import {ProfileComponent} from './profile/profile.component';
+import {ProfileComponent} from './auth/profile/profile.component';
 import {TermsConditionsComponent} from './terms-conditions/terms-conditions.component';
 import {SettingsComponent} from './admin/settings/settings.component';
 
@@ -21,13 +21,12 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'notice', component: LegalNoticeComponent, canActivate: [AuthGuard]},
-  {path: 'shop', component: MainMenuComponent},
-  {path: 'flowers', component: FlowersComponent},
-  {path: 'bouquets', component: BouquetsComponent},
-  {path: 'profile', component: ProfileComponent},
+  {path: 'shop', component: MainMenuComponent, canActivate: [AuthGuard]},
+  {path: 'flowers', component: FlowersComponent, canActivate: [AuthGuard]},
+  {path: 'bouquets', component: BouquetsComponent, canActivate: [AuthGuard]},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'terms', component: TermsConditionsComponent},
-  {path: 'control', component: ControlComponent},
-  {path: 'settings', component: SettingsComponent},
+  {path: 'control', component: ControlComponent, canActivate: [AuthGuard]},
   {path: 'reset', component: ResetComponent},
   {path: '**', component: HomeComponent},
 ];

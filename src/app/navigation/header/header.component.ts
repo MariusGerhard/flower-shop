@@ -20,18 +20,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private uiService: UIService) {
     this.headerTitleService.title.subscribe(updatedTitle => {
       this.title = updatedTitle;
-    //  console.log(this.title);
     });
   }
   ngOnInit() {
-    /*
-    this.firebaseService.getUserStatus().subscribe(
-      (res) => {
-        this.userStatus = res;
-        console.log('Header userstatus:' + this.userStatus);
-      }
-    );
-     */
     this.authSubscription = this.firebaseService.authChanged.subscribe(authStatus => {
       this.userStatus = authStatus;
     });
@@ -43,7 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.selectedIndex = id;
   }
   onLogout() {
-    this.firebaseService.logoutUser();
+    this.firebaseService.logoutUser().then(r => console.log('Logged out' + r));
     this.uiService.showSnackbar('Logout successful', null, 1500);
     this.userStatus = false;
   }

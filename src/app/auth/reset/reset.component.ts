@@ -2,19 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import {fallIn, moveIn} from '../../router.animations';
 import {NgForm} from '@angular/forms';
 import {FirebaseService} from '../../shared/services/firebase.service';
+import {UIService} from '../../shared/services/ui.service';
 
 @Component({
-  selector: 'app-resset-pass',
+  selector: 'app-reset',
   templateUrl: './reset.component.html',
   styleUrls: ['./reset.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class ResetComponent implements OnInit {
   state: string;
   isLoading = false;
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService,
+              private uiService: UIService) { }
 
   ngOnInit() {
   }
@@ -22,6 +22,7 @@ export class ResetComponent implements OnInit {
     this.isLoading = true;
     this.firebaseService.sendPasswordResetEmail(form.value.email.toString()).then(()  => {
       this.isLoading = false;
+      this.uiService.showSnackbar('E-Mail was send', null, 2000);
     }).catch(() => {
       this.isLoading = false;
     });

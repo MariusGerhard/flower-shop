@@ -5,11 +5,12 @@
         (ngSubmit)="onSubmit(f)"
         fxLayoutGap="1%"
   >
-    <h1>Register to Flower Shop</h1>
+    <h1>Account Settings</h1>
+    <button class="edit-button" mat-raised-button color="warn" (click)="onEdit()">{{editTextString}}</button>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
       <mat-form-field>
-        <mat-label>Please enter your first name</mat-label>
+        <mat-label>First name</mat-label>
         <label>
           <input type="text"
                  matInput
@@ -17,6 +18,7 @@
                  name="firstName"
                  required
                  #firstName="ngModel"
+                 [disabled]="!isEdit"
           >
         </label>
         <mat-error *ngIf="firstName.hasError('required')">
@@ -24,7 +26,7 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Please enter your last name</mat-label>
+        <mat-label>Last name</mat-label>
         <label>
           <input type="text"
                  matInput
@@ -32,6 +34,7 @@
                  name="lastName"
                  required
                  #lastName="ngModel"
+                 [disabled]="!isEdit"
           >
         </label>
         <mat-error *ngIf="lastName.hasError('required')">
@@ -39,27 +42,28 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-      <mat-label>Please enter your E-Mail</mat-label>
-      <label>
-        <input type="email"
-               matInput
-               ngModel
-               name="email"
-               email
-               required
-               #email="ngModel"
-        >
-      </label>
-      <mat-error *ngIf="!email.hasError('required')">
-        Email is Invalid
-      </mat-error>
-      <mat-error *ngIf="email.hasError('required')">
-        Field should not be empty
-      </mat-error>
-    </mat-form-field>
+        <mat-label>Your E-Mail</mat-label>
+        <label>
+          <input type="email"
+                 matInput
+                 ngModel
+                 name="email"
+                 email
+                 required
+                 #email="ngModel"
+                 [disabled]="!isEdit"
+          >
+        </label>
+        <mat-error *ngIf="!email.hasError('required')">
+          Email is Invalid
+        </mat-error>
+        <mat-error *ngIf="email.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
       <mat-form-field>
         <mat-hint align="start" *ngIf="pw.value?.length < 8">
-            Please Enter a minimum of 8 characters
+          Please Enter a minimum of 8 characters
         </mat-hint>
         <mat-label>Please enter your Password </mat-label>
         <label>
@@ -70,17 +74,18 @@
                  required
                  minlength="8"
                  #pw="ngModel"
+                 [disabled]="!isEdit"
           >
         </label>
         <mat-hint align="end" *ngIf="pw.value?.length < 8">
-             {{ pw.value?.length }} /8
+          {{ pw.value?.length }} /8
         </mat-hint>
       </mat-form-field>
       <mat-form-field>
         <mat-hint>
           You must be at least 16 Years old
         </mat-hint>
-        <mat-label>Please enter your Birthdate</mat-label>
+        <mat-label>Your Birthdate</mat-label>
         <label>
           <input matInput
                  [matDatepicker]="picker"
@@ -89,24 +94,14 @@
                  ngModel
                  name="birthdateValue"
                  required
+                 [disabled]="!isEdit"
           >
         </label>
         <mat-error>Field should not be empty</mat-error>
         <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-checkbox ngModel
-                    name="conditions"
-                    color="warn"
-                    required
-      >
-        Agree to <a routerLink="/terms">Terms and Conditions</a>.
-      </mat-checkbox>
-      <button mat-raised-button
-              type="submit"
-              color="accent"
-              [disabled]="f.invalid"
-      >Submit</button>
+      <button mat-raised-button color="accent" type="submit">Save Changes</button>
     </mat-card>
   </form>
 </section>

@@ -7,8 +7,6 @@ import {fallIn, moveIn} from '../router.animations';
   templateUrl: './legal-notice.component.html',
   styleUrls: ['./legal-notice.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class LegalNoticeComponent implements OnInit {
   state: string;

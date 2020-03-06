@@ -22,10 +22,12 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.toggleNavEvent.emit();
   }
   onLogout() {
-    this.firebaseService.logoutUser();
-    this.uiService.showSnackbar('Logout successful', null, 1500);
-    this.userStatus = false;
-    this.onToggle();
+    this.firebaseService.logoutUser().then(
+      () => {
+        this.uiService.showSnackbar('Logout successful', null, 1500);
+        this.userStatus = false;
+        this.onToggle();
+      });
   }
   updateUserStatus() {
     this.authSubscription = this.firebaseService.authChanged.subscribe(authStatus => {

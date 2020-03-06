@@ -9,8 +9,6 @@ import {FirebaseService} from '../../shared/services/firebase.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class RegisterComponent implements OnInit {
   max: Date;
@@ -18,7 +16,6 @@ export class RegisterComponent implements OnInit {
   state: string;
   error = false;
   isLoading = false;
-  private queryConnection;
   constructor(private headerTitleService: HeaderTitleService,
               private firebaseService: FirebaseService) { }
 

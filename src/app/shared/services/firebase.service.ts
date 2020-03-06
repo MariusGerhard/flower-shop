@@ -6,17 +6,26 @@ import {UIService} from './ui.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import {User} from 'firebase';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {Bouquet} from '../models/bouquet.model';
+import {AngularFireDatabase} from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
+  private defaultCenterColl = 'elish';
+  private userColl = 'userdb';
+  private eStoreColl = 'estore';
   fakeResponse = false;
   userStatus = false;
+  category: string;
+  flower: string;
   user: User;
   authChanged = new Subject<boolean>();
   constructor(private router: Router,
               private uiService: UIService,
+              private firestore: AngularFirestore,
               private afAuth: AngularFireAuth) { }
   isAuth() {
     return this.userStatus;
@@ -28,7 +37,7 @@ export class FirebaseService {
         this.userStatus = true;
         this.authChanged.next(true);
         this.uiService.showSnackbar('Login successful', null, 1500);
-        this.router.navigate(['/shop']).then(r => console.log('rooted to shop'));
+        this.router.navigate(['/shop']);
         localStorage.setItem('user', JSON.stringify(this.user));
       } else {
         this.userStatus = false;
@@ -70,57 +79,24 @@ export class FirebaseService {
     await this.afAuth.auth.currentUser.sendEmailVerification();
     await this.router.navigate(['admin/verify-email']);
   }
-  logoutUser() {
-    this.afAuth.auth.signOut().then(() => console.log('Logout'));
+  async logoutUser() {
+    await this.afAuth.auth.signOut();
   }
-  setBouquets(columnType, wurst) {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-        }, 2000);
-      }
-    );
+  setBouquets(columnType, data: Bouquet) {
+        return this.firestore.collection(columnType).add(data);
+    }
+  updateBouquets(columnType, key, value) {
+    console.log(columnType + key + value);
+    return this.firestore.collection(columnType).doc(key).update(value);
   }
-  updateBouquets(columnType, wurst) {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-        }, 2000);
-      }
-    );
+  /*
+  Outdated
+  getBouquet(columnType, key) {
+    return this.firestore.collection('bouquet').doc(key).get();
   }
-  getBouquet(columnType, id) {
-    const fakeResponse = {
-      _id: 123,
-      name: 'Schinkenwurst',
-      category: 'Wurst',
-      price: 12,
-      seasonStart: 5,
-      seasonEnd: 8,
-      flower: 'rose',
-      description: 'roses are are red'
-    };
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(fakeResponse);
-        }, 2000);
-      }
-    );
-  }
-  delBouquet(columnType, id) {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-        }, 2000);
-      }
-    );
+   */
+  delBouquet(columnType, key) {
+    return this.firestore.collection(columnType).doc(key).delete();
   }
   delBouquetPic(wurst, wurst2) {
     this.fakeResponse = true;
@@ -132,34 +108,34 @@ export class FirebaseService {
       }
     );
   }
-  getFilterBouquets(columnType, filters) {
-    const fakeResponse = [{
-      name: 'filter',
-      category: 'filtercat',
-      price: 'filter2',
-      seasonStart: '2'
-    }];
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(fakeResponse);
-        }, 2000);
+  getFilterBouquets(columnType: string, filters) {
+    if (filters) {
+      if (filters.name > '') {
+        return this.firestore.collection(columnType, ref =>
+          ref
+            .where('name', '>=', filters.name)
+            .orderBy('name', 'desc')
+        ).snapshotChanges();
       }
-    );
+      if (filters.category > '') {
+        return this.firestore.collection(columnType, ref =>
+          ref
+            .where('category', '==', filters.category)
+            .orderBy('name', 'desc')
+        ).snapshotChanges();
+      }
+      if (filters.flower > '')  {
+        return this.firestore.collection(columnType, ref =>
+          ref
+            .where('flower', '==', filters.flower)
+            .orderBy('name', 'desc')
+        ).snapshotChanges();
+      }
+    } else {
+      return this.firestore.collection(columnType).snapshotChanges();
+    }
   }
   getBouquets(columnType) {
-    const fakeResponse = [{
-      name: 'testName',
-      category: 'testcat',
-      price: 'testPrice',
-      seasonStart: '1'
-    }];
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(fakeResponse);
-        }, 2000);
-      }
-    );
+    return this.firestore.collection(columnType).snapshotChanges();
   }
 }

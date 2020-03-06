@@ -9,8 +9,6 @@ import {FirebaseService} from '../../shared/services/firebase.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class LoginComponent implements OnInit {
   state: string;

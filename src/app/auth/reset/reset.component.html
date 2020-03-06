@@ -9,7 +9,7 @@
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
       <mat-form-field>
-        <mat-label>Please enter your Email</mat-label>
+        <mat-label>Please enter your E-mail</mat-label>
         <label>
           <input type="email"
                  matInput
@@ -21,7 +21,7 @@
           >
         </label>
         <mat-error *ngIf="!email.hasError('required')">
-          Email is Invalid
+          E-mail is Invalid
         </mat-error>
         <mat-error *ngIf="email.hasError('required')">
           Field should not be empty

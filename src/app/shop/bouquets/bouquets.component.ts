@@ -7,6 +7,7 @@ import {HeaderTitleService} from '../../shared/services/header-title.service';
 import {MatTableDataSource} from '@angular/material';
 import {FirebaseService} from '../../shared/services/firebase.service';
 import {AngularFireStorage} from '@angular/fire/storage';
+import {Bouquet} from '../../shared/models/bouquet.model';
 
 
 @Component({
@@ -14,8 +15,6 @@ import {AngularFireStorage} from '@angular/fire/storage';
   templateUrl: './bouquets.component.html',
   styleUrls: ['./bouquets.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class BouquetsComponent implements OnInit, OnDestroy {
   // Animations
@@ -41,8 +40,9 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   showHostSelfie = false;
   myDocId;
   counter = 0;
+  bouquets: Bouquet[];
 
-  bouquets: Observable<any[]>;
+//  bouquets: Observable<any[]>;
 
   constructor(db: AngularFirestore,
               private headerTitleService: HeaderTitleService,
@@ -52,32 +52,30 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Bouquets');
-  }
-  getData() {
-    this.members = this.firebaseService.getBouquets('bouquets');
+    this.querySubscription = this.firebaseService.getBouquets('bouquets').subscribe(data => {
+        this.bouquets = data.map(e => {
+          return {
+            id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Bouquet;
+        });
+      }
+    );
   }
   getFilterData(filters) {
     if (filters) {
       this.members = this.firebaseService.getFilterBouquets('bouquets', filters);
     } else {
-      this.getData();
     }
   }
   setData(formData) {
-    this.isLoading = true;
-    this.firebaseService.setBouquets('bouquets', formData).then((res) => {
-      this.savedChanges = true;
-      this.isLoading = false;
-    }).catch(error => {
-      this.error = true;
-      this.errorMessage = error.message;
-      this.isLoading = false;
-    });
+    this.firebaseService.setBouquets('bouquets', formData);
   }
   getPic(picId) {
     const ref = this.storage.ref(picId);
     this.profileUrl = ref.getDownloadURL();
   }
+  /*
   addToCart(item, counter){
     this.isLoading = true;
     const data = item;
@@ -87,6 +85,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
       this.savedChanges = true;
     });
   }
+   */
   showDetails(item) {
     this.counter = 0;
     this.myDocData = item;
@@ -94,9 +93,8 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     // capture user interest event, user has looked into product details
     this.isLoading = true;
     const data = item;
-    return this.firebaseService.getBouquets('bouquets').then((success) => {
-      this.isLoading = false;
-    });
+    return this.firebaseService.getBouquets('bouquets');
+    this.isLoading = false;
   }
   countProd(filter) {
     if (filter === 'add') {
