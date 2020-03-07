@@ -36,10 +36,8 @@ import { OrdersComponent } from './admin/orders/orders.component';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
-// import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import {ResetComponent} from './auth/reset/reset.component';
-import { BouquetDetailsComponent } from './shop/bouquet-details/bouquet-details.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +60,6 @@ import { BouquetDetailsComponent } from './shop/bouquet-details/bouquet-details.
     UsersComponent,
     OrdersComponent,
     ResetComponent,
-    BouquetDetailsComponent
   ],
   imports: [
     BrowserModule,

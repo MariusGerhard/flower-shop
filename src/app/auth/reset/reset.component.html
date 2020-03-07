@@ -27,7 +27,7 @@
           Field should not be empty
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button type="submit" color="accent" >Submit</button>
+      <button mat-raised-button type="submit" color="accent" [disabled]="isLoading">Submit</button>
     </mat-card>
   </form>
 </section>

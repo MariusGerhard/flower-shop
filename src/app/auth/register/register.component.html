@@ -105,6 +105,7 @@
       <button mat-raised-button
               type="submit"
               color="accent"
+              [disabled]="isLoading"
               [disabled]="f.invalid"
       >Submit</button>
     </mat-card>

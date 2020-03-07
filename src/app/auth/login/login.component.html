@@ -46,6 +46,7 @@
               type="submit"
               color="accent"
               [disabled]="f.invalid"
+              [disabled]="isLoading"
               >
         Submit
       </button>
@@ -56,8 +57,8 @@
         fxLayoutGap="10px">
       <h1>Social Media</h1>
       <mat-card fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="center center">
-        <button mat-raised-button color="warn" (click)="onLogin('Google')"> Login with Google</button>
-        <button mat-raised-button color="primary" (click)="onLogin('Facebook')"> Login with Facebook</button>
+        <button mat-raised-button color="warn" (click)="onLogin('Google')" [disabled]="isLoading"> Login with Google</button>
+        <button mat-raised-button color="primary" (click)="onLogin('Facebook')" [disabled]="isLoading"> Login with Facebook</button>
       </mat-card>
     <p> No Account? You can create one <a routerLink="/register">here</a></p>
     <p> Forgot you E-Mail? You can reset <a routerLink="/reset">here</a></p>

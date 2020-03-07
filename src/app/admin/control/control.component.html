@@ -1,12 +1,12 @@
-<section fxLayoutAlign="center center" [@fallIn]="state" >
-  <mat-tab-group animationDuration="0">
-    <mat-tab label="Users" [@fallIn]="state" >
+<section [@fallIn]="state" >
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Users" >
       <app-users></app-users>
     </mat-tab>
-    <mat-tab label="Products" [@fallIn]="state" >
+    <mat-tab label="Bouquets" >
       <app-settings></app-settings>
     </mat-tab>
-    <mat-tab label="Orders" [@fallIn]="state" >
+    <mat-tab label="Orders" >
       <app-orders></app-orders>
     </mat-tab>
   </mat-tab-group>

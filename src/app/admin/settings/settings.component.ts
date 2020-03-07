@@ -66,7 +66,7 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
     if ( filter === '') {
       filter = 'a';
     }
-    console.log(filter);
+    // console.log(filter);
     this.queryConnection = this.firebaseService.getFilterBouquets('bouquets', filter).subscribe(
       data => {
         this.bouquets = data.map(e => {

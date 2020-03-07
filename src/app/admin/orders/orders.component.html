@@ -4,7 +4,42 @@
   <label>
     <input matInput autofocus [hidden]="true" appAutofocus>
   </label>
-  <div fxLayoutAlign="column center" fxLayoutGap="1%" fxLayout="column">
+  <div fxLayoutAlign="column center" fxLayoutGap="2%" fxLayout="column">
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-card>
+      <mat-card-content>
+        <form #searchFormData="ngForm"
+              *ngIf="(toggleMode=='searchMode')"
+        >
+          <mat-card-actions>
+            <button type="button" mat-raised-button color="accent" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+              <mat-icon  color="primary">add</mat-icon>
+              <mat-icon  color="primary">cached</mat-icon>
+            </div>
+          </mat-card-actions>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+            <mat-form-field>
+              <mat-label>Bouquet Name</mat-label>
+              <label>
+                <input matInput [disabled]="category.value > '' || flower.value >'' " type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Category</mat-label>
+              <label>
+                <input matInput [disabled]="name.value > '' || flower.value >'' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Flower</mat-label>
+              <label>
+                <input matInput [disabled]="name.value > '' || category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>

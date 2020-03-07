@@ -1,61 +1,56 @@
 <section>
-  <h1 fxLayoutAlign="center center" >Administrate Bouquets</h1>
+  <h1 fxLayoutAlign="center center">Administrate Bouquets</h1>
+  <mat-label [hidden]="true">hidden</mat-label>
   <label>
-    <input [hidden]="true" appAutofocus>
+    <input matInput autofocus [hidden]="true" appAutofocus>
   </label>
-  <div fxLayoutAlign="column center" fxLayoutGap="1.5%" fxLayout="column">
+  <div fxLayoutAlign="column center" fxLayoutGap="2%" fxLayout="column"  class="card-container">
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card>
       <mat-card-content>
-        <div *ngIf="(toggleMode=='searchMode')
+        <form #searchFormData="ngForm" *ngIf="(toggleMode == 'searchMode')
          else (toggleMode == 'addMode')?
           showAddMode : ((toggleMode == 'editMode')?
           showEditMode : showResMode)">
-          <form #searchFormData="ngForm">
-            <mat-card-actions>
-              <button type="button" mat-raised-button color="accent" (click)="toggle('resMode');getFilterData(searchFormData.value);" [disabled]="!searchFormData.valid" class="search-button">Search</button>
-              <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
-                <mat-icon (click)="toggle('addMode')" color="primary">add</mat-icon>
-                <mat-icon (click)="toggle('resMode');getData();" color="primary">cached</mat-icon>
-              </div>
-            </mat-card-actions>
-            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
-              <mat-form-field>
-                <mat-label>Bouquet Name</mat-label>
-                <label>
-                  <input matInput [disabled]="category.value > '' || flower.value >'' " type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
-                </label>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Category</mat-label>
-                <label>
-                  <input matInput [disabled]="name.value > '' || flower.value >'' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
-                </label>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Flower</mat-label>
-                <label>
-                  <input matInput [disabled]="name.value > '' || category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
-                </label>
-              </mat-form-field>
+          <mat-card-actions>
+            <button type="button" mat-raised-button color="accent" (click)="toggle('resMode');getFilterData(searchFormData.value);" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
+              <mat-icon (click)="toggle('addMode')" color="primary" >add</mat-icon>
+              <mat-icon (click)="toggle('resMode');getData();" color="primary">cached</mat-icon>
             </div>
-          </form>
-        </div>
+          </mat-card-actions>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+            <mat-form-field>
+              <mat-label>Bouquet Name</mat-label>
+              <label>
+                <input matInput [disabled]="category.value > '' || flower.value >'' " type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Category</mat-label>
+              <label>
+                <input matInput [disabled]="name.value > '' || flower.value >'' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Flower</mat-label>
+              <label>
+                <input matInput [disabled]="name.value > '' || category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+          </div>
+        </form>
       </mat-card-content>
     </mat-card>
   </div>
 </section>
 <ng-template #showAddMode >
   <form #addDataForm="ngForm" (ngSubmit)="setData(addDataForm.value);" novalidate>
-    <mat-error *ngIf="savedChanges">
-      Data is saved.
-      <mat-icon (click)="this.addDataForm.reset();savedChanges=false;toggle('searchMode');">clear</mat-icon>
-    </mat-error>
     <div *ngIf="!savedChanges">
       <mat-error *ngIf="error">Error: {{ errorMessage }}</mat-error>
       <mat-card-actions align="start">
-        <button type="submit" mat-raised-button [disabled]="!addDataForm.valid" color="accent">Add</button>
-        <button type="reset" (click)="this.addDataForm.reset();" mat-raised-button color="warn">Clear</button>
+        <button type="submit" mat-raised-button [disabled]="!addDataForm.valid" color="accent" [disabled]="isLoading">Add</button>
+        <button type="reset" (click)="this.addDataForm.reset();" mat-raised-button color="warn" [disabled]="isLoading">Clear</button>
         <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="1%">
           <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
           <mat-icon color="primary" (click)="toggle('resMode');getData();">cached</mat-icon>
@@ -117,7 +112,7 @@
     <div *ngIf="!savedChanges">
       <mat-error *ngIf="error">Error: {{ errorMessage }}</mat-error>
       <mat-card-actions align="start">
-        <button type="submit" mat-raised-button [disabled]="!this.editDataForm.valid || this.editDataForm.pristine" color="accent" class="search-button">Update</button>
+        <button type="submit" mat-raised-button [disabled]="!this.editDataForm.valid || this.editDataForm.pristine" color="accent" class="search-button" [disabled]="isLoading">Update</button>
         <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
           <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
           <mat-icon color="primary" (click)="toggle('resMode');getData();">cached</mat-icon>
@@ -180,11 +175,11 @@
     <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
   </mat-card-actions>
   <div *ngIf="takeHostSelfie">
-    <button type="reset" (click)="takeHostSelfie=false;" mat-icon-button color="warn"><mat-icon>clear</mat-icon></button>
+    <button type="reset" (click)="takeHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
     <input type="file">
   </div>
   <div *ngIf="showHostSelfie">
-    <button type="reset" (click)="showHostSelfie=false;" mat-icon-button color="primary"><mat-icon>clear</mat-icon></button>
+    <button type="reset" (click)="showHostSelfie=false;" mat-icon-button color="primary" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
     <br>
     <img [src]="profileUrl | async" width="300" height="300" alt="dummy"/>
     <br>
@@ -218,18 +213,20 @@
       <ng-container matColumnDef="_id">
         <mat-header-cell *matHeaderCellDef> action </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button matTooltip="Show Picture" *ngIf="row.path" (click)="getPic(row.path);this.showHostSelfie=true;">
+          <button mat-icon-button matTooltip="Show Picture" *ngIf="row.path" (click)="getPic(row.path);this.showHostSelfie=true;" [disabled]="isLoading">
             <mat-icon color="primary">photo_camera</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Remove Picture" *ngIf="row.path" (click)="deleteProductPic(row._id);this.showHostSelfie=false;">
+          <button mat-icon-button matTooltip="Remove Picture" *ngIf="row.path" (click)="deleteProductPic(row._id);this.showHostSelfie=false;" [disabled]="isLoading">
             <mat-icon color="primary">camera_roll</mat-icon>
           </button>
           <button mat-icon-button matTooltip="Take Picture" (click)="this.myDocId=row._id;this.takeHostSelfie=true;" color="primary"
-                  *ngIf="!row.path" class="label-error"><mat-icon>camera_roll</mat-icon></button>
-          <button mat-icon-button (click)="getDoc(row._id)">
+                  *ngIf="!row.path" class="label-error"[disabled]="isLoading">
+            <mat-icon>camera_roll</mat-icon>
+          </button>
+          <button mat-icon-button (click)="getDoc(row._id)" [disabled]="isLoading">
             <mat-icon color="primary">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteDoc(row._id)">
+          <button mat-icon-button (click)="deleteDoc(row._id)" [disabled]="isLoading">
             <mat-icon color="primary">delete</mat-icon>
           </button>
         </mat-cell>

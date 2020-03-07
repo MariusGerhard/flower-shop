@@ -1,46 +1,70 @@
 <section [@fallIn]="state">
-  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <h1>All Bouquets</h1>
-    <mat-progress-bar mode="indeterminate" *ngIf="!isLoading"></mat-progress-bar>
-    <mat-label [hidden]="true"></mat-label>
-    <label>
-      <input matInput autofocus [hidden]="true" appAutofocus>
-    </label>
-    <mat-card>
-      <mat-card-actions>
-        <form #searchForm="ngForm">
-          <mat-form-field class="example-form">
-            <label for="search"></label>
-            <input matInput type="text" placeholder="Search" #search="ngModel" ngModel id="search" name="search" minlength="3" maxlength="50">
-          </mat-form-field>
-          <mat-icon color="primary" (click)="this.searchForm.reset();">clear</mat-icon>
-          <mat-icon color="primary" (click)="getFilterData(search.value)">search</mat-icon>
-        </form>
-      </mat-card-actions>
-    </mat-card>
-    <mat-card *ngFor="let bouquet of bouquets">
-      <mat-card-header>
-        <mat-card-title>{{bouquet.name}}</mat-card-title>
-        <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p class="category-class">
-          {{ bouquet.category }}´s love this bouquet!
-        </p>
-        <p>
-          <span>Description:</span> {{ bouquet.description}}
-        </p>
-        <p>
-          <span>Price:</span> {{ bouquet.price}} &euro;
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary">Buy</button>
-        <button mat-raised-button color="accent">Details</button>
-      </mat-card-actions>
-    </mat-card>
+  <h1 *ngIf="!isDetail" fxLayout fxLayoutAlign="center center" >All Bouquets</h1>
+  <mat-label [hidden]="true"></mat-label>
+  <label>
+    <input matInput autofocus [hidden]="true" appAutofocus>
+  </label>
+  <div fxLayoutAlign="column center" fxLayoutGap="2%" fxLayout="column">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading && !isDetail"></mat-progress-bar>
+      <div *ngIf="!isDetail" class="content-container" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="2%">
+      <mat-card *ngFor="let bouquet of bouquets" (click)="toggle(); onDetails(bouquet._id)" fxLayout="row"  fxLayoutGap="2%">
+        <mat-card-content class="pic-size" fxLayoutAlign="center center">
+          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        </mat-card-content>
+        <div>
+        <mat-card-header>
+          <mat-card-title>{{bouquet.name}}</mat-card-title>
+          <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-header>
+          <p>
+            <b class="category-class">{{ bouquet.category }}´s love this bouquet!</b> <br>
+            <span class="span-price">Price:</span> {{ bouquet.price}} &euro;
+          </p>
+        </mat-card-header>
+        </div>
+      </mat-card>
+    </div>
   </div>
 </section>
-
-
+<section *ngIf="isDetail"  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%" class="details-section" >
+  <mat-card class="details-card">
+    <div class="spinner-wrapper">
+      <div class="spinner-overlay">
+        <div class="spinner-show" *ngIf="isLoading">
+          <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+      </div>
+    </div>
+    <mat-card-header>
+      <div mat-card-avatar class="header-image"></div>
+      <mat-card-title>{{bouquet.name}}</mat-card-title>
+      <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="bottom-spacing">
+      <h3 class="category-class">
+        Your {{bouquet.category}} will love this handmade bouquet
+      </h3>
+    </mat-card-content>
+    <mat-card-content class="pic-size-details">
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    </mat-card-content>
+    <mat-card-content>
+      <p>
+        {{bouquet.description}}
+      </p>
+      <h2>
+        Available between {{bouquet.seasonStart}} and {{bouquet.seasonEnd}}
+      </h2>
+      <h2>
+        Price: <span>{{bouquet.price}} &euro; </span>
+      </h2>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="center center">
+      <button mat-button mat-raised-button color="primary" [disabled]="isLoading" (click)="onOrder()">Order</button>
+      <button mat-button mat-raised-button color="accent" [disabled]="isLoading" (click)="onExtras()">Extras</button>
+    </mat-card-actions>
+  </mat-card>
+  <button mat-raised-button color="warn" (click)="toggle()" class="back-button" [disabled]="isLoading">back</button>
+</section>
 

@@ -13,5 +13,6 @@ button{
   width: 50%;
 }
 .edit-button{
+  min-width: 200px;
   width: 25%;
 }

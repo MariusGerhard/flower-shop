@@ -9,7 +9,10 @@ import {fallIn, moveIn} from '../../router.animations';
 })
 export class OrdersComponent implements OnInit {
   isLoading = false;
-  constructor() { }
+  toggleMode: string;
+  constructor() {
+    this.toggleMode = 'searchMode';
+  }
 
   ngOnInit() {
   }

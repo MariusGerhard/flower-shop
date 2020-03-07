@@ -20,16 +20,12 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   // Animations
   state: string;
   isLoading =  false;
-  isAuth;
   members: Observable<any>;
-  // members: any;
-  // members: any[];
-  dataSource: MatTableDataSource<any>;
+  isDetail = false;
   myDocData;
   data;
   currentDate;
   currentDate7;
-  toggle = true;
   savedChanges = false;
   error = false;
   errorMessage = '';
@@ -38,17 +34,13 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   profileUrl: Observable<string | null>;
   takeHostSelfie = false;
   showHostSelfie = false;
-  myDocId;
   counter = 0;
   bouquets: Bouquet[];
-
-//  bouquets: Observable<any[]>;
-
+  bouquet: Bouquet;
   constructor(db: AngularFirestore,
               private headerTitleService: HeaderTitleService,
               private firebaseService: FirebaseService,
               private storage: AngularFireStorage) {
-  //  this.bouquets = db.collection('bouquets').valueChanges();
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Bouquets');
@@ -62,14 +54,18 @@ export class BouquetsComponent implements OnInit, OnDestroy {
       }
     );
   }
-  getFilterData(filters) {
-    if (filters) {
-      this.members = this.firebaseService.getFilterBouquets('bouquets', filters);
-    } else {
-    }
+  toggle() {
+    this.isDetail = !this.isDetail;
   }
-  setData(formData) {
-    this.firebaseService.setBouquets('bouquets', formData);
+  onOrder() {
+    console.log('ordered');
+  }
+  onDetails(id) {
+    this.bouquet = this.bouquets.find(x => x._id === id);
+  }
+  onExtras() {
+  }
+  getFilterData(filters) {
   }
   getPic(picId) {
     const ref = this.storage.ref(picId);
@@ -86,25 +82,6 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     });
   }
    */
-  showDetails(item) {
-    this.counter = 0;
-    this.myDocData = item;
-   // this.getPic(item.path);
-    // capture user interest event, user has looked into product details
-    this.isLoading = true;
-    const data = item;
-    return this.firebaseService.getBouquets('bouquets');
-    this.isLoading = false;
-  }
-  countProd(filter) {
-    if (filter === 'add') {
-      this.counter = this.counter + 1;
-    } else {
-      if (this.counter > 0) {
-        this.counter = this.counter - 1;
-      }
-    }
-  }
   ngOnDestroy() {
     if (this.querySubscription) {
       this.querySubscription.unsubscribe();
