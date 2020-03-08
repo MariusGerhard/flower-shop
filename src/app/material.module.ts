@@ -15,7 +15,7 @@ import {
   MatListModule,
   MatNativeDateModule,
   MatPaginatorModule,
-  MatProgressBarModule, MatProgressSpinnerModule,
+  MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
   MatSortModule,
@@ -45,7 +45,9 @@ const MaterialModules = [
   MatTooltipModule,
   MatSnackBarModule,
   MatTabsModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
 ];
 @NgModule({
   imports: [MaterialModules],

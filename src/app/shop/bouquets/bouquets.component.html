@@ -28,6 +28,10 @@
   </div>
 </section>
 <section *ngIf="isDetail"  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%" class="details-section" >
+  <mat-label [hidden]="true">hidden</mat-label>
+  <label>
+    <input matInput autofocus [hidden]="true" appAutofocus>
+  </label>
   <mat-card class="details-card">
     <div class="spinner-wrapper">
       <div class="spinner-overlay">

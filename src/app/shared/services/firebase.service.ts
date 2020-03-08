@@ -9,19 +9,20 @@ import {User} from 'firebase';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Bouquet} from '../models/bouquet.model';
 import {AngularFireDatabase} from '@angular/fire/database';
+import {UserModel} from '../models/userModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
-  private defaultCenterColl = 'elish';
-  private userColl = 'userdb';
-  private eStoreColl = 'estore';
   fakeResponse = false;
-  userStatus = false;
+  private userStatus = false;
+  private isAdmin = true;
   category: string;
   flower: string;
-  user: User;
+  private newUser: UserModel;
+  private currentUserId: string;
+  private user: User;
   authChanged = new Subject<boolean>();
   constructor(private router: Router,
               private uiService: UIService,
@@ -30,10 +31,24 @@ export class FirebaseService {
   isAuth() {
     return this.userStatus;
   }
+  checkAdmin() {
+    return this.isAdmin;
+  }
+  getCurrentUserId() {
+    return this.currentUserId;
+  }
+  getCurrentUser(id) {
+    console.log(id);
+    return this.firestore.collection('user', ref =>
+      ref
+        .where('id', '==', id)
+    ).snapshotChanges();
+  }
   async initAuthListener() {
      this.afAuth.authState.subscribe(user => {
       if ( user) {
         this.user = user;
+        this.currentUserId = user.uid;
         this.userStatus = true;
         this.authChanged.next(true);
         this.uiService.showSnackbar('Login successful', null, 1500);
@@ -48,21 +63,34 @@ export class FirebaseService {
     });
   }
   async registerUser(authData) {
-    this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).then(
-      () => {
+    await this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).then(
+      (res) => {
+        this.newUser = {
+          id: res.user.uid,
+          gender: authData.gender,
+          firstName: authData.firstName,
+          lastName: authData.lastName,
+          email: authData.email,
+          birth: authData.birth,
+          role: 'user',
+          countOrders: 0,
+        };
         this.uiService.showSnackbar('Account created. Login successful', null, 1500);
       })
       .catch(err => {
         console.log(err);
       });
+    await console.log('end', this.newUser);
+    await this.setUser(this.newUser);
   }
   async sendPasswordResetEmail(passwordResetEmail: string) {
     await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
-    this.router.navigate(['login']).then(() => console.log('Password reset success'));
+    await this.router.navigate(['login']).then(() => console.log('Password reset success'));
   }
   async loginUser(loginData) {
     this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password).then(
-      () => {
+      (res) => {
+        this.currentUserId = res.user.uid;
       })
       .catch(err => {
         this.userStatus = false;
@@ -80,7 +108,12 @@ export class FirebaseService {
     await this.router.navigate(['admin/verify-email']);
   }
   async logoutUser() {
+    this.currentUserId = '';
     await this.afAuth.auth.signOut();
+  }
+  setUser(userData: UserModel) {
+      this.currentUserId = userData.id;
+      return this.firestore.collection('user').add(userData);
   }
   setBouquets(columnType, data: Bouquet) {
         return this.firestore.collection(columnType).add(data);
@@ -89,12 +122,6 @@ export class FirebaseService {
     console.log(columnType + key + value);
     return this.firestore.collection(columnType).doc(key).update(value);
   }
-  /*
-  Outdated
-  getBouquet(columnType, key) {
-    return this.firestore.collection('bouquet').doc(key).get();
-  }
-   */
   delBouquet(columnType, key) {
     return this.firestore.collection(columnType).doc(key).delete();
   }
@@ -137,5 +164,8 @@ export class FirebaseService {
   }
   getBouquets(columnType) {
     return this.firestore.collection(columnType).snapshotChanges();
+  }
+  getUsers() {
+    return this.firestore.collection('user').snapshotChanges();
   }
 }

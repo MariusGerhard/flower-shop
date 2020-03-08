@@ -8,32 +8,38 @@
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card>
       <mat-card-content>
-        <form #searchFormData="ngForm" *ngIf="(toggleMode=='searchMode')">
+        <form #searchFormData="ngForm" *ngIf="(toggleMode == 'searchMode')
+         else (toggleMode == 'addMode')?
+          showAddMode : ((toggleMode == 'editMode')?
+          showEditMode : showResMode)">
           <mat-card-actions>
-            <button type="button" mat-raised-button color="accent" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <button type="button" [disabled]="searchFormData.invalid" mat-raised-button color="accent" class="search-button" (click)="toggle('resMode');onSearch(searchFormData.value)">Search</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
-              <mat-icon color="primary">add</mat-icon>
-              <mat-icon color="primary">cached</mat-icon>
+              <mat-icon color="primary" (click)="getAllUsers();toggle('resMode');">cached</mat-icon>
             </div>
           </mat-card-actions>
           <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
             <mat-form-field>
-              <mat-label>Bouquet Name</mat-label>
-              <label>
-                <input matInput [disabled]="category.value > '' || flower.value >'' " type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
+              <mat-label>Select Role</mat-label>
+              <mat-select [disabled]="counter.value > 0" #select="ngModel" [ngModel]="searchFormData" name="role">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
+              </mat-select>
+              <mat-hint align="end">choose a role</mat-hint>
             </mat-form-field>
             <mat-form-field>
-              <mat-label>Category</mat-label>
-              <label>
-                <input matInput [disabled]="name.value > '' || flower.value >'' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Flower</mat-label>
-              <label>
-                <input matInput [disabled]="name.value > '' || category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
+                <mat-label>Minimum amount of Orders</mat-label>
+                <label>
+                  <input [disabled]="select.value == 'User' || select.value == 'Admin' || select.value == 'Employee'"
+                         matInput type="text" name="counter" #counter="ngModel" ngModel required pattern="[0-9,.]+">
+                </label>
+              <mat-hint align="end">only numbers allowed</mat-hint>
+              <mat-error *ngIf="!counter.hasError('required')">
+                only numbers allowed
+              </mat-error>
+              <mat-error *ngIf="counter.hasError('required')">
+                Field should not be empty
+              </mat-error>
             </mat-form-field>
           </div>
         </form>
@@ -41,3 +47,50 @@
     </mat-card>
   </div>
 </section>
+<ng-template #showResMode>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+    <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+  </mat-card-actions>
+  <div>
+    <mat-form-field>
+      <mat-label>Filter Results</mat-label>
+      <label>
+        <input matInput (keyup)="applyFilter($event)">
+      </label>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="lastName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.lastName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="role" class="sizeRole">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="counterOrders" class="sizeCounter">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Orders</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.countOrders | number}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> action </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="onGetUser(row._id)" [disabled]="isLoading">
+            <mat-icon color="primary">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDeleteUser(row._id)" [disabled]="isLoading">
+            <mat-icon color="primary">delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+  </div>
+</ng-template>
+<ng-template #showAddMode>
+</ng-template>
+<ng-template #showEditMode>
+</ng-template>

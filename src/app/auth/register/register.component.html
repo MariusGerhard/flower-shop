@@ -8,6 +8,13 @@
     <h1>Register to Flower Shop</h1>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+      <mat-radio-group aria-label="Your gender" ngModel name="gender" required #gender="ngModel">
+        <mat-radio-button value="Mr." color="primary">Male</mat-radio-button>
+        <mat-radio-button value="Mrs." color="warn">Female</mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="gender.hasError('required')">
+        Please select your gender
+      </mat-error>
       <mat-form-field>
         <mat-label>Please enter your first name</mat-label>
         <label>
@@ -105,8 +112,7 @@
       <button mat-raised-button
               type="submit"
               color="accent"
-              [disabled]="isLoading"
-              [disabled]="f.invalid"
+              [disabled]="isLoading || f.invalid"
       >Submit</button>
     </mat-card>
   </form>

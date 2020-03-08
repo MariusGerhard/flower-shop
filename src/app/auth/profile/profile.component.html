@@ -9,6 +9,10 @@
     <button class="edit-button" mat-raised-button color="warn" (click)="onEdit()">{{editTextString}}</button>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+      <mat-radio-group aria-label="Your gender" ngModel name="gender" required #gender="ngModel">
+        <mat-radio-button value="Mr." color="primary">Male</mat-radio-button>
+        <mat-radio-button value="Mrs." color="warn">Female</mat-radio-button>
+      </mat-radio-group>
       <mat-form-field>
         <mat-label>First name</mat-label>
         <label>
@@ -95,12 +99,16 @@
                  name="birthdateValue"
                  required
                  [disabled]="!isEdit"
+                 #picker
           >
         </label>
         <mat-error>Field should not be empty</mat-error>
         <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
+      <p>
+        Number of Orders: {{counter}}
+      </p>
       <button mat-raised-button color="accent" type="submit" [disabled]="isLoading">Save Changes</button>
     </mat-card>
   </form>

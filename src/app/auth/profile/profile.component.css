@@ -16,3 +16,10 @@ button{
   min-width: 200px;
   width: 25%;
 }
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+p{
+  color: forestgreen;
+  font-weight: bold;
+}
