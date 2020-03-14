@@ -28,7 +28,7 @@ import { FooterComponent } from './navigation/footer/footer.component';
 import { ProfileComponent } from './auth/profile/profile.component';
 import { AutofocusDirective } from './shared/directives/autofocus.directive';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
-import { SettingsComponent } from './admin/settings/settings.component';
+import { SettingsComponent } from './admin/bouquets/settings.component';
 import { ControlComponent } from './admin/control/control.component';
 import { UsersComponent } from './admin/users/users.component';
 import { OrdersComponent } from './admin/orders/orders.component';

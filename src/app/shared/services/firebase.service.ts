@@ -37,11 +37,11 @@ export class FirebaseService {
   getCurrentUserId() {
     return this.currentUserId;
   }
-  getCurrentUser(id) {
-    console.log(id);
+  getCurrentUser(authId) {
+    console.log('User: ' + authId);
     return this.firestore.collection('user', ref =>
       ref
-        .where('id', '==', id)
+        .where('authId', '==', authId)
     ).snapshotChanges();
   }
   async initAuthListener() {
@@ -67,6 +67,7 @@ export class FirebaseService {
       (res) => {
         this.newUser = {
           id: res.user.uid,
+          authId: res.user.uid,
           gender: authData.gender,
           firstName: authData.firstName,
           lastName: authData.lastName,
@@ -115,11 +116,16 @@ export class FirebaseService {
       this.currentUserId = userData.id;
       return this.firestore.collection('user').add(userData);
   }
+  updateUser(columnType, key, value) {
+    console.log(columnType + key + value);
+    return this.firestore.collection(columnType).doc(key).update(value);
+  }
   setBouquets(columnType, data: Bouquet) {
         return this.firestore.collection(columnType).add(data);
     }
   updateBouquets(columnType, key, value) {
-    console.log(columnType + key + value);
+    console.log(key);
+    console.log(value._id);
     return this.firestore.collection(columnType).doc(key).update(value);
   }
   delBouquet(columnType, key) {

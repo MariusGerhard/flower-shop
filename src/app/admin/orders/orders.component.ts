@@ -8,6 +8,7 @@ import {fallIn, moveIn} from '../../router.animations';
   animations: [moveIn(), fallIn()],
 })
 export class OrdersComponent implements OnInit {
+  state: string;
   isLoading = false;
   toggleMode: string;
   constructor() {

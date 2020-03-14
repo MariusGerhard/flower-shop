@@ -12,6 +12,7 @@ import {User} from 'firebase';
 export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
+  state: string;
   dataSource: MatTableDataSource<any>;
   displayedColumns = ['lastName', 'role', 'counterOrders', 'id'];
   isLoading = false;

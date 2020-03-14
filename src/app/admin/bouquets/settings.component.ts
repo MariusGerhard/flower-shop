@@ -14,8 +14,6 @@ import {UIService} from '../../shared/services/ui.service';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
   animations: [moveIn(), fallIn()],
-  // tslint:disable-next-line:no-host-metadata-property
-  host: {'@moveIn': ''},
 })
 export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   // Animations
@@ -115,6 +113,7 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   }
   setData(formData: Bouquet) {
     this.isLoading = true;
+    console.log(formData._id);
     this.firebaseService.setBouquets('bouquets', formData).then(
       () => {
         this.isLoading = false;

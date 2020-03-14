@@ -4,27 +4,29 @@
         #f="ngForm"
         (ngSubmit)="onSubmit(f)"
         fxLayoutGap="1%"
+        novalidate
   >
     <h1>Account Settings</h1>
-    <button class="edit-button" mat-raised-button color="primary" routerLink="/shop">Back to Shop</button>
-    <button class="edit-button" mat-raised-button color="warn" (click)="onEdit()">{{editTextString}}</button>
+    <button type="button" class="edit-button" mat-raised-button color="primary" routerLink="/shop">Back to Shop</button>
+    <button type="button" class="edit-button" mat-raised-button color="warn" (click)="onEdit()">{{editTextString}}</button>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
-      <mat-radio-group aria-label="Your gender" ngModel name="gender" required #gender="ngModel" [disabled]="!isEdit">
+      <mat-radio-group aria-label="Your gender" ngModel name="gender" #gender="ngModel" [disabled]="!isEdit">
         <mat-radio-button [checked]="user.gender === 'Mr.'"  value="Mr." color="primary">Male</mat-radio-button>
         <mat-radio-button [checked]="user.gender === 'Mrs.'" value="Mrs." color="warn">Female</mat-radio-button>
       </mat-radio-group>
+      <input type="hidden" name="authId" id="authId" [ngModel]="user.authId" required>
+      <input type="hidden" name="id" id="id" [ngModel]="user.id" required>
       <mat-form-field>
         <mat-label>First name</mat-label>
         <label>
           <input type="text"
                  matInput
-                 ngModel
                  name="firstName"
                  required
                  #firstName="ngModel"
                  [disabled]="!isEdit"
-                 [value]="user.firstName"
+                 [ngModel]="user.firstName"
           >
         </label>
         <mat-error *ngIf="firstName.hasError('required')">
@@ -36,12 +38,11 @@
         <label>
           <input type="text"
                  matInput
-                 ngModel
                  name="lastName"
                  required
                  #lastName="ngModel"
                  [disabled]="!isEdit"
-                 [value]="user.lastName"
+                 [ngModel]="user.lastName"
           >
         </label>
         <mat-error *ngIf="lastName.hasError('required')">
@@ -58,7 +59,7 @@
                  [matDatepicker]="picker"
                  [max]="max"
                  [min]="min"
-                 [(ngModel)]="birthday"
+                 [ngModel]="birthday"
                  name="birthdateValue"
                  required
                  [disabled]="!isEdit"
@@ -72,7 +73,7 @@
       <p>
         Number of Orders: {{counter}}
       </p>
-      <button mat-raised-button color="accent" type="submit" [disabled]="isLoading">Save Changes</button>
+      <button mat-raised-button color="accent" type="submit" [disabled]="isLoading || f.invalid || f.pristine">Save Changes</button>
     </mat-card>
   </form>
 </section>

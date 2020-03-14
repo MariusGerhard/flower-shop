@@ -4,7 +4,6 @@ import {HeaderTitleService} from '../../shared/services/header-title.service';
 import {fallIn, moveIn} from '../../router.animations';
 import {FirebaseService} from '../../shared/services/firebase.service';
 import {UserModel} from '../../shared/models/userModel';
-import {Bouquet} from '../../shared/models/bouquet.model';
 
 @Component({
   selector: 'app-register',
@@ -41,9 +40,24 @@ export class RegisterComponent implements OnInit {
       birth: form.value.birthdateValue,
     }).then(
       ()  => {
-      this.isLoading = false;
-    }).catch(() => {
+        this.isLoading = false;
+      }).catch(() => {
       this.isLoading = false;
     });
   }
 }
+
+/*
+setData(formData: Bouquet) {
+  this.isLoading = true;
+  this.firebaseService.setBouquets('bouquets', formData).then(
+    () => {
+      this.isLoading = false;
+      this.uiService.showSnackbar(formData.name + ' was added', null, 2500);
+    },
+    (err) => {
+      console.log(err);
+      this.isLoading = false;
+    });
+}
+ */

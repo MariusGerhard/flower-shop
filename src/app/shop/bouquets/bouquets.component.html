@@ -1,4 +1,4 @@
-<section>
+<section [@fallIn]="state">
   <h1 fxLayoutAlign="center center" *ngIf="toggleMode =='searchMode'">All Bouquets</h1>
   <div fxLayoutAlign="column center" fxLayoutGap="2%" fxLayout="column">
     <mat-card *ngIf="(toggleMode == 'searchMode')
