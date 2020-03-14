@@ -1,45 +1,83 @@
-<section [@fallIn]="state">
-  <h1 *ngIf="!isDetail" fxLayout fxLayoutAlign="center center" >All Bouquets</h1>
-  <mat-label [hidden]="true"></mat-label>
-  <label>
-    <input matInput autofocus [hidden]="true" appAutofocus>
-  </label>
+<section>
+  <h1 fxLayoutAlign="center center" *ngIf="toggleMode =='searchMode'">All Bouquets</h1>
   <div fxLayoutAlign="column center" fxLayoutGap="2%" fxLayout="column">
-    <mat-progress-bar mode="indeterminate" *ngIf="isLoading && !isDetail"></mat-progress-bar>
-      <div *ngIf="!isDetail" class="content-container" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="2%">
-      <mat-card *ngFor="let bouquet of bouquets" (click)="toggle(); onDetails(bouquet._id)" fxLayout="row"  fxLayoutGap="2%">
-        <mat-card-content class="pic-size" fxLayoutAlign="center center">
-          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-        </mat-card-content>
-        <div>
-        <mat-card-header>
-          <mat-card-title>{{bouquet.name}}</mat-card-title>
-          <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-header>
-          <p>
-            <b class="category-class">{{ bouquet.category }}´s love this bouquet!</b> <br>
-            <span class="span-price">Price:</span> {{ bouquet.price}} &euro;
-          </p>
-        </mat-card-header>
-        </div>
-      </mat-card>
-    </div>
+    <mat-card *ngIf="(toggleMode == 'searchMode')
+               else (toggleMode == 'detailMode')?
+                showDetailMode : ((toggleMode == 'resMode')?
+                showResMode : ((toggleMode == 'orderMode')?
+                showOrderMode: showExtrasMode))">
+      <mat-card-content>
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <form #searchFormData="ngForm">
+          <mat-card-actions>
+            <button type="button" mat-raised-button color="accent" (click)="toggle('orderMode');getFilterData(searchFormData.value);" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
+              <mat-icon (click)="toggle('resMode')" color="primary" >cached</mat-icon>
+            </div>
+          </mat-card-actions>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+            <mat-form-field>
+              <mat-label>Bouquet Name</mat-label>
+              <label>
+                <input matInput [disabled]="flower.value > '' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Category</mat-label>
+              <label>
+                <input matInput [disabled]="category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button color="warn" (click)="toggle('searchMode')" class="back-button" [disabled]="isLoading" *ngIf="toggleMode == 'resMode'">back</button>
+    <button mat-raised-button color="warn"
+            (click)="toggle('resMode')"
+            class="back-button"
+            [disabled]="isLoading"
+            *ngIf="toggleMode == 'orderMode' || toggleMode == 'extrasMode' || toggleMode == 'detailMode'">
+      back
+    </button>
   </div>
 </section>
-<section *ngIf="isDetail"  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%" class="details-section" >
-  <mat-label [hidden]="true">hidden</mat-label>
-  <label>
-    <input matInput autofocus [hidden]="true" appAutofocus>
-  </label>
-  <mat-card class="details-card">
-    <div class="spinner-wrapper">
-      <div class="spinner-overlay">
-        <div class="spinner-show" *ngIf="isLoading">
-          <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-        </div>
-      </div>
+
+<ng-template #showResMode>
+  <mat-card class="margin-top">
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input matInput appAutofocus (keyup)="applyFilter($event)" placeholder="tulip">
+    </mat-form-field>
+  </mat-card>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <mat-card *ngFor="let bouquet of bouquets" (click)="toggle('detailMode'); onDetails(bouquet._id)" fxLayout="row"  fxLayoutGap="2%">
+    <mat-card-content class="pic-size" fxLayoutAlign="center center">
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    </mat-card-content>
+    <div>
+      <mat-card-header>
+        <mat-card-title>{{bouquet.name}}</mat-card-title>
+        <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-header>
+        <p>
+          <b class="category-class">{{ bouquet.category }}´s love this bouquet!</b> <br>
+          <span class="span-price">Price:</span> {{ bouquet.price}} &euro;
+        </p>
+      </mat-card-header>
     </div>
+  </mat-card>
+</ng-template>
+
+<ng-template #showDetailMode>
+  <mat-card-actions>
+    <mat-label [hidden]="true">hidden</mat-label>
+    <label>
+      <input matInput [hidden]="true" appAutofocus>
+    </label>
+  </mat-card-actions>
+  <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="header-image"></div>
       <mat-card-title>{{bouquet.name}}</mat-card-title>
@@ -65,10 +103,27 @@
       </h2>
     </mat-card-content>
     <mat-card-actions fxLayoutAlign="center center">
-      <button mat-button mat-raised-button color="primary" [disabled]="isLoading" (click)="onOrder()">Order</button>
-      <button mat-button mat-raised-button color="accent" [disabled]="isLoading" (click)="onExtras()">Extras</button>
+      <button mat-button mat-raised-button color="primary" [disabled]="isLoading" (click)="onOrder();toggle('orderMode')">Order</button>
+      <button mat-button mat-raised-button color="accent" [disabled]="isLoading" (click)="onExtras();toggle('extrasMode')">Extras</button>
     </mat-card-actions>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   </mat-card>
-  <button mat-raised-button color="warn" (click)="toggle()" class="back-button" [disabled]="isLoading">back</button>
-</section>
+</ng-template>
 
+<ng-template #showOrderMode>
+  <mat-card class="margin-top">
+    <p>
+    Order Mode
+    </p>
+  </mat-card>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+</ng-template>
+
+<ng-template #showExtrasMode>
+  <mat-card class="margin-top">
+    <p>
+      Extras Mode
+    </p>
+  </mat-card>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+</ng-template>

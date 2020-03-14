@@ -13,32 +13,41 @@ import {FirebaseService} from '../../shared/services/firebase.service';
 export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('firstName', {static: false}) private firstName;
   @ViewChild('firstName', {static: false}) private lastName;
-  user: UserModel[];
+  users: UserModel[];
+  user: UserModel = {
+    gender: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    birth: '',
+  };
   userId: string;
   state: string;
   isLoading = false;
   isEdit = false;
+  birthday: Date;
   editTextString = 'Edit Settings';
   min: Date;
   max: Date;
   counter: number;
   private queryConnection;
   constructor(private headerTitleService: HeaderTitleService, private firebaseService: FirebaseService) {
-    this.counter = 2;
   }
-
   ngOnInit() {
     this.headerTitleService.setTitle('Profile');
     this.userId = this.firebaseService.getCurrentUserId();
     this.queryConnection = this.firebaseService.getCurrentUser(this.userId).subscribe(
       res => {
-        this.user = res.map(e => {
+        this.users = res.map(e => {
           return {
             id: e.payload.doc.id,
             ...e.payload.doc.data(),
           }as UserModel;
         });
-        this.firstName.nativeElement = this.user[0].firstName;
+        this.user = this.users[0];
+        this.birthday = new Date('2000/07/07');
+        console.log(this.user.gender);
+        this.counter = this.user.countOrders;
         this.isLoading = false;
       },
       (err) => {

@@ -6,12 +6,13 @@
         fxLayoutGap="1%"
   >
     <h1>Account Settings</h1>
+    <button class="edit-button" mat-raised-button color="primary" routerLink="/shop">Back to Shop</button>
     <button class="edit-button" mat-raised-button color="warn" (click)="onEdit()">{{editTextString}}</button>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
-      <mat-radio-group aria-label="Your gender" ngModel name="gender" required #gender="ngModel">
-        <mat-radio-button value="Mr." color="primary">Male</mat-radio-button>
-        <mat-radio-button value="Mrs." color="warn">Female</mat-radio-button>
+      <mat-radio-group aria-label="Your gender" ngModel name="gender" required #gender="ngModel" [disabled]="!isEdit">
+        <mat-radio-button [checked]="user.gender === 'Mr.'"  value="Mr." color="primary">Male</mat-radio-button>
+        <mat-radio-button [checked]="user.gender === 'Mrs.'" value="Mrs." color="warn">Female</mat-radio-button>
       </mat-radio-group>
       <mat-form-field>
         <mat-label>First name</mat-label>
@@ -23,6 +24,7 @@
                  required
                  #firstName="ngModel"
                  [disabled]="!isEdit"
+                 [value]="user.firstName"
           >
         </label>
         <mat-error *ngIf="firstName.hasError('required')">
@@ -39,51 +41,12 @@
                  required
                  #lastName="ngModel"
                  [disabled]="!isEdit"
+                 [value]="user.lastName"
           >
         </label>
         <mat-error *ngIf="lastName.hasError('required')">
           Field should not be empty
         </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Your E-Mail</mat-label>
-        <label>
-          <input type="email"
-                 matInput
-                 ngModel
-                 name="email"
-                 email
-                 required
-                 #email="ngModel"
-                 [disabled]="!isEdit"
-          >
-        </label>
-        <mat-error *ngIf="!email.hasError('required')">
-          Email is Invalid
-        </mat-error>
-        <mat-error *ngIf="email.hasError('required')">
-          Field should not be empty
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-hint align="start" *ngIf="pw.value?.length < 8">
-          Please Enter a minimum of 8 characters
-        </mat-hint>
-        <mat-label>Please enter your Password </mat-label>
-        <label>
-          <input type="password"
-                 matInput
-                 ngModel
-                 name="password"
-                 required
-                 minlength="8"
-                 #pw="ngModel"
-                 [disabled]="!isEdit"
-          >
-        </label>
-        <mat-hint align="end" *ngIf="pw.value?.length < 8">
-          {{ pw.value?.length }} /8
-        </mat-hint>
       </mat-form-field>
       <mat-form-field>
         <mat-hint>
@@ -95,7 +58,7 @@
                  [matDatepicker]="picker"
                  [max]="max"
                  [min]="min"
-                 ngModel
+                 [(ngModel)]="birthday"
                  name="birthdateValue"
                  required
                  [disabled]="!isEdit"

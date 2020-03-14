@@ -30,6 +30,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   error = false;
   errorMessage = '';
   private querySubscription;
+  dataSource = new MatTableDataSource();
 
   profileUrl: Observable<string | null>;
   takeHostSelfie = false;
@@ -37,10 +38,12 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   counter = 0;
   bouquets: Bouquet[];
   bouquet: Bouquet;
+  toggleMode: string;
   constructor(db: AngularFirestore,
               private headerTitleService: HeaderTitleService,
               private firebaseService: FirebaseService,
               private storage: AngularFireStorage) {
+    this.toggleMode = 'searchMode';
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Bouquets');
@@ -54,8 +57,22 @@ export class BouquetsComponent implements OnInit, OnDestroy {
       }
     );
   }
-  toggle() {
-    this.isDetail = !this.isDetail;
+  toggle(filter?) {
+    if (!filter) {
+      filter = 'searchMode';
+    }
+    this.toggleMode = filter;
+  }
+  getData() {
+    this.querySubscription = this.firebaseService.getBouquets('bouquets').subscribe(data => {
+        this.bouquets = data.map(e => {
+          return {
+            id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Bouquet;
+        });
+      }
+    );
   }
   onOrder() {
     console.log('ordered');
@@ -82,6 +99,10 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     });
   }
    */
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
   ngOnDestroy() {
     if (this.querySubscription) {
       this.querySubscription.unsubscribe();

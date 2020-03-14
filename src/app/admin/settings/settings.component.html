@@ -60,41 +60,41 @@
         <mat-form-field>
           <mat-label>Bouquet Name</mat-label>
           <label for="name"></label>
-          <input matInput name="name" id="name" ngModel required minlength="1">
+          <input matInput name="name" id="name" ngModel required minlength="1" type="text">
           <mat-hint align="end">eg. Rose-Bouquet</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Category</mat-label>
           <label for="category"></label>
-          <input matInput name="category" id="category" ngModel required minlength="1">
+          <input matInput name="category" id="category" ngModel required minlength="1" type="text">
           <mat-hint align="end">eg. Mum</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Description</mat-label>
           <label for="description"></label>
-          <textarea matInput name="description" id="description" ngModel></textarea>
+          <textarea matInput name="description" id="description" ngModel type="text"></textarea>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Flower</mat-label>
           <label for="flower"></label>
-          <input matInput name="flower" id="flower" required minlength="3" ngModel>
+          <input matInput name="flower" id="flower" required minlength="3" ngModel type="text">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Season Start</mat-label>
           <label for="seasonStart"></label>
-          <input matInput name="seasonStart" id="seasonStart" ngModel required pattern="[0-9]+">
+          <input matInput name="seasonStart" id="seasonStart" ngModel required pattern="[0-9]+" type="number">
           <mat-hint align="end">eg. insert 1 for January</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Season End</mat-label>
           <label for="seasonEnd"></label>
-          <input matInput name="seasonEnd" id="seasonEnd" ngModel required pattern="[0-9]+">
+          <input matInput name="seasonEnd" id="seasonEnd" ngModel required pattern="[0-9]+" type="number">
           <mat-hint align="end">eg. insert 12 for december</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Price</mat-label>
           <label for="price"></label>
-          <input matInput name="price" id="price" ngModel required pattern="[0-9]+">
+          <input matInput name="price" id="price" ngModel required pattern="[0-9.]+" type="number">
         </mat-form-field>
       </div>
     </div>
@@ -122,47 +122,47 @@
         <mat-form-field>
           <mat-label>Bouquet Name</mat-label>
           <label>
-            <input matInput name="name" [ngModel]="myDocData.name" required minlength="1">
+            <input matInput name="name" [ngModel]="myDocData.name" required minlength="1" type="text">
           </label>
           <mat-hint align="end">eg. Rose-Bouquet</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Category</mat-label>
           <label>
-            <input matInput name="category" [ngModel]="myDocData.category" required minlength="1">
+            <input matInput name="category" [ngModel]="myDocData.category" required minlength="1" type="text">
           </label>
           <mat-hint align="end">eg. Mum</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Description</mat-label>
           <label>
-            <textarea matInput name="description" [ngModel]="myDocData.description"></textarea>
+            <textarea matInput name="description" [ngModel]="myDocData.description" type="text"></textarea>
           </label>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Flower</mat-label>
           <label>
-            <input matInput name="flower"  [ngModel]="myDocData.flower" required minlength="3">
+            <input matInput name="flower"  [ngModel]="myDocData.flower" required minlength="3" type="text">
           </label>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Season Start</mat-label>
           <label>
-            <input matInput name="seasonStart"  [ngModel]="myDocData.seasonStart" required pattern="[0-9]+">
+            <input matInput name="seasonStart"  [ngModel]="myDocData.seasonStart" required pattern="[0-9]+" type="number">
           </label>
           <mat-hint align="end">eg. insert 1 for January</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Season End</mat-label>
           <label>
-            <input matInput name="seasonEnd"  [ngModel]="myDocData.seasonEnd" required pattern="[0-9]+">
+            <input matInput name="seasonEnd"  [ngModel]="myDocData.seasonEnd" required pattern="[0-9]+" type="number">
           </label>
           <mat-hint align="end">eg. insert 12 for December</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Price</mat-label>
           <label>
-            <input matInput name="price" [ngModel]="myDocData.price" required pattern="[0-9,.]+">
+            <input matInput name="price" [ngModel]="myDocData.price" required pattern="[0-9.]+" type="number">
           </label>
         </mat-form-field>
       </div>
