@@ -23,6 +23,10 @@
     <mat-icon color="warn">account_box</mat-icon>
     <span class="nav-item">&nbsp; Profile</span>
   </a>
+  <a mat-list-item routerLink="/orders" (click)="onToggle()" *ngIf="userStatus">
+    <mat-icon color="warn">receipt</mat-icon>
+    <span class="nav-item">&nbsp; My Orders</span>
+  </a>
   <a mat-list-item routerLink="/control" (click)="onToggle()" *ngIf="userStatus">
   <mat-icon color="warn">settings</mat-icon>
   <span class="nav-item">&nbsp;Admin Control</span>

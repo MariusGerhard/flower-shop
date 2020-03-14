@@ -38,6 +38,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import {ResetComponent} from './auth/reset/reset.component';
+import { MyOrdersComponent } from './shop/my-orders/my-orders.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {ResetComponent} from './auth/reset/reset.component';
     UsersComponent,
     OrdersComponent,
     ResetComponent,
+    MyOrdersComponent,
   ],
   imports: [
     BrowserModule,

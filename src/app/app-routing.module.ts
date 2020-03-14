@@ -10,11 +10,11 @@ import {FlowersComponent} from './shop/flowers/flowers.component';
 import {BouquetsComponent} from './shop/bouquets/bouquets.component';
 import {ProfileComponent} from './auth/profile/profile.component';
 import {TermsConditionsComponent} from './terms-conditions/terms-conditions.component';
-import {SettingsComponent} from './admin/settings/settings.component';
 
 import {AuthGuard} from './auth/auth.guard';
 import {ControlComponent} from './admin/control/control.component';
 import {ResetComponent} from './auth/reset/reset.component';
+import {MyOrdersComponent} from './shop/my-orders/my-orders.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -28,6 +28,7 @@ const routes: Routes = [
   {path: 'terms', component: TermsConditionsComponent},
   {path: 'control', component: ControlComponent, canActivate: [AuthGuard]},
   {path: 'reset', component: ResetComponent},
+  {path: 'orders', component: MyOrdersComponent},
   {path: '**', component: HomeComponent},
 ];
 

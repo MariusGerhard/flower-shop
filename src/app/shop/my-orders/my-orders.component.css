@@ -1,0 +1,9 @@
+mat-progress-bar{
+  width: 95%;
+  margin-bottom: 10px;
+}
+mat-card{
+  width: 90%;
+  margin-bottom: 10px;
+  max-width: 500px;
+}
