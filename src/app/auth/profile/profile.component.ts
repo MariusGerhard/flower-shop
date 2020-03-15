@@ -43,6 +43,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Profile');
+    this.max = new Date();
+    this.min = new Date();
+    this.max.setFullYear(this.max.getFullYear() - 16);
+    this.min.setFullYear(this.max.getFullYear() - 100);
     this.isLoading = true;
     this.userId = this.firebaseService.getCurrentUserId();
     this.queryConnection = this.firebaseService.getCurrentUser(this.userId).subscribe(
@@ -82,16 +86,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   onSubmit(formData) {
     this.isLoading = true;
-    console.log(formData.value.id);
-    console.log(formData.value);
+    // console.log(formData.value.id);
+    // console.log(formData.value.lastName);
     this.firebaseService.updateUser('user', formData.value.id, formData.value).then(
       () => {
         this.isLoading = false;
-        this.uiService.showSnackbar(formData.value.name + ' was updated', null, 2500);
+        this.uiService.showSnackbar(formData.value.firstName + ' ' + formData.value.lastName + ' was updated', null, 2500);
         this.router.navigate(['/shop']);
       },
       (err) => {
-        this.uiService.showSnackbar(formData.value.name + ' has error' + err, null, 2500);
+        this.uiService.showSnackbar(formData.value.lastName + ' has error' + err, null, 2500);
       });
   }
   ngOnDestroy(): void {

@@ -1,8 +1,11 @@
 export class Order {
-  id: string;
-  orderDate: Date;
-  pickUpDate: Date;
-  price: number;
   userId: string;
-  bouquetId: string;
+  userName: string;
+  bouquetId: number;
+  orderDate: string;
+  event?: string;
+  message?: string;
+  bouquetName: string;
+  price: number;
+  pickUpDate: string;
 }

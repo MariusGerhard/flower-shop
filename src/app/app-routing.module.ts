@@ -20,7 +20,7 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'notice', component: LegalNoticeComponent, canActivate: [AuthGuard]},
+  {path: 'notice', component: LegalNoticeComponent},
   {path: 'shop', component: MainMenuComponent, canActivate: [AuthGuard]},
   {path: 'flowers', component: FlowersComponent, canActivate: [AuthGuard]},
   {path: 'bouquets', component: BouquetsComponent, canActivate: [AuthGuard]},

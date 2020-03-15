@@ -2,7 +2,7 @@
 Modules import app
  */
 import {BrowserModule} from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
@@ -77,7 +77,10 @@ import { MyOrdersComponent } from './shop/my-orders/my-orders.component';
     AngularFireAuthModule,
     AngularFireStorageModule,
   ],
-  providers: [],
+  providers: [{
+    provide: LOCALE_ID,
+    useValue: 'en-En'
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

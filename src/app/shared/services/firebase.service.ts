@@ -8,8 +8,8 @@ import * as firebase from 'firebase/app';
 import {User} from 'firebase';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Bouquet} from '../models/bouquet.model';
-import {AngularFireDatabase} from '@angular/fire/database';
 import {UserModel} from '../models/userModel';
+import {Order} from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,6 @@ export class FirebaseService {
     return this.currentUserId;
   }
   getCurrentUser(authId) {
-    console.log('User: ' + authId);
     return this.firestore.collection('user', ref =>
       ref
         .where('authId', '==', authId)
@@ -57,7 +56,7 @@ export class FirebaseService {
       } else {
         this.userStatus = false;
         this.authChanged.next(false);
-        this.router.navigate(['']).then(r => console.log('Logout'));
+        this.router.navigate(['']);
         localStorage.setItem('user', null);
       }
     });
@@ -173,5 +172,8 @@ export class FirebaseService {
   }
   getUsers() {
     return this.firestore.collection('user').snapshotChanges();
+  }
+  setOrder(columnType, data: Order) {
+    return this.firestore.collection(columnType).add(data);
   }
 }

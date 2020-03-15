@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.selectedIndex = id;
   }
   onLogout() {
-    this.firebaseService.logoutUser().then(r => console.log('Logged out' + r));
+    this.firebaseService.logoutUser();
     this.uiService.showSnackbar('Logout successful', null, 1500);
     this.userStatus = false;
   }
