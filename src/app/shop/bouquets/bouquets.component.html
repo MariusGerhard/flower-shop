@@ -10,7 +10,7 @@
         <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
         <form #searchFormData="ngForm">
           <mat-card-actions>
-            <button type="button" mat-raised-button color="accent" (click)="toggle('orderMode');getFilterData(searchFormData.value);" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <button type="button" mat-raised-button color="accent" (click)="toggle('orderMode')" [disabled]="!searchFormData.valid" class="search-button">Search</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
               <mat-icon (click)="toggle('resMode')" color="primary" >cached</mat-icon>
             </div>
