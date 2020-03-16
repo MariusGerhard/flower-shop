@@ -16,9 +16,11 @@ export class AuthGuard implements CanActivate {
     if (this.firebaseService.isAuth()) {
       return true;
     }
+    /*
     this.router.navigate(['/login']).then(
       () => {
         this.uiService.showSnackbar('Please Login first', null, 2000);
       });
+     */
   }
 }

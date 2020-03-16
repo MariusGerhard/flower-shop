@@ -144,7 +144,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.firebaseService.setOrder('order', this.order).then(
       () => {
         this.uiService.showSnackbar('Your order of ' + this.order.bouquetName + ' was successful' , null, 2500);
-        this.router.navigate(['/shop']).then(() => console.log('Order completed'));
+        this.router.navigate(['/shop']);
       },
       (err) => {
         console.log(err);

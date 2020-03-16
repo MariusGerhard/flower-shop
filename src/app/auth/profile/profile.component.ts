@@ -52,7 +52,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.queryConnection = this.firebaseService.getCurrentUser(this.userId).subscribe(
       res => {
         this.users = res.map(e => {
-          console.log(e.payload.doc.id);
           this.saveId = e.payload.doc.id;
           return {
             authId: e.payload.doc.id,
@@ -64,8 +63,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.birthday = new Date('2000/07/07');
         this.counter = this.user.countOrders;
         this.isLoading = false;
-   //     console.log('User: ' + this.user.authId);
-        console.log('Collection: ' + this.user.id);
       },
       (err) => {
         this.isLoading = false;
@@ -86,8 +83,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   onSubmit(formData) {
     this.isLoading = true;
-    // console.log(formData.value.id);
-    // console.log(formData.value.lastName);
     this.firebaseService.updateUser('user', formData.value.id, formData.value).then(
       () => {
         this.isLoading = false;

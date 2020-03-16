@@ -1,4 +1,8 @@
 <mat-nav-list class="accent-background">
+  <a mat-list-item routerLink="/" (click)="onToggle()">
+    <mat-icon>home</mat-icon>
+    <span class="nav-item">&nbsp; Home</span>
+  </a>
   <a mat-list-item routerLink="/login" (click)="onToggle()" *ngIf="!userStatus">
     <mat-icon>input</mat-icon>
     <span class="nav-item">&nbsp; Login</span>
@@ -7,7 +11,7 @@
   <mat-icon>assignment</mat-icon>
   <span class="nav-item">&nbsp; Register</span>
   </a>
-  <a mat-list-item routerLink="/shop" (click)="onToggle()">
+  <a mat-list-item routerLink="/shop" (click)="onToggle()" *ngIf="userStatus">
     <mat-icon>shop</mat-icon>
     <span class="nav-item">&nbsp; Shop</span>
   </a>

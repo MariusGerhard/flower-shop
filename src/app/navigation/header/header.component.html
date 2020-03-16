@@ -23,7 +23,8 @@
       <li><a routerLink="/control"  [ngClass]="{'highlight': title == 'Control'}" (click)="setSelected(9)" [hidden]="!userStatus">Control</a></li>
       <li><a routerLink="/profile"  [ngClass]="{'highlight': title == 'Profile'}" (click)="setSelected(11)" [hidden]="!userStatus">Profile</a></li>
       <li><a routerLink="/orders"  [ngClass]="{'highlight': title == 'My Orders'}" (click)="setSelected(12)" [hidden]="!userStatus">My Orders</a></li>
-      <li><a routerLink="/shop"  [ngClass]="{'highlight': title === 'Shop'}" (click)="setSelected(1)">Shop</a></li>
+      <li><a routerLink="/shop"  [ngClass]="{'highlight': title === 'Shop'}" (click)="setSelected(1)" [hidden]="!userStatus">Shop</a></li>
+      <li><a routerLink="/" [ngClass]="{'highlight': title == 'Home'}">Home</a></li>
       <li *ngIf="!userStatus"><a routerLink="/login" [ngClass]="{'highlight': title == 'Login'}" (click)="setSelected(4)">Login</a></li>
       <li *ngIf="!userStatus"><a routerLink="/register" [ngClass]="{'highlight': title == 'Register'}" (click)="setSelected(5)">Register</a></li>
       <li *ngIf="userStatus" (click)="onLogout()"><a>Logout</a></li>

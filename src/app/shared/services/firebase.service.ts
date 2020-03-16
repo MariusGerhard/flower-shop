@@ -50,14 +50,11 @@ export class FirebaseService {
         this.currentUserId = user.uid;
         this.userStatus = true;
         this.authChanged.next(true);
-        this.uiService.showSnackbar('Login successful', null, 1500);
         this.router.navigate(['/shop']);
-        localStorage.setItem('user', JSON.stringify(this.user));
       } else {
         this.userStatus = false;
         this.authChanged.next(false);
         this.router.navigate(['']);
-        localStorage.setItem('user', null);
       }
     });
   }
@@ -91,11 +88,15 @@ export class FirebaseService {
     this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password).then(
       (res) => {
         this.currentUserId = res.user.uid;
+        this.uiService.showSnackbar('Login successful', null, 1500);
       })
       .catch(err => {
         this.userStatus = false;
         console.log(err);
-      });
+      })
+      .finally( () => {
+        }
+      );
   }
   async loginGoogle() {
     await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
