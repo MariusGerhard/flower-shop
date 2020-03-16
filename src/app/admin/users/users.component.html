@@ -76,7 +76,7 @@
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> action </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="onGetUser(row._id)" [disabled]="isLoading">
+          <button mat-icon-button (click)="onGetUser(row._id);toggle('editMode')" [disabled]="isLoading">
             <mat-icon color="primary">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="onDeleteUser(row._id)" [disabled]="isLoading">
@@ -90,7 +90,16 @@
     <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
   </div>
 </ng-template>
-<ng-template #showAddMode>
-</ng-template>
 <ng-template #showEditMode>
+  <mat-card-actions>
+    <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+      <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+      <mat-icon color="primary" (click)="toggle('resMode')">cached</mat-icon>
+    </div>
+  </mat-card-actions>
+  <mat-card-content>
+    <p>content</p>
+  </mat-card-content>
+</ng-template>
+<ng-template #showAddMode>
 </ng-template>

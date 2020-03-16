@@ -45,7 +45,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   bouquet: Bouquet;
   toggleMode: string;
   order: Order;
-  pickupDate: Date;
+  pickUpDate: Date;
   orderDate: Date;
   events: string[];
   userId: string;
@@ -68,7 +68,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
               private router: Router) {
     this.events = ['Birthday', 'Mothers Day', 'Christmas', 'Easter'];
     this.userId = this.firebaseService.getCurrentUserId();
-    this.pickupDate = new Date();
+    this.pickUpDate = new Date();
     this.orderDate = new Date();
     this.toggleMode = 'searchMode';
     this.order = {
@@ -90,6 +90,10 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.min.setDate(this.min.getDate() + 1);
     this.max.setDate(this.max.getDate() + 21);
     this.isLoading = true;
+    this.getBouquets();
+    this.getUser();
+  }
+  getBouquets() {
     this.querySubscription = this.firebaseService.getBouquets('bouquets').subscribe(data => {
         this.bouquets = data.map(e => {
           return {
@@ -107,6 +111,8 @@ export class BouquetsComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
+  }
+  getUser() {
     this.querySubscription = this.firebaseService.getCurrentUser(this.userId).subscribe(
       res => {
         this.users = res.map(e => {
@@ -139,8 +145,9 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.toggleMode = filter;
   }
   onOrder() {
-    console.log(this.order);
     this.isLoading = true;
+    this.pickUpDate = new Date(this.order.pickUpDate);
+    this.order.pickUpDate = this.pickUpDate.toDateString();
     this.firebaseService.setOrder('order', this.order).then(
       () => {
         this.uiService.showSnackbar('Your order of ' + this.order.bouquetName + ' was successful' , null, 2500);

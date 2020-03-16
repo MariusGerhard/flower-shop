@@ -117,7 +117,6 @@ export class FirebaseService {
       return this.firestore.collection('user').add(userData);
   }
   updateUser(columnType, key, value) {
-    console.log(columnType + key + value);
     return this.firestore.collection(columnType).doc(key).update(value);
   }
   setBouquets(columnType, data: Bouquet) {
@@ -173,6 +172,16 @@ export class FirebaseService {
   }
   getUsers() {
     return this.firestore.collection('user').snapshotChanges();
+  }
+  getUserOrder(columnType: string, filter) {
+    return this.firestore.collection(columnType, ref =>
+      ref
+        .where('userId', '==', filter)
+        .orderBy('orderDate', 'desc')
+    ).snapshotChanges();
+  }
+  getOrders() {
+    return this.firestore.collection('order').snapshotChanges();
   }
   setOrder(columnType, data: Order) {
     return this.firestore.collection(columnType).add(data);

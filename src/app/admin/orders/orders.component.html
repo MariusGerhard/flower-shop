@@ -9,12 +9,14 @@
     <mat-card>
       <mat-card-content>
         <form #searchFormData="ngForm"
-              *ngIf="(toggleMode=='searchMode')"
-        >
+              *ngIf="(toggleMode == 'searchMode')
+              else (toggleMode == 'detailedMode')?
+              showDetailedMode : ((toggleMode == 'editMode')?
+              showEditMode : showResMode)">
           <mat-card-actions>
-            <button type="button" mat-raised-button color="accent" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <button type="button" mat-raised-button color="accent" [disabled]="!searchFormData.valid" class="search-button" (click)="toggle('resMode')">Search</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
-              <mat-icon  color="primary">cached</mat-icon>
+              <mat-icon  color="primary" (click)="toggle('resMode')">cached</mat-icon>
             </div>
           </mat-card-actions>
           <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
@@ -42,3 +44,27 @@
     </mat-card>
   </div>
 </section>
+<ng-template #showDetailedMode>
+  <mat-card-actions>
+    action
+  </mat-card-actions>
+  <mat-card-content>
+    details
+  </mat-card-content>
+</ng-template>
+<ng-template #showResMode>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+    <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+  </mat-card-actions>
+  <mat-card-content>
+    content
+  </mat-card-content>
+</ng-template>
+<ng-template #showEditMode>
+  <mat-card-actions>
+    action
+  </mat-card-actions>
+  <mat-card-content>
+    edit
+  </mat-card-content>
+</ng-template>
