@@ -113,9 +113,9 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   }
   setData(formData: Bouquet) {
     this.isLoading = true;
-    console.log(formData._id);
     this.firebaseService.setBouquets('bouquets', formData).then(
       () => {
+       // this.firebaseService.updateBouquets('bouquets', formData._id, formData);
         this.isLoading = false;
         this.uiService.showSnackbar(formData.name + ' was added', null, 2500);
       },

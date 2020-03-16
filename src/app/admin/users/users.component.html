@@ -31,7 +31,7 @@
                 <mat-label>Minimum amount of Orders</mat-label>
                 <label>
                   <input [disabled]="select.value == 'User' || select.value == 'Admin' || select.value == 'Employee'"
-                         matInput type="number" name="counter" #counter="ngModel" ngModel required pattern="[0-9]+">
+                         matInput type="tel" name="counter" #counter="ngModel" ngModel required pattern="[0-9]+">
                 </label>
               <mat-hint align="end">only numbers allowed</mat-hint>
               <mat-error *ngIf="!counter.hasError('required')">

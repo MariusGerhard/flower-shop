@@ -89,13 +89,22 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.min = new Date();
     this.min.setDate(this.min.getDate() + 1);
     this.max.setDate(this.max.getDate() + 21);
+    this.isLoading = true;
     this.querySubscription = this.firebaseService.getBouquets('bouquets').subscribe(data => {
         this.bouquets = data.map(e => {
           return {
-            id: e.payload.doc.id,
+            _id: e.payload.doc.id,
             ...e.payload.doc.data(),
           }as Bouquet;
+          this.isLoading = false;
         });
+      },
+      (err) => {
+        this.isLoading = false;
+        console.log(err);
+      },
+      () => {
+        this.isLoading = false;
       }
     );
     this.querySubscription = this.firebaseService.getCurrentUser(this.userId).subscribe(
@@ -129,25 +138,11 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     }
     this.toggleMode = filter;
   }
-  /*
-  getData() {
-    this.querySubscription = this.firebaseService.getBouquets('bouquets').subscribe(data => {
-        this.bouquets = data.map(e => {
-          return {
-            id: e.payload.doc.id,
-            ...e.payload.doc.data(),
-          }as Bouquet;
-        });
-      }
-    );
-  }
-   */
   onOrder() {
     console.log(this.order);
     this.isLoading = true;
     this.firebaseService.setOrder('order', this.order).then(
       () => {
-        this.isLoading = false;
         this.uiService.showSnackbar('Your order of ' + this.order.bouquetName + ' was successful' , null, 2500);
         this.router.navigate(['/shop']).then(() => console.log('Order completed'));
       },
@@ -155,6 +150,9 @@ export class BouquetsComponent implements OnInit, OnDestroy {
         console.log(err);
         this.isLoading = false;
       });
+    // update user counter
+    this.user.countOrders = this.user.countOrders + 1;
+    this.firebaseService.updateUser('user', this.user.id, this.user).then(() => this.isLoading = false);
   }
   onDetails(id) {
     this.bouquet = this.bouquets.find(x => x._id === id);
@@ -166,17 +164,6 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     const ref = this.storage.ref(picId);
     this.profileUrl = ref.getDownloadURL();
   }
-  /*
-  addToCart(item, counter){
-    this.isLoading = true;
-    const data = item;
-    data.qty = counter;
-    return this.firebaseService.updateBouquets('bouquets', data).then((success) => {
-      this.isLoading = false;
-      this.savedChanges = true;
-    });
-  }
-   */
   setExtras() {
     if (this.order.event !== '' && this.isExtra === false) {
       this.order.price = parseFloat(this.order.price.toString()) + 2.50;

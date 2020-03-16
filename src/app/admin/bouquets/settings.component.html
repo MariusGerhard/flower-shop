@@ -82,19 +82,19 @@
         <mat-form-field>
           <mat-label>Season Start</mat-label>
           <label for="seasonStart"></label>
-          <input matInput name="seasonStart" id="seasonStart" ngModel required pattern="[0-9]+" type="number">
+          <input matInput name="seasonStart" id="seasonStart" ngModel required pattern="[0-9]+" type="tel">
           <mat-hint align="end">eg. insert 1 for January</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Season End</mat-label>
           <label for="seasonEnd"></label>
-          <input matInput name="seasonEnd" id="seasonEnd" ngModel required pattern="[0-9]+" type="number">
+          <input matInput name="seasonEnd" id="seasonEnd" ngModel required pattern="[0-9]+" type="tel">
           <mat-hint align="end">eg. insert 12 for december</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Price</mat-label>
           <label for="price"></label>
-          <input matInput name="price" id="price" ngModel required pattern="[0-9.]+" type="number">
+          <input matInput name="price" id="price" ngModel required pattern="[0-9.]+" type="tel">
         </mat-form-field>
       </div>
     </div>
@@ -148,21 +148,21 @@
         <mat-form-field>
           <mat-label>Season Start</mat-label>
           <label>
-            <input matInput name="seasonStart"  [ngModel]="myDocData.seasonStart" required pattern="[0-9]+" type="number">
+            <input matInput name="seasonStart"  [ngModel]="myDocData.seasonStart" required pattern="[0-9]+" type="tel">
           </label>
           <mat-hint align="end">eg. insert 1 for January</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Season End</mat-label>
           <label>
-            <input matInput name="seasonEnd"  [ngModel]="myDocData.seasonEnd" required pattern="[0-9]+" type="number">
+            <input matInput name="seasonEnd"  [ngModel]="myDocData.seasonEnd" required pattern="[0-9]+" type="tel">
           </label>
           <mat-hint align="end">eg. insert 12 for December</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Price</mat-label>
           <label>
-            <input matInput name="price" [ngModel]="myDocData.price" required pattern="[0-9.]+" type="number">
+            <input matInput name="price" [ngModel]="myDocData.price" required pattern="[0-9.]+" type="tel">
           </label>
         </mat-form-field>
       </div>
