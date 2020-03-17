@@ -1,0 +1,14 @@
+span{
+  color: forestgreen;
+}
+a{
+  color: red;
+}
+section{
+  margin-bottom: 1%;
+}
+mat-card{
+  width: 90%;
+  margin-bottom: 10px;
+  max-width: 500px;
+}

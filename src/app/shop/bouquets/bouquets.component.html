@@ -1,0 +1,190 @@
+<section [@fallIn]="state">
+  <h1 fxLayoutAlign="center center" *ngIf="toggleMode =='searchMode'">All Bouquets</h1>
+  <div fxLayoutAlign="column center" fxLayoutGap="2%" fxLayout="column">
+    <mat-card *ngIf="(toggleMode == 'searchMode')
+               else (toggleMode == 'detailMode')?
+                showDetailMode : ((toggleMode == 'resMode')?
+                showResMode : ((toggleMode == 'orderMode')?
+                showOrderMode: showExtrasMode))">
+      <mat-card-content>
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <form #searchFormData="ngForm">
+          <mat-card-actions>
+            <button type="button" mat-raised-button color="accent" (click)="toggle('orderMode')" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
+              <mat-icon (click)="toggle('resMode')" color="primary" >cached</mat-icon>
+            </div>
+          </mat-card-actions>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+            <mat-form-field>
+              <mat-label>Bouquet Name</mat-label>
+              <label>
+                <input matInput [disabled]="flower.value > '' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Category</mat-label>
+              <label>
+                <input matInput [disabled]="category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button color="warn" (click)="toggle('searchMode')" class="back-button" [disabled]="isLoading" *ngIf="toggleMode == 'resMode'">back</button>
+    <button mat-raised-button color="warn"
+            (click)="toggle('resMode')"
+            class="back-button"
+            [disabled]="isLoading"
+            *ngIf="toggleMode == 'orderMode' || toggleMode == 'extraMode' || toggleMode == 'detailMode'">
+      back
+    </button>
+  </div>
+</section>
+
+<ng-template #showResMode>
+  <mat-card class="margin-top">
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <label>
+        <input matInput appAutofocus (keyup)="applyFilter($event)" placeholder="tulip">
+      </label>
+    </mat-form-field>
+  </mat-card>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <mat-card *ngFor="let bouquet of bouquets" (click)="toggle('detailMode'); onDetails(bouquet._id)" fxLayout="row"  fxLayoutGap="2%">
+    <mat-card-content class="pic-size" fxLayoutAlign="center center">
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    </mat-card-content>
+    <div>
+      <mat-card-header>
+        <mat-card-title>{{bouquet.name}}</mat-card-title>
+        <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-header>
+        <p>
+          <b class="category-class">{{ bouquet.category }}´s love this bouquet!</b> <br>
+          <span class="span-price">Price: &nbsp;</span> {{ bouquet.price | currency:'EUR'}}
+        </p>
+      </mat-card-header>
+    </div>
+  </mat-card>
+</ng-template>
+
+<ng-template #showDetailMode>
+  <mat-card-actions>
+    <mat-label [hidden]="true">hidden</mat-label>
+    <label>
+      <input matInput [hidden]="true" appAutofocus>
+    </label>
+  </mat-card-actions>
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar class="header-image"></div>
+      <mat-card-title>{{bouquet.name}}</mat-card-title>
+      <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="bottom-spacing">
+      <h3 class="category-class">
+        Your {{bouquet.category}} will love this handmade bouquet
+      </h3>
+    </mat-card-content>
+    <mat-card-content class="pic-size-details">
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    </mat-card-content>
+    <mat-card-content>
+      <p>
+        {{bouquet.description}}
+      </p>
+      <h2>
+        Available between {{bouquet.seasonStart}} and {{bouquet.seasonEnd}}
+      </h2>
+      <h2>
+        Price: &nbsp; <span>{{bouquet.price | currency:'EUR'}} </span>
+      </h2>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="center center">
+      <button mat-button mat-raised-button color="primary" [disabled]="isLoading" (click)="toggle('orderMode')">Order</button>
+      <button mat-button mat-raised-button color="accent" [disabled]="isLoading" (click)="toggle('extraMode')">Extras</button>
+    </mat-card-actions>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  </mat-card>
+</ng-template>
+
+<ng-template #showOrderMode>
+  <h1>Order</h1>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <form #orderData="ngForm" style="width: 100%"  fxLayoutAlign="center center">
+    <mat-card fxLayout="column" fxLayoutGap="7.5%" fxLayoutAlign="center center" >
+      <input type="hidden" name="orderDate" id="orderDate" [ngModel]="order.orderDate" required>
+      <input type="hidden" name="userId" id="userId" [ngModel]="order.userId" required>
+      <input type="hidden" name="userName" id="userName" [ngModel]="order.userName" required>
+      <input type="hidden" name="bouquetId" id="bouquetId" [ngModel]="order.bouquetId" required>
+      <input type="hidden" name="bouquetName" [ngModel]="order.bouquetName" required>
+      <input type="hidden" name="price" [ngModel]="order.price" required>
+      <input type="hidden" name="event" id="event" [ngModel]="order.event">
+      <input type="hidden" name="message" id="message" [ngModel]="order.message">
+      <h2>{{order.bouquetName}}</h2>
+      <h4 style="color: forestgreen"> Price: &nbsp;{{order.price | currency:'EUR'}} </h4>
+      <div fxLayout="row" style="width: 100%" fxLayoutAlign="center center">
+        <p style="margin-right: 10%; color: crimson">More Unique? </p>
+        <div>
+         <button mat-raised-button color="accent" (click)="toggle('extraMode')">Customise</button>
+        </div>
+      </div>
+      <mat-form-field style="width: 250px">
+        <mat-hint>
+          Minimum is next day
+        </mat-hint>
+        <mat-label>Select pick-up day</mat-label>
+        <label>
+          <input matInput
+                 [matDatepicker]="picker"
+                 [max]="max"
+                 [min]="min"
+                 [(ngModel)]="order.pickUpDate"
+                 name="pickUpDate"
+                 id="pickUpDate"
+                 required
+                 #picker
+          >
+        </label>
+        <mat-error>Field should not be empty</mat-error>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button style="width: 250px" mat-raised-button color="primary" type="submit" (click)="onOrder()" [disabled]="isLoading || orderData.invalid">Send Order</button>
+   </mat-card>
+  </form>
+</ng-template>
+
+<ng-template #showExtrasMode>
+  <form style="width: 100%" fxLayout="column" fxLayoutGap="2.5%" fxLayoutAlign="center center" #extraForm="ngForm">
+    <h1>Customised Extras</h1>
+    <mat-card fxLayout="column" fxLayoutGap="2.5%" fxLayoutAlign="center center">
+      <h3 style="color: crimson">Special Event?</h3>
+      <mat-form-field style="width: 250px">
+        <mat-label>Select Event</mat-label>
+        <mat-select #select="ngModel" [(ngModel)]="order.event" name="event">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let event of events" [value]="event">{{event}}</mat-option>
+        </mat-select>
+        <mat-hint align="end">choose an event eg. birthday</mat-hint>
+      </mat-form-field>
+      <h3 style="color: forestgreen">Handwritten Greetings Card!</h3>
+      <mat-form-field>
+        <mat-hint align="start" *ngIf="textField.value?.length < 250">
+          Please Enter a maximum of 250 characters
+        </mat-hint>
+        <label>
+          <textarea appAutofocus style="height: 100px" matInput name="description" [(ngModel)]="order.message" type="text" #textField="ngModel" maxlength="250"></textarea>
+        </label>
+        <mat-hint align="end" *ngIf="textField.value?.length < 300">
+          {{ textField.value?.length }} /250
+        </mat-hint>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="toggle('orderMode');setExtras()">Order</button>
+    </mat-card>
+  </form>
+</ng-template>

@@ -1,2 +1,93 @@
-<h1>{{title}}</h1>
-<mat-slider color="accent" min="1" max="100" step="1" value="1"></mat-slider>
+<section [@fallIn]="state">
+  <label>
+    <input autofocus [hidden]="true" appAutofocus>
+  </label>
+  <div fxLayout
+       fxLayoutAlign="center center">
+    <div class="logo-big"
+         fxShow.gt-xs
+         fxHide.lt-sm >
+    </div>
+    <div class="logo-medium"
+         fxShow.lt-sm
+         fxHide.gt-xs>
+    </div>
+  </div>
+  <div>
+    <div fxLayout="column"
+         fxLayoutAlign="center center"
+         fxLayout.gt-md="row"
+         fxLayoutGap.gt-md="50px"
+         fxLayoutGap.lt-lg="0px"
+         class="home-text-layout">
+      <section fxLayout="column" fxLayoutGap="15px" class="section-margin" fxShow.gt-md fxHide.lt-md>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>The <span>smile</span> of the earth</mat-card-title>
+          </mat-card-header>
+          <div class="home-pic-2-big"></div>
+          <mat-card-footer>
+            <mat-card-content><b>Flowers are great gift for everybody. <a routerLink="/register">Register</a> and present a bouquet to a friend.</b></mat-card-content>
+          </mat-card-footer>
+        </mat-card>
+        <mat-card >
+          <mat-card-header>
+            <mat-card-title>
+              A <span>splash of colors</span> for the soul
+            </mat-card-title>
+          </mat-card-header>
+          <div class="home-pic-1-big"></div>
+          <mat-card-footer>
+            <mat-card-content><b>Look through all of our Bouquets. You only need to <a routerLink="/login">login</a>.</b></mat-card-content>
+          </mat-card-footer>
+        </mat-card>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              The overwhelming <span>magic</span> of flowers
+            </mat-card-title>
+          </mat-card-header>
+          <div class="home-pic-3-big"></div>
+          <mat-card-footer>
+            <mat-card-content><b>You want a special customised bouquet? <a routerLink="/flowers">Customize</a> you own bouquet!</b></mat-card-content>
+          </mat-card-footer>
+        </mat-card>
+      </section>
+      <section fxLayout="column" fxLayoutGap="15px" class="section-margin" fxHide.gt-md fxShow.lt-md>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              The <span>smile</span> of the earth
+            </mat-card-title>
+          </mat-card-header>
+          <div class="home-pic-2-small"></div>
+          <mat-card-footer>
+            <mat-card-content><b><b>Flowers are great gift for everybody.<br> <a routerLink="/register">Register</a> and present a bouquet to a friend.</b></b></mat-card-content>
+          </mat-card-footer>
+        </mat-card>
+        <mat-card >
+          <mat-card-header>
+            <mat-card-title>
+              A <span>splash of colors</span> for the soul
+            </mat-card-title>
+          </mat-card-header>
+          <div class="home-pic-1-small"></div>
+          <mat-card-footer>
+            <mat-card-content><b>Look through all of our Bouquets.<br> You only need to <a routerLink="/login">login</a>.</b></mat-card-content>
+          </mat-card-footer>
+        </mat-card>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              The <span>magic</span> of flowers
+            </mat-card-title>
+          </mat-card-header>
+          <div class="home-pic-3-small"></div>
+          <mat-card-footer>
+            <mat-card-content><b>You want a special customized bouquet? <br><a routerLink="/flowers">Customize</a> you own bouquet!</b></mat-card-content>
+          </mat-card-footer>
+        </mat-card>
+      </section>
+    </div>
+  </div>
+</section>

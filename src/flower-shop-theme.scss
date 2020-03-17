@@ -1,0 +1,15 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+  $flower-shop-primary: mat-palette($mat-indigo);
+  $flower-shop-accent: mat-palette($mat-green);
+
+  $flower-shop-warn: mat-palette($mat-pink);
+  $flower-shop-theme: mat-light-theme($flower-shop-primary, $flower-shop-accent, $flower-shop-warn);
+
+.accent-background{
+  background-color: mat-color($flower-shop-primary);
+  height: 100%;
+}
+  @include angular-material-theme($flower-shop-theme);
+

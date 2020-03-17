@@ -1,0 +1,26 @@
+mat-sidenav-container, mat-sidenav, mat-sidenav-content{
+  height: 100%;
+}
+mat-sidenav{
+  width: 200px;
+}
+main {
+  min-height: 100%;
+  margin-bottom: -30px;
+}
+.container{
+  padding-bottom: 30px;
+  padding-top: 60px;
+}
+app-footer{
+  position: relative;
+  margin-top: -30px;
+  clear: both;
+}
+app-header{
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+

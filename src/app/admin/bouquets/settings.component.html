@@ -1,0 +1,239 @@
+<section>
+  <h1 fxLayoutAlign="center center">Administrate Bouquets</h1>
+  <mat-label [hidden]="true">hidden</mat-label>
+  <label>
+    <input matInput autofocus [hidden]="true" appAutofocus>
+  </label>
+  <div fxLayoutAlign="column center" fxLayoutGap="2%" fxLayout="column"  class="card-container">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-card>
+      <mat-card-content>
+        <form #searchFormData="ngForm" *ngIf="(toggleMode == 'searchMode')
+         else (toggleMode == 'addMode')?
+          showAddMode : ((toggleMode == 'editMode')?
+          showEditMode : showResMode)">
+          <mat-card-actions>
+            <button type="button" mat-raised-button color="accent" (click)="toggle('resMode');getFilterData(searchFormData.value);" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
+              <mat-icon (click)="toggle('addMode')" color="primary" >add</mat-icon>
+              <mat-icon (click)="toggle('resMode');getData();" color="primary">cached</mat-icon>
+            </div>
+          </mat-card-actions>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+            <mat-form-field>
+              <mat-label>Bouquet Name</mat-label>
+              <label>
+                <input matInput [disabled]="category.value > '' || flower.value >'' " type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Category</mat-label>
+              <label>
+                <input matInput [disabled]="name.value > '' || flower.value >'' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Flower</mat-label>
+              <label>
+                <input matInput [disabled]="name.value > '' || category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
+              </label>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+<ng-template #showAddMode >
+  <form #addDataForm="ngForm" (ngSubmit)="setData(addDataForm.value);" novalidate>
+    <div *ngIf="!savedChanges">
+      <mat-error *ngIf="error">Error: {{ errorMessage }}</mat-error>
+      <mat-card-actions align="start">
+        <button type="submit" mat-raised-button [disabled]="!addDataForm.valid" color="accent" [disabled]="isLoading">Add</button>
+        <button type="reset" (click)="this.addDataForm.reset();" mat-raised-button color="warn" [disabled]="isLoading">Clear</button>
+        <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="1%">
+          <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+          <mat-icon color="primary" (click)="toggle('resMode');getData();">cached</mat-icon>
+        </div>
+      </mat-card-actions>
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+        <mat-form-field>
+          <mat-label>Bouquet Name</mat-label>
+          <label for="name"></label>
+          <input matInput name="name" id="name" ngModel required minlength="1" type="text">
+          <mat-hint align="end">eg. Rose-Bouquet</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Category</mat-label>
+          <label for="category"></label>
+          <input matInput name="category" id="category" ngModel required minlength="1" type="text">
+          <mat-hint align="end">eg. Mum</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <label for="description"></label>
+          <textarea matInput name="description" id="description" ngModel type="text"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Flower</mat-label>
+          <label for="flower"></label>
+          <input matInput name="flower" id="flower" required minlength="3" ngModel type="text">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Season Start</mat-label>
+          <label for="seasonStart"></label>
+          <input matInput name="seasonStart" id="seasonStart" ngModel required pattern="[0-9]+" type="tel">
+          <mat-hint align="end">eg. insert 1 for January</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Season End</mat-label>
+          <label for="seasonEnd"></label>
+          <input matInput name="seasonEnd" id="seasonEnd" ngModel required pattern="[0-9]+" type="tel">
+          <mat-hint align="end">eg. insert 12 for december</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Price</mat-label>
+          <label for="price"></label>
+          <input matInput name="price" id="price" ngModel required pattern="[0-9.]+" type="tel">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<ng-template #showEditMode>
+  <form #editDataForm="ngForm" (ngSubmit)="updateData(editDataForm.value);" novalidate>
+    <input type="hidden" name="_id" id="_id" [ngModel]="myDocData._id" required>
+    <div>
+      <mat-error *ngIf="savedChanges">
+        Data is saved.
+        <mat-icon (click)="this.editDataForm.reset();savedChanges=false;toggle('searchMode');">clear</mat-icon>
+      </mat-error>
+    </div>
+    <div *ngIf="!savedChanges">
+      <mat-error *ngIf="error">Error: {{ errorMessage }}</mat-error>
+      <mat-card-actions align="start">
+        <button type="submit" mat-raised-button [disabled]="!this.editDataForm.valid || this.editDataForm.pristine" color="accent" class="search-button" [disabled]="isLoading">Update</button>
+        <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+          <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+          <mat-icon color="primary" (click)="toggle('resMode');getData();">cached</mat-icon>
+        </div>
+      </mat-card-actions>
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+        <mat-form-field>
+          <mat-label>Bouquet Name</mat-label>
+          <label>
+            <input matInput name="name" [ngModel]="myDocData.name" required minlength="1" type="text">
+          </label>
+          <mat-hint align="end">eg. Rose-Bouquet</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Category</mat-label>
+          <label>
+            <input matInput name="category" [ngModel]="myDocData.category" required minlength="1" type="text">
+          </label>
+          <mat-hint align="end">eg. Mum</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <label>
+            <textarea matInput name="description" [ngModel]="myDocData.description" type="text"></textarea>
+          </label>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Flower</mat-label>
+          <label>
+            <input matInput name="flower"  [ngModel]="myDocData.flower" required minlength="3" type="text">
+          </label>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Season Start</mat-label>
+          <label>
+            <input matInput name="seasonStart"  [ngModel]="myDocData.seasonStart" required pattern="[0-9]+" type="tel">
+          </label>
+          <mat-hint align="end">eg. insert 1 for January</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Season End</mat-label>
+          <label>
+            <input matInput name="seasonEnd"  [ngModel]="myDocData.seasonEnd" required pattern="[0-9]+" type="tel">
+          </label>
+          <mat-hint align="end">eg. insert 12 for December</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Price</mat-label>
+          <label>
+            <input matInput name="price" [ngModel]="myDocData.price" required pattern="[0-9.]+" type="tel">
+          </label>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<ng-template #showResMode>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+    <mat-icon color="primary" (click)="toggle('addMode')">add</mat-icon>
+    <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+  </mat-card-actions>
+  <div *ngIf="takeHostSelfie">
+    <button type="reset" (click)="takeHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
+    <input type="file">
+  </div>
+  <div *ngIf="showHostSelfie">
+    <button type="reset" (click)="showHostSelfie=false;" mat-icon-button color="primary" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
+    <br>
+    <img [src]="profileUrl | async" width="300" height="300" alt="dummy"/>
+    <br>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Filter Results</mat-label>
+      <label>
+        <input matInput (keyup)="applyFilter($event)">
+      </label>
+    </mat-form-field>
+  </div>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.category}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="seasonStart">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>SeasonStart</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.seasonStart}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.price}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="_id">
+        <mat-header-cell *matHeaderCellDef> action </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button matTooltip="Show Picture" *ngIf="row.path" (click)="getPic(row.path);this.showHostSelfie=true;" [disabled]="isLoading">
+            <mat-icon color="primary">photo_camera</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Remove Picture" *ngIf="row.path" (click)="deleteProductPic(row._id);this.showHostSelfie=false;" [disabled]="isLoading">
+            <mat-icon color="primary">camera_roll</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Take Picture" (click)="this.myDocId=row._id;this.takeHostSelfie=true;" color="primary"
+                  *ngIf="!row.path" class="label-error"[disabled]="isLoading">
+            <mat-icon>camera_roll</mat-icon>
+          </button>
+          <button mat-icon-button (click)="getDoc(row._id)" [disabled]="isLoading">
+            <mat-icon color="primary">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteDoc(row._id)" [disabled]="isLoading">
+            <mat-icon color="primary">delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+  </div>
+</ng-template>

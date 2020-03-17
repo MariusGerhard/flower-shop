@@ -1,0 +1,44 @@
+<mat-nav-list class="accent-background">
+  <a mat-list-item routerLink="/" (click)="onToggle()">
+    <mat-icon>home</mat-icon>
+    <span class="nav-item">&nbsp; Home</span>
+  </a>
+  <a mat-list-item routerLink="/login" (click)="onToggle()" *ngIf="!userStatus">
+    <mat-icon>input</mat-icon>
+    <span class="nav-item">&nbsp; Login</span>
+  </a>
+  <a mat-list-item routerLink="/register" (click)="onToggle()" *ngIf="!userStatus">
+  <mat-icon>assignment</mat-icon>
+  <span class="nav-item">&nbsp; Register</span>
+  </a>
+  <a mat-list-item routerLink="/shop" (click)="onToggle()" *ngIf="userStatus">
+    <mat-icon>shop</mat-icon>
+    <span class="nav-item">&nbsp; Shop</span>
+  </a>
+  <a mat-list-item routerLink="/bouquets" (click)="onToggle()" *ngIf="userStatus">
+    <mat-icon svgIcon="bouquet" ></mat-icon>
+    <span class="nav-item">&nbsp; Bouquets</span>
+  </a>
+  <a mat-list-item routerLink="/flowers" (click)="onToggle()" *ngIf="userStatus">
+    <mat-icon svgIcon="flower"></mat-icon>
+    <span class="nav-item">&nbsp; Custom Bouquets</span>
+  </a>
+  <a mat-list-item routerLink="/profile" (click)="onToggle()" *ngIf="userStatus">
+    <mat-icon color="warn">account_box</mat-icon>
+    <span class="nav-item">&nbsp; Profile</span>
+  </a>
+  <a mat-list-item routerLink="/orders" (click)="onToggle()" *ngIf="userStatus">
+    <mat-icon color="warn">receipt</mat-icon>
+    <span class="nav-item">&nbsp; My Orders</span>
+  </a>
+  <a mat-list-item routerLink="/control" (click)="onToggle()" *ngIf="userStatus">
+  <mat-icon color="warn">settings</mat-icon>
+  <span class="nav-item">&nbsp;Admin Control</span>
+  </a>
+  <mat-list-item *ngIf="userStatus">
+    <button mat-icon-button (click)="onLogout()">
+      <mat-icon>logout</mat-icon>
+      <span class="nav-item">&nbsp; Logout</span>
+    </button>
+  </mat-list-item>
+</mat-nav-list>

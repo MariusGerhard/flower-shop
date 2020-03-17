@@ -1,0 +1,28 @@
+mat-progress-bar{
+  width: 95%;
+  margin-bottom: 10px;
+}
+mat-card{
+  width: 95%;
+  margin-bottom: 10px;
+  max-width: 500px;
+}
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+p{
+  margin: 0;
+}
+button{
+  margin-top: 15px;
+  width: 250px;
+}

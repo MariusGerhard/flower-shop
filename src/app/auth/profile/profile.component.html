@@ -1,0 +1,83 @@
+<section [@fallIn]="state">
+  <form fxLayout="column"
+        fxLayoutAlign="center center"
+        #f="ngForm"
+        (ngSubmit)="onSubmit(f)"
+        fxLayoutGap="1%"
+        novalidate
+  >
+    <h1>Account Settings</h1>
+    <button type="button" class="edit-button" mat-raised-button color="warn" routerLink="/shop">Back to Shop</button>
+    <button type="button" class="edit-button" mat-raised-button color="primary" (click)="onEdit()">{{editTextString}}</button>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+      <mat-radio-group aria-label="Your gender" [ngModel]="user.gender" name="gender" #gender="ngModel" [disabled]="!isEdit">
+        <mat-radio-button [checked]="user.gender === 'Mr.'"  value="Mr." color="primary">Male</mat-radio-button>
+        <mat-radio-button [checked]="user.gender === 'Mrs.'" value="Mrs." color="warn">Female</mat-radio-button>
+      </mat-radio-group>
+      <input type="hidden" name="authId" id="authId" [ngModel]="user.authId" required>
+      <input type="hidden" name="id" id="id" [ngModel]="user.id" required>
+      <mat-form-field>
+        <mat-label>First name</mat-label>
+        <label>
+          <input type="text"
+                 matInput
+                 name="firstName"
+                 required
+                 #firstName="ngModel"
+                 [disabled]="!isEdit"
+                 [ngModel]="user.firstName"
+          >
+        </label>
+        <mat-error *ngIf="firstName.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Last name</mat-label>
+        <label>
+          <input type="text"
+                 matInput
+                 name="lastName"
+                 required
+                 #lastName="ngModel"
+                 [disabled]="!isEdit"
+                 [ngModel]="user.lastName"
+          >
+        </label>
+        <mat-error *ngIf="lastName.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <p>
+        Your current birthday: {{birthdayValue}}
+      </p>
+      <mat-form-field>
+        <mat-hint>
+          You must be at least 16 Years old
+        </mat-hint>
+        <mat-label>Set new Birthdate</mat-label>
+        <label>
+          <input matInput
+                 [matDatepicker]="picker"
+                 [max]="max"
+                 [min]="min"
+                 [(ngModel)]="user.birth"
+                 name="birth"
+                 [value]="user.birth"
+                 [disabled]="!isEdit"
+                 #picker
+                 [required]="true"
+          >
+        </label>
+        <mat-error>Field should not be empty</mat-error>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <p>
+        Number of Orders: {{counter}}
+      </p>
+      <button mat-raised-button color="accent" type="submit" [disabled]="isLoading || f.hasError('required') || f.pristine">Save Changes</button>
+    </mat-card>
+  </form>
+</section>

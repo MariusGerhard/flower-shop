@@ -1,21 +1,65 @@
-<section>
+<section [@fallIn]="state">
+  <label>
+    <input autofocus [hidden]="true" appAutofocus>
+  </label>
   <form fxLayout="column"
         fxLayoutAlign="center center"
         #f="ngForm"
         (ngSubmit)="onSubmit(f)"
-        fxLayoutGap="10px"
+        fxLayoutGap="1%"
   >
     <h1>Register to Flower Shop</h1>
-    <mat-form-field>
-      <input type="email"
-             matInput
-             ngModel
-             name="email"
-             placeholder="Please enter your Email"
-             email
-             required
-             #email="ngModel"
-      >
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+      <mat-radio-group aria-label="Your gender" ngModel name="gender" required #gender="ngModel">
+        <mat-radio-button value="Mr." color="primary">Male</mat-radio-button>
+        <mat-radio-button value="Mrs." color="warn">Female</mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="gender.hasError('required')">
+        Please select your gender
+      </mat-error>
+      <mat-form-field>
+        <mat-label>Please enter your first name</mat-label>
+        <label>
+          <input type="text"
+                 matInput
+                 ngModel
+                 name="firstName"
+                 required
+                 #firstName="ngModel"
+          >
+        </label>
+        <mat-error *ngIf="firstName.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Please enter your last name</mat-label>
+        <label>
+          <input type="text"
+                 matInput
+                 ngModel
+                 name="lastName"
+                 required
+                 #lastName="ngModel"
+          >
+        </label>
+        <mat-error *ngIf="lastName.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+      <mat-label>Please enter your E-Mail</mat-label>
+      <label>
+        <input type="email"
+               matInput
+               ngModel
+               name="email"
+               email
+               required
+               #email="ngModel"
+        >
+      </label>
       <mat-error *ngIf="!email.hasError('required')">
         Email is Invalid
       </mat-error>
@@ -23,51 +67,56 @@
         Field should not be empty
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-hint align="start" *ngIf="pw.value?.length < 8">
-          Please Enter a minimum of 8 characters
-      </mat-hint>
-      <input type="password"
-             matInput
-             ngModel
-             name="password"
-             placeholder="Please enter your Password "
-             required
-             minlength="8"
-             #pw="ngModel"
+      <mat-form-field>
+        <mat-hint align="start" *ngIf="pw.value?.length < 8">
+            Please Enter a minimum of 8 characters
+        </mat-hint>
+        <mat-label>Please enter your Password </mat-label>
+        <label>
+          <input type="password"
+                 matInput
+                 ngModel
+                 name="password"
+                 required
+                 minlength="8"
+                 #pw="ngModel"
+          >
+        </label>
+        <mat-hint align="end" *ngIf="pw.value?.length < 8">
+             {{ pw.value?.length }} /8
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-hint>
+          You must be at least 16 Years old
+        </mat-hint>
+        <mat-label>Please enter your Birthdate</mat-label>
+        <label>
+          <input matInput
+                 [matDatepicker]="picker"
+                 [max]="max"
+                 [min]="min"
+                 ngModel
+                 name="birthdateValue"
+                 required
+          >
+        </label>
+        <mat-error>Field should not be empty</mat-error>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-checkbox ngModel
+                    name="conditions"
+                    color="warn"
+                    required
       >
-      <mat-hint align="end" *ngIf="pw.value?.length < 8">
-           {{ pw.value?.length }} /8
-      </mat-hint>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-hint>
-        You must be at least 16 Years old
-      </mat-hint>
-      <input matInput
-             placeholder="Please enter your Birthdate"
-             [matDatepicker]="birthdate"
-             [max]="max"
-             [min]="min"
-             ngModel
-             name="birthdateValue"
-             required
-      >
-      <mat-error>Field should not be empty</mat-error>
-      <mat-datepicker-toggle [for]="birthdate" matSuffix></mat-datepicker-toggle>
-      <mat-datepicker #birthdate></mat-datepicker>
-    </mat-form-field>
-    <mat-checkbox ngModel
-                  name="conditions"
-                  color="primary"
-                  required
-    >
-      Agree to Terms and Conditions.
-    </mat-checkbox>
-    <button mat-raised-button
-            type="submit"
-            color="primary"
-            [disabled]="f.invalid"
-    >Submit</button>
+        Agree to <a routerLink="/terms">Terms and Conditions</a>.
+      </mat-checkbox>
+      <button mat-raised-button
+              type="submit"
+              color="accent"
+              [disabled]="isLoading || f.invalid"
+      >Submit</button>
+    </mat-card>
   </form>
 </section>

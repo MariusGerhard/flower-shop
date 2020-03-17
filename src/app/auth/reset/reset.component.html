@@ -1,0 +1,33 @@
+<section [@fallIn]="state">
+  <form fxLayout="column"
+        fxLayoutAlign="center center"
+        #f="ngForm"
+        (ngSubmit)="onSubmit(f)"
+        fxLayoutGap="10px"
+  >
+    <h1>Reset Flower Shop Password</h1>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+      <mat-form-field>
+        <mat-label>Please enter your E-mail</mat-label>
+        <label>
+          <input type="email"
+                 matInput
+                 ngModel
+                 name="email"
+                 email
+                 required
+                 #email="ngModel"
+          >
+        </label>
+        <mat-error *ngIf="!email.hasError('required')">
+          E-mail is Invalid
+        </mat-error>
+        <mat-error *ngIf="email.hasError('required')">
+          Field should not be empty
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button type="submit" color="accent" [disabled]="isLoading">Submit</button>
+    </mat-card>
+  </form>
+</section>

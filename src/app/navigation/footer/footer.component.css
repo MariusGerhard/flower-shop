@@ -1,0 +1,11 @@
+a{
+  text-decoration: none;
+  color: white;
+}
+a:hover, a:active{
+  opacity: 65%;
+}
+.container-layout{
+  display: block;
+  width: 75%;
+}

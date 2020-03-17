@@ -1,0 +1,18 @@
+<section [@fallIn]="state">
+  <h1 fxLayout fxLayoutAlign="center center" autofocus>Custom Bouquets</h1>
+  <input autofocus [hidden]="true" appAutofocus>
+  <div fxLayoutAlign="column center" fxLayoutGap="15px" fxLayout="column">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-card *ngFor="let flower of flowers | async" fxLayout>
+      <mat-card-header>
+        <mat-card-title>{{flower.name}}</mat-card-title>
+        <mat-card-subtitle>{{flower.color}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Price: {{ flower.price }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+mat-progress-bar{
+  width: 100%;
+}
+.search-button{
+  width: 250px;
+}
+.mat-form-field {
+  width: 100%;
+  font-size: 14px;
+}
+mat-card{
+  max-width: 500px;
+  width: calc(100% - 40px);
+  margin-bottom: 10px;
+}
+mat-card-actions{
+}

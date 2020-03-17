@@ -1,0 +1,37 @@
+a{
+  text-decoration: none;
+  color: white;
+}
+a:hover{
+  opacity: 65%;
+}
+.highlight{
+  color: black;
+}
+.navigationBar{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nav-item{
+  display: inline-block;
+  padding: 5px;
+}
+.brand{
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-image: url("../../../assets/logos/brand.png");
+}
+.logo{
+  width: 131px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-image: url("../../../assets/logos/logo_small.png");
+}
+mat-toolbar{
+  margin-bottom: 10px;
+}
+.link-list{
+  margin-right: 1%;
+}

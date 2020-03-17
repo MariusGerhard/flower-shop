@@ -1,0 +1,34 @@
+<mat-toolbar color="primary">
+  <div fxLayout fxFlex fxLayoutAlign="flex-start">
+    <a routerLink="/">
+      <div class="brand" (click)="setSelected(0)"></div>
+    </a>
+    <div fxHide.gt-sm  fxLayout fxLayoutAlign="center center" >
+      <button (click)="onToggle()" mat-icon-button>
+        <mat-icon>
+          menu
+        </mat-icon>
+      </button>
+    </div>
+    <div fxLayout fxLayoutAlign="center center" class="nav-item">
+      {{title}}
+    </div>
+  </div>
+  <div class="logo">
+  </div>
+  <div fxLayout fxFlex fxLayoutAlign="flex-end" fxHide.lt-md class="link-list">
+    <ul class="navigationBar" fxLayout fxLayoutGap="15px">
+      <li><a routerLink="/flowers"   [ngClass]="{'highlight': title === 'Custom'}" (click)="setSelected(2)" [hidden]="!userStatus">Custom</a></li>
+      <li><a routerLink="/bouquets"  [ngClass]="{'highlight': title === 'Bouquets'}" (click)="setSelected(3)" [hidden]="!userStatus">Bouquets</a></li>
+      <li><a routerLink="/control"  [ngClass]="{'highlight': title == 'Control'}" (click)="setSelected(9)" [hidden]="!userStatus">Control</a></li>
+      <li><a routerLink="/profile"  [ngClass]="{'highlight': title == 'Profile'}" (click)="setSelected(11)" [hidden]="!userStatus">Profile</a></li>
+      <li><a routerLink="/orders"  [ngClass]="{'highlight': title == 'My Orders'}" (click)="setSelected(12)" [hidden]="!userStatus">My Orders</a></li>
+      <li><a routerLink="/shop"  [ngClass]="{'highlight': title === 'Shop'}" (click)="setSelected(1)" [hidden]="!userStatus">Shop</a></li>
+      <li><a routerLink="/" [ngClass]="{'highlight': title == 'Home'}">Home</a></li>
+      <li *ngIf="!userStatus"><a routerLink="/login" [ngClass]="{'highlight': title == 'Login'}" (click)="setSelected(4)">Login</a></li>
+      <li *ngIf="!userStatus"><a routerLink="/register" [ngClass]="{'highlight': title == 'Register'}" (click)="setSelected(5)">Register</a></li>
+      <li *ngIf="userStatus" (click)="onLogout()"><a>Logout</a></li>
+    </ul>
+  </div>
+</mat-toolbar>
+

@@ -1,0 +1,17 @@
+mat-card{
+  width: 90%;
+  margin-bottom: 10px;
+  max-width: 500px;
+}
+mat-card-header{
+  width: 25%;
+  display: block;
+}
+mat-card-content{
+  width: 25%;
+}
+mat-progress-bar{
+  width: 80%;
+  margin-top: 1.5%;
+  margin-bottom: 1.5%;
+}

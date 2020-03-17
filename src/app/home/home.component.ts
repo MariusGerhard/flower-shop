@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HeaderTitleService} from '../shared/services/header-title.service';
+import {fallIn, moveIn} from '../router.animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  animations: [moveIn(), fallIn()],
 })
 export class HomeComponent implements OnInit {
-  title = 'Flower-Shop';
-  constructor() {}
-  ngOnInit() {
+  state: string;
+  constructor(private headerTitleService: HeaderTitleService) {
   }
-
+  ngOnInit() {
+    this.headerTitleService.setTitle('Home');
+  }
 }

@@ -1,0 +1,25 @@
+mat-progress-bar{
+  width: 75%;
+}
+mat-card{
+  width: 90%;
+  margin-bottom: 10px;
+  max-width: 500px;
+}
+mat-form-field{
+  width: 90%;
+}
+button{
+  width: 50%;
+}
+.edit-button{
+  min-width: 200px;
+  width: 25%;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+p{
+  color: forestgreen;
+  font-weight: bold;
+}
