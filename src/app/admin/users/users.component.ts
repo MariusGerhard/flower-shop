@@ -3,6 +3,8 @@ import {FirebaseService} from '../../shared/services/firebase.service';
 import {UserModel} from '../../shared/models/userModel';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {User} from 'firebase';
+import {UIService} from '../../shared/services/ui.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -17,13 +19,17 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   displayedColumns = ['lastName', 'role', 'counterOrders', 'id'];
   isLoading = false;
   toggleMode: string;
+  user: UserModel;
   users: UserModel[];
   tmp: UserModel[] = [];
+  updateRoles: string[] = ['User', 'Employee'];
   roles: string[] = [
     'User', 'Employee', 'Admin'
   ];
   private querySubscription;
-  constructor(private firebaseService: FirebaseService) {
+  constructor(private firebaseService: FirebaseService,
+              private uiService: UIService,
+              private router: Router) {
     this.toggleMode = 'searchMode';
   }
   ngOnInit() {
@@ -89,6 +95,21 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
    );
   }
   onGetUser(id) {
+    this.user = this.users.find(x => x .id === id);
+  }
+  onChangeRole(role) {
+    console.log(role.value);
+    this.user.role = role.value.toLowerCase();
+    console.log(this.user.role);
+    this.firebaseService.updateUser('user', this.user.id, this.user).then(
+      () => {
+        this.isLoading = false;
+        this.uiService.showSnackbar(this.user.firstName + ' ' + this.user.lastName + ' was updated', null, 2500);
+        this.toggle('searchMode');
+      },
+      (err) => {
+        this.uiService.showSnackbar(this.user.lastName + ' has error' + err, null, 2500);
+      });
   }
   onDeleteUser(id) {}
   // data table methods

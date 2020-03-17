@@ -1,4 +1,7 @@
 <section [@fallIn]="state">
+  <label>
+    <input autofocus [hidden]="true" appAutofocus>
+  </label>
   <div fxLayout="column" fxLayoutAlign="center center">
     <h3>{{user.firstName}} {{user.lastName}} Orders</h3>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
@@ -35,15 +38,18 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <button mat-raised-button color="primary" routerLink="/shop" *ngIf="toggleMode == 'listMode'">back</button>
+      <button mat-raised-button color="warn" routerLink="/shop" *ngIf="toggleMode == 'listMode'">back</button>
     </div>
   </div>
 </section>
 <ng-template #showDetailMode>
+  <label>
+    <input autofocus [hidden]="true" appAutofocus>
+  </label>
  <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.5%">
    <mat-card-content fxLayout="column" fxLayoutAlign="center center">
      <p>Content</p>
    </mat-card-content>
  </mat-card>
-  <button mat-raised-button color="primary" (click)="toggle('listMode')">back</button>
+  <button mat-raised-button color="warn" (click)="toggle('listMode')">back</button>
 </ng-template>

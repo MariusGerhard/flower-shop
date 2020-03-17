@@ -5,6 +5,7 @@ import {UserModel} from '../../shared/models/userModel';
 import {FirebaseService} from '../../shared/services/firebase.service';
 import {UIService} from '../../shared/services/ui.service';
 import {Router} from '@angular/router';
+import {Timestamp} from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -28,12 +29,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   saveId: string;
   userId: string;
   state: string;
+  birthdayValue: string;
   isLoading = false;
   isEdit = false;
   birthday: Date;
   editTextString = 'Edit Settings';
   min: Date;
   max: Date;
+  birthObject: any;
   counter: number;
   private queryConnection;
   constructor(private headerTitleService: HeaderTitleService,
@@ -49,6 +52,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.min.setFullYear(this.max.getFullYear() - 100);
     this.isLoading = true;
     this.userId = this.firebaseService.getCurrentUserId();
+    this.getUser();
+  }
+  getUser() {
     this.queryConnection = this.firebaseService.getCurrentUser(this.userId).subscribe(
       res => {
         this.users = res.map(e => {
@@ -60,7 +66,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
         });
         this.users[0].id = this.saveId;
         this.user = this.users[0];
-        this.birthday = new Date('2000/07/07');
+        this.birthObject = this.user.birth;
+        this.birthday = new Date(this.birthObject.seconds * 1000);
+        this.birthdayValue = this.birthday.toDateString();
         this.counter = this.user.countOrders;
         this.isLoading = false;
       },
@@ -82,7 +90,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
   onSubmit(formData) {
-    this.isLoading = true;
     this.firebaseService.updateUser('user', formData.value.id, formData.value).then(
       () => {
         this.isLoading = false;

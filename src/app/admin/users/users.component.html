@@ -19,7 +19,7 @@
             </div>
           </mat-card-actions>
           <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
-            <mat-form-field>
+            <mat-form-field style="width: 50%;display: block">
               <mat-label>Select Role</mat-label>
               <mat-select [disabled]="counter.value > 0" #select="ngModel" [ngModel]="searchFormData" name="role">
                 <mat-option>None</mat-option>
@@ -27,7 +27,7 @@
               </mat-select>
               <mat-hint align="end">choose a role</mat-hint>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field style="width: 50%;display: block">
                 <mat-label>Minimum amount of Orders</mat-label>
                 <label>
                   <input [disabled]="select.value == 'User' || select.value == 'Admin' || select.value == 'Employee'"
@@ -76,7 +76,7 @@
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> action </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="onGetUser(row._id);toggle('editMode')" [disabled]="isLoading">
+          <button mat-icon-button (click)="onGetUser(row.id);toggle('editMode')" [disabled]="isLoading">
             <mat-icon color="primary">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="onDeleteUser(row._id)" [disabled]="isLoading">
@@ -91,15 +91,33 @@
   </div>
 </ng-template>
 <ng-template #showEditMode>
-  <mat-card-actions>
-    <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
-      <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
-      <mat-icon color="primary" (click)="toggle('resMode')">cached</mat-icon>
-    </div>
-  </mat-card-actions>
-  <mat-card-content>
-    <p>content</p>
-  </mat-card-content>
+  <form #f="ngForm">
+    <mat-card-actions>
+      <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+        <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+        <mat-icon color="primary" (click)="toggle('resMode')">cached</mat-icon>
+      </div>
+    </mat-card-actions>
+    <mat-card-content fxLayout="column" fxLayoutGap="5%">
+        <p>
+          Change Role of <b style="color: crimson">{{users[0].firstName}} {{ users[0].lastName}}</b>
+        </p>
+        <p>
+          E-Mail: <b style="color: crimson">{{users[0].email}}</b>
+        </p>
+      <div fxLayout="column" fxLayoutGap="25px" fxLayoutAlign="center center">
+        <mat-form-field style="width: 50%;display: block">
+          <mat-label style="margin-top: 15px">Select new Role</mat-label>
+          <mat-select  #choseRole [ngModel]="choseRole" name="choseRole">
+            <mat-option *ngFor="let updateRole of updateRoles" [value]="updateRole">{{updateRole}}</mat-option>
+          </mat-select>
+          <mat-hint align="end">choose a role</mat-hint>
+          <mat-error>Please select role</mat-error>
+        </mat-form-field>
+        <button mat-raised-button [disabled]="choseRole.empty" color="accent" style="width: 250px;margin-top: 25px" (click)="onChangeRole(choseRole)">Change Role</button>
+      </div>
+    </mat-card-content>
+  </form>
 </ng-template>
 <ng-template #showAddMode>
 </ng-template>

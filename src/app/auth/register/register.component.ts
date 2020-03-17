@@ -46,18 +46,3 @@ export class RegisterComponent implements OnInit {
     });
   }
 }
-
-/*
-setData(formData: Bouquet) {
-  this.isLoading = true;
-  this.firebaseService.setBouquets('bouquets', formData).then(
-    () => {
-      this.isLoading = false;
-      this.uiService.showSnackbar(formData.name + ' was added', null, 2500);
-    },
-    (err) => {
-      console.log(err);
-      this.isLoading = false;
-    });
-}
- */
