@@ -48,7 +48,11 @@
   </label>
  <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.5%">
    <mat-card-content fxLayout="column" fxLayoutAlign="center center">
-     <p>Content</p>
+     <p>Order from {{order.orderDate}}</p>
+     <p>Hello {{order.userName}},
+     Thank you for buying our beautiful Flower Bouquet.
+     The {{order.bouquetName}} is waiting for you in
+     our Shop on {{order.pickUpDate}} at 10pm</p>
    </mat-card-content>
  </mat-card>
   <button mat-raised-button color="warn" (click)="toggle('listMode')">back</button>

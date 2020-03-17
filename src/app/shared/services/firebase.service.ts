@@ -78,6 +78,7 @@ export class FirebaseService {
       if ( user) {
         this.user = user;
         this.currentUserId = user.uid;
+        this.checkUser();
         this.userStatus = true;
         this.authChanged.next(true);
         this.router.navigate(['/shop']);

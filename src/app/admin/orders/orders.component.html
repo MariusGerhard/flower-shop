@@ -14,29 +14,37 @@
               showDetailedMode : ((toggleMode == 'editMode')?
               showEditMode : showResMode)">
           <mat-card-actions>
-            <button type="button" mat-raised-button color="accent" [disabled]="!searchFormData.valid" class="search-button" (click)="toggle('resMode')">Search</button>
+            <button type="button" mat-raised-button color="accent" [disabled]="searchFormData.hasError('required')" class="search-button" (click)="toggle('resMode');getSearchOrders(searchFormData);">Search</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
-              <mat-icon  color="primary" (click)="toggle('resMode')">cached</mat-icon>
+              <mat-icon  color="primary" (click)="toggle('resMode');getAllOrders()">cached</mat-icon>
             </div>
           </mat-card-actions>
-          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
-            <mat-form-field>
-              <mat-label>Bouquet Name</mat-label>
-              <label>
-                <input matInput [disabled]="category.value > '' || flower.value >'' " type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+            <mat-form-field style="width: 50%;display: block">
+              <mat-label style="margin-top: 15px">Select Date</mat-label>
+              <mat-select  #dateType [ngModel]="dateType" name="dateType" required>
+                <mat-option *ngFor="let dateTyp of dateTypes" [value]="dateType">{{dateTyp}}</mat-option>
+              </mat-select>
+              <mat-hint align="end">eg. Pickup</mat-hint>
+              <mat-error>Please select role</mat-error>
             </mat-form-field>
-            <mat-form-field>
-              <mat-label>Category</mat-label>
+            <mat-form-field style="width: 250px">
+              <mat-hint>
+                Minimum is next day
+              </mat-hint>
+              <mat-label>Select pick-up day</mat-label>
               <label>
-                <input matInput [disabled]="name.value > '' || flower.value >'' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
+                <input matInput
+                       [matDatepicker]="picker"
+                       name="picker"
+                       id="picker"
+                       required
+                       #picker
+                >
               </label>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Flower</mat-label>
-              <label>
-                <input matInput [disabled]="name.value > '' || category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
+              <mat-error>Field should not be empty</mat-error>
+              <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </div>
         </form>

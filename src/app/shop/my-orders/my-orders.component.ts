@@ -54,6 +54,7 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
   }
   onDetails(id) {
     console.log(id);
+    console.log(this.order);
   }
   toggle(filter?) {
     if (!filter) {

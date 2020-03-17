@@ -15,6 +15,7 @@ import {AuthGuard} from './auth/auth.guard';
 import {ControlComponent} from './admin/control/control.component';
 import {ResetComponent} from './auth/reset/reset.component';
 import {MyOrdersComponent} from './shop/my-orders/my-orders.component';
+import {EmployeeGuard} from './auth/employee.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -26,7 +27,7 @@ const routes: Routes = [
   {path: 'bouquets', component: BouquetsComponent, canActivate: [AuthGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'terms', component: TermsConditionsComponent},
-  {path: 'control', component: ControlComponent, canActivate: [AuthGuard]},
+  {path: 'control', component: ControlComponent, canActivate: [EmployeeGuard]},
   {path: 'reset', component: ResetComponent},
   {path: 'orders', component: MyOrdersComponent},
   {path: '**', component: HomeComponent},
@@ -35,7 +36,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'top'})],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard, EmployeeGuard]
 })
 
 export class AppRoutingModule {}

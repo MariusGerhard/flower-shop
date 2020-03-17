@@ -85,6 +85,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Bouquets');
+    console.log(this.firebaseService.getUserRole());
     this.max = new Date();
     this.min = new Date();
     this.min.setDate(this.min.getDate() + 1);
