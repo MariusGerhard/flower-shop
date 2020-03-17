@@ -79,7 +79,7 @@
           <button mat-icon-button (click)="onGetUser(row.id);toggle('editMode')" [disabled]="isLoading">
             <mat-icon color="primary">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="onDeleteUser(row._id)" [disabled]="isLoading">
+          <button mat-icon-button (click)="onDeleteUser(row.id)" [disabled]="isLoading">
             <mat-icon color="primary">delete</mat-icon>
           </button>
         </mat-cell>
@@ -100,10 +100,10 @@
     </mat-card-actions>
     <mat-card-content fxLayout="column" fxLayoutGap="5%">
         <p>
-          Change Role of <b style="color: crimson">{{users[0].firstName}} {{ users[0].lastName}}</b>
+          Change Role of <b style="color: crimson">{{user.firstName}} {{ user.lastName}}</b>
         </p>
         <p>
-          E-Mail: <b style="color: crimson">{{users[0].email}}</b>
+          E-Mail: <b style="color: crimson">{{user.email}}</b>
         </p>
       <div fxLayout="column" fxLayoutGap="25px" fxLayoutAlign="center center">
         <mat-form-field style="width: 50%;display: block">

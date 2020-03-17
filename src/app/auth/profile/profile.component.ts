@@ -1,11 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HeaderTitleService} from '../../shared/services/header-title.service';
 import {fallIn, moveIn} from '../../router.animations';
 import {UserModel} from '../../shared/models/userModel';
 import {FirebaseService} from '../../shared/services/firebase.service';
 import {UIService} from '../../shared/services/ui.service';
 import {Router} from '@angular/router';
-import {Timestamp} from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -14,8 +13,6 @@ import {Timestamp} from 'rxjs';
   animations: [moveIn(), fallIn()],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  @ViewChild('firstName', {static: false}) private firstName;
-  @ViewChild('firstName', {static: false}) private lastName;
   users: UserModel[];
   user: UserModel = {
     authId: '',

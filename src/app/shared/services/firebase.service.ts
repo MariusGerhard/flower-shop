@@ -17,9 +17,12 @@ import {Order} from '../models/order.model';
 export class FirebaseService {
   fakeResponse = false;
   private userStatus = false;
-  private isAdmin = true;
+  private userRole: string;
   category: string;
   flower: string;
+  private users: UserModel[];
+  private currentUser: UserModel;
+  private querySubscription;
   private newUser: UserModel;
   private currentUserId: string;
   private user: User;
@@ -31,8 +34,35 @@ export class FirebaseService {
   isAuth() {
     return this.userStatus;
   }
-  checkAdmin() {
-    return this.isAdmin;
+  getUserRole() {
+    return this.userRole;
+  }
+  getCurrentUserData() {
+    return this.currentUser;
+  }
+  checkUser() {
+    this.querySubscription = this.getCurrentUser(this.currentUserId).subscribe(
+      res => {
+        this.users = res.map(e => {
+          return {
+            ...e.payload.doc.data(),
+          }as UserModel;
+        });
+        this.currentUser = this.users[0];
+        if (this.currentUser === undefined) {
+          console.log('Your account was disabled');
+          this.logoutUser();
+          this.uiService.showSnackbar('Login disabled', null, 1500);
+        } else {
+          this.userRole = this.currentUser.role;
+          this.uiService.showSnackbar('User was successful', null, 1500);
+        }
+      },
+      (err) => {
+        console.log(err);
+        this.logoutUser();
+      },
+    );
   }
   getCurrentUserId() {
     return this.currentUserId;
@@ -88,7 +118,7 @@ export class FirebaseService {
     this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password).then(
       (res) => {
         this.currentUserId = res.user.uid;
-        this.uiService.showSnackbar('Login successful', null, 1500);
+        this.checkUser();
       })
       .catch(err => {
         this.userStatus = false;
@@ -123,11 +153,12 @@ export class FirebaseService {
         return this.firestore.collection(columnType).add(data);
     }
   updateBouquets(columnType, key, value) {
-    console.log(key);
-    console.log(value._id);
     return this.firestore.collection(columnType).doc(key).update(value);
   }
   delBouquet(columnType, key) {
+    return this.firestore.collection(columnType).doc(key).delete();
+  }
+  delUser(columnType, key) {
     return this.firestore.collection(columnType).doc(key).delete();
   }
   delBouquetPic(wurst, wurst2) {

@@ -17,8 +17,20 @@ export class RegisterComponent implements OnInit {
   newUser: UserModel;
   state: string;
   error = false;
-  userId: any;
+  userId: string;
   isLoading = false;
+  saveId: string;
+  users: UserModel[];
+  user: UserModel = {
+    authId: '',
+    id: '',
+    gender: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    birth: '',
+  };
+  private queryConnection;
   constructor(private headerTitleService: HeaderTitleService,
               private firebaseService: FirebaseService) { }
 
@@ -41,8 +53,41 @@ export class RegisterComponent implements OnInit {
     }).then(
       ()  => {
         this.isLoading = false;
+        this.userId = this.firebaseService.getCurrentUserId();
+        this.getUser();
       }).catch(() => {
       this.isLoading = false;
     });
+  }
+  getUser() {
+    this.queryConnection = this.firebaseService.getCurrentUser(this.userId).subscribe(
+      res => {
+        this.users = res.map(e => {
+          this.saveId = e.payload.doc.id;
+          return {
+            authId: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as UserModel;
+        });
+        this.users[0].id = this.saveId;
+        this.user = this.users[0];
+        this.isLoading = false;
+        this.firebaseService.updateUser('user', this.saveId, this.user).then(
+          () => {
+            this.isLoading = false;
+          },
+          (err) => {
+            console.log(err);
+            this.isLoading = false;
+          });
+      },
+      (err) => {
+        this.isLoading = false;
+        console.log(err);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
   }
 }

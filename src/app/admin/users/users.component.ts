@@ -28,8 +28,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
   private querySubscription;
   constructor(private firebaseService: FirebaseService,
-              private uiService: UIService,
-              private router: Router) {
+              private uiService: UIService) {
     this.toggleMode = 'searchMode';
   }
   ngOnInit() {
@@ -111,7 +110,20 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
         this.uiService.showSnackbar(this.user.lastName + ' has error' + err, null, 2500);
       });
   }
-  onDeleteUser(id) {}
+  onDeleteUser(id) {
+    this.isLoading = true;
+    if (confirm('Are you sure to delete this User?')) {
+      this.firebaseService.delUser('user', id).then(
+        () => {
+          this.isLoading = false;
+          this.uiService.showSnackbar('User was deleted', null, 2500);
+        });
+      this.toggle('searchMode');
+      this.getAllUsers();
+    } else {
+      this.isLoading = false;
+    }
+  }
   // data table methods
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
