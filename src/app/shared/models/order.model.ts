@@ -1,7 +1,7 @@
 export class Order {
   userId: string;
   userName: string;
-  bouquetId: number;
+  bouquetId: string;
   orderDate: string;
   event?: string;
   message?: string;

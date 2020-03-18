@@ -74,7 +74,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.order = {
       userId: 'UserID',
       userName: 'UserName',
-      bouquetId: 12,
+      bouquetId: '',
       bouquetName: 'BouquetName',
       price: 12.0,
       orderDate: this.orderDate.toDateString(),
