@@ -14,35 +14,36 @@
               showDetailedMode : ((toggleMode == 'editMode')?
               showEditMode : showResMode)">
           <mat-card-actions>
-            <button type="button" mat-raised-button color="accent" [disabled]="searchFormData.hasError('required')" class="search-button" (click)="toggle('resMode');getSearchOrders(searchFormData);">Search</button>
+            <button type="button" mat-raised-button color="accent" [disabled]="searchFormData.invalid" class="search-button" (click)="toggle('resMode');getSearchOrders(searchFormData.value);">Search</button>
+            <button type="button" mat-raised-button color="warn" (click)="toggle('resMode')" class="search-button">Soon</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
               <mat-icon  color="primary" (click)="toggle('resMode');getAllOrders()">cached</mat-icon>
             </div>
           </mat-card-actions>
-          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
-            <mat-form-field style="width: 50%;display: block">
-              <mat-label style="margin-top: 15px">Select Date</mat-label>
-              <mat-select  #dateType [ngModel]="dateType" name="dateType" required>
-                <mat-option *ngFor="let dateTyp of dateTypes" [value]="dateType">{{dateTyp}}</mat-option>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%">
+            <mat-form-field style="width: 250px">
+              <mat-label>Select Date</mat-label>
+              <mat-select [(ngModel)]="dateType" name="dateType" required>
+                <mat-option *ngFor="let dateType of dateTypes" [value]="dateType">{{dateType}}</mat-option>
               </mat-select>
               <mat-hint align="end">eg. Pickup</mat-hint>
               <mat-error>Please select role</mat-error>
             </mat-form-field>
             <mat-form-field style="width: 250px">
               <mat-hint>
-                Minimum is next day
+                Your start date
               </mat-hint>
-              <mat-label>Select pick-up day</mat-label>
+              <mat-label>Select start Date</mat-label>
               <label>
                 <input matInput
+                       required
                        [matDatepicker]="picker"
                        name="picker"
                        id="picker"
-                       required
+                       ngModel
                        #picker
                 >
               </label>
-              <mat-error>Field should not be empty</mat-error>
               <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>

@@ -18,8 +18,8 @@
               <mat-icon color="primary" (click)="getAllUsers();toggle('resMode');">cached</mat-icon>
             </div>
           </mat-card-actions>
-          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
-            <mat-form-field style="width: 50%;display: block">
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%">
+            <mat-form-field style="width: 250px;display: block">
               <mat-label>Select Role</mat-label>
               <mat-select [disabled]="counter.value > 0" #select="ngModel" [ngModel]="searchFormData" name="role">
                 <mat-option>None</mat-option>
@@ -27,7 +27,7 @@
               </mat-select>
               <mat-hint align="end">choose a role</mat-hint>
             </mat-form-field>
-            <mat-form-field style="width: 50%;display: block">
+            <mat-form-field style="width: 250px;display: block">
                 <mat-label>Minimum amount of Orders</mat-label>
                 <label>
                   <input [disabled]="select.value == 'User' || select.value == 'Admin' || select.value == 'Employee'"

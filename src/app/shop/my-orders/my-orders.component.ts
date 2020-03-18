@@ -28,16 +28,8 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
     email: '',
     birth: '',
   };
-  orders: Order[];
-  order: Order = {
-    bouquetId: 0,
-    bouquetName: '',
-    userName: '',
-    userId: '',
-    pickUpDate: '',
-    orderDate: '',
-    price: 0
-  }
+  orders: any[];
+  order: any;
   displayedColumns: string[] = ['bouquetName', 'orderDate', 'action'];
   dataSource: MatTableDataSource<Order>;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -53,8 +45,7 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
     this.getUser();
   }
   onDetails(id) {
-    console.log(id);
-    console.log(this.order);
+    this.order = this.orders.find( x => x._id === id);
   }
   toggle(filter?) {
     if (!filter) {

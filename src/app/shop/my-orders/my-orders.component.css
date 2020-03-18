@@ -10,7 +10,10 @@ mat-card{
 table {
   width: 100%;
 }
-
+p{
+  margin: 0.5rem;
+  font-size: 1.2rem;
+}
 .mat-form-field {
   font-size: 14px;
   width: 100%;
@@ -19,10 +22,13 @@ table {
 td, th {
   width: 25%;
 }
-p{
-  margin: 0;
-}
 button{
   margin-top: 15px;
   width: 250px;
+}
+.span-green{
+  color: forestgreen;
+}
+.span-red{
+  color: crimson;
 }

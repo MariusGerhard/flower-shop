@@ -47,12 +47,31 @@
     <input autofocus [hidden]="true" appAutofocus>
   </label>
  <mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.5%">
-   <mat-card-content fxLayout="column" fxLayoutAlign="center center">
-     <p>Order from {{order.orderDate}}</p>
-     <p>Hello {{order.userName}},
-     Thank you for buying our beautiful Flower Bouquet.
-     The {{order.bouquetName}} is waiting for you in
-     our Shop on {{order.pickUpDate}} at 10pm</p>
+   <mat-card-content fxLayout="column">
+     <p>Order from <b class="span-green">{{order.orderDate}}</b></p><br>
+     <p>Hello <b>{{order.userName}}</b>,<br>
+       Thank you for buying our beautiful <b class="span-green">Flower Bouquet</b>.
+     </p>
+     <p>
+       The <b class="span-green">{{order.bouquetName}}</b> is waiting for you
+       in our Shop on <b class="span-red">{{order.pickUpDate}}</b> at 10am.
+     </p>
+     <p *ngIf="order.event">
+       You included <b class="span-green">{{order.event}}</b> Event
+     </p>
+     <p *ngIf="order.message">
+       Your Card Text:
+       <br>
+       <b>{{order.message}}</b>
+     </p>
+     <br>
+     <p>
+       Kind regards,
+       <br>
+      <b class="span-green">
+       Your Flowershop-Team
+     </b>
+     </p>
    </mat-card-content>
  </mat-card>
   <button mat-raised-button color="warn" (click)="toggle('listMode')">back</button>

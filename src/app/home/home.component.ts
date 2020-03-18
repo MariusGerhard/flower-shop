@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HeaderTitleService} from '../shared/services/header-title.service';
 import {fallIn, moveIn} from '../router.animations';
+import {FirebaseService} from '../shared/services/firebase.service';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +11,13 @@ import {fallIn, moveIn} from '../router.animations';
 })
 export class HomeComponent implements OnInit {
   state: string;
-  constructor(private headerTitleService: HeaderTitleService) {
+  isAuth =  false;
+  constructor(private headerTitleService: HeaderTitleService,
+              private firebaseService: FirebaseService) {
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Home');
+    this.isAuth = this.firebaseService.isAuth();
+    console.log(this.isAuth);
   }
 }

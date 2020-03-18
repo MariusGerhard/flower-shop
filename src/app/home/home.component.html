@@ -23,33 +23,33 @@
       <section fxLayout="column" fxLayoutGap="15px" class="section-margin" fxShow.gt-md fxHide.lt-md>
         <mat-card>
           <mat-card-header>
-            <mat-card-title>The <span>smile</span> of the earth</mat-card-title>
+            <mat-card-title>The <span class="span-green">smile</span> of the earth</mat-card-title>
           </mat-card-header>
           <div class="home-pic-2-big"></div>
           <mat-card-footer>
-            <mat-card-content><b>Flowers are great gift for everybody. <a routerLink="/register">Register</a> and present a bouquet to a friend.</b></mat-card-content>
+            <mat-card-content><h3>Flowers are great gift for everybody.</h3><h3 *ngIf="!isAuth"><a routerLink="/register">Register</a> and present a bouquet to a friend.</h3></mat-card-content>
           </mat-card-footer>
         </mat-card>
         <mat-card >
           <mat-card-header>
             <mat-card-title>
-              A <span>splash of colors</span> for the soul
+              A <span class="span-green">splash of colors</span> for the soul
             </mat-card-title>
           </mat-card-header>
           <div class="home-pic-1-big"></div>
           <mat-card-footer>
-            <mat-card-content><b>Look through all of our Bouquets. You only need to <a routerLink="/login">login</a>.</b></mat-card-content>
+            <mat-card-content><h3>Look through all of our Bouquets.</h3><h3 *ngIf="!isAuth"> You only need to <a routerLink="/login">login</a>.</h3></mat-card-content>
           </mat-card-footer>
         </mat-card>
         <mat-card>
           <mat-card-header>
             <mat-card-title>
-              The overwhelming <span>magic</span> of flowers
+              The overwhelming <span class="span-green">magic</span> of flowers
             </mat-card-title>
           </mat-card-header>
           <div class="home-pic-3-big"></div>
           <mat-card-footer>
-            <mat-card-content><b>You want a special customised bouquet? <a routerLink="/flowers">Customize</a> you own bouquet!</b></mat-card-content>
+            <mat-card-content><h3>You want a special customised bouquet?</h3><h3 *ngIf="isAuth"><a routerLink="/bouquets">Customize</a> you own bouquet!</h3></mat-card-content>
           </mat-card-footer>
         </mat-card>
       </section>
@@ -57,34 +57,34 @@
         <mat-card>
           <mat-card-header>
             <mat-card-title>
-              The <span>smile</span> of the earth
+              The <span class="span-green">smile</span> of the earth
             </mat-card-title>
           </mat-card-header>
           <div class="home-pic-2-small"></div>
           <mat-card-footer>
-            <mat-card-content><b><b>Flowers are great gift for everybody.<br> <a routerLink="/register">Register</a> and present a bouquet to a friend.</b></b></mat-card-content>
+            <mat-card-content><h3>Flowers are great gift for everybody.</h3><h3 *ngIf="!isAuth"><a routerLink="/register">Register</a> and present a bouquet to a friend.</h3></mat-card-content>
           </mat-card-footer>
         </mat-card>
         <mat-card >
           <mat-card-header>
             <mat-card-title>
-              A <span>splash of colors</span> for the soul
+              A <span class="span-green">splash of colors</span> for the soul
             </mat-card-title>
           </mat-card-header>
           <div class="home-pic-1-small"></div>
           <mat-card-footer>
-            <mat-card-content><b>Look through all of our Bouquets.<br> You only need to <a routerLink="/login">login</a>.</b></mat-card-content>
+            <mat-card-content><h3>Look through all of our Bouquets.</h3><h3 *ngIf="!isAuth">You only need to <a routerLink="/login">login</a>.</h3></mat-card-content>
           </mat-card-footer>
         </mat-card>
         <mat-card>
           <mat-card-header>
             <mat-card-title>
-              The <span>magic</span> of flowers
+              The <span class="span-green">magic</span> of flowers
             </mat-card-title>
           </mat-card-header>
           <div class="home-pic-3-small"></div>
           <mat-card-footer>
-            <mat-card-content><b>You want a special customized bouquet? <br><a routerLink="/flowers">Customize</a> you own bouquet!</b></mat-card-content>
+            <mat-card-content><h3>You want a special customized bouquet?</h3><h3 *ngIf="isAuth"><a routerLink="/bouquets">Customize</a> your own bouquet!</h3></mat-card-content>
           </mat-card-footer>
         </mat-card>
       </section>

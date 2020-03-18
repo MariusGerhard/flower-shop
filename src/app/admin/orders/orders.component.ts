@@ -16,11 +16,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
   isLoading = false;
   toggleMode: string;
   dateTypes: string[] = ['PickUpDate', 'OrderDate'];
+  dateType: string;
+  selectedOption: string;
   orders: Order[];
   order: Order;
   private querySubscription;
   constructor(private firebaseService: FirebaseService) {
     this.toggleMode = 'searchMode';
+    this.selectedOption = 'PickUpDate';
   }
   ngOnInit() {
   }
@@ -37,8 +40,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
       }
     );
   }
-  getSearchOrders(form: NgForm) {
-    console.log(form.value.dateTyp);
+  getSearchOrders(form) {
+    console.log(form.dateType);
+    console.log(form.picker);
+  }
+  getNextDayOrders() {
   }
   toggle(filter?) {
     if (!filter) {

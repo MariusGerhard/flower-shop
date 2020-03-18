@@ -1,9 +1,12 @@
-span{
+.span-green{
   color: forestgreen;
   font-weight: bold;
 }
 a{
   color: forestgreen;
+}
+h3{
+  margin: 0;
 }
 .home-text-layout{
   text-align: center;

@@ -141,6 +141,7 @@ export class FirebaseService {
   }
   async logoutUser() {
     this.currentUserId = '';
+    await this.querySubscription.unsubscribe();
     await this.afAuth.auth.signOut();
   }
   setUser(userData: UserModel) {
