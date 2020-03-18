@@ -50,6 +50,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   getAllOrders() {
     this.isSearch = false;
+    this.isLoading = true;
     this.firebaseService.getOrders().subscribe(
       (res) => {
         this.orders = res.map(e => {
@@ -67,12 +68,41 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   getSearchOrders(form) {
     console.log(form.dateType);
-    console.log(form.picker);
+    console.log(form.picker.toDateString());
+    this.isLoading = true;
+    this.firebaseService.getOrdersByStartDate(form.picker.toDateString(), form.dateType).subscribe(
+      (res) => {
+        this.orders = res.map(e => {
+          return {
+            _id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Order;
+        });
+        this.dataSource = new MatTableDataSource(this.orders);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+      }
+    );
   }
   onNextDayOrders() {
     this.nextDay = new Date();
     this.nextDay.setDate(this.nextDay.getDate() + 1);
-    console.log(this.nextDay);
+    this.isLoading = true;
+    this.firebaseService.getOrdersByDate(this.nextDay.toDateString()).subscribe(
+      (res) => {
+        this.orders = res.map(e => {
+          return {
+            _id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Order;
+        });
+        this.dataSource = new MatTableDataSource(this.orders);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+      }
+    );
   }
   toggle(filter?) {
     if (!filter) {
@@ -82,10 +112,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   onDetails(id) {
     this.order = this.orders.find( x => x._id === id);
-    console.log(this.order.bouquetId);
     this.bouquetSubscription = this.firebaseService.getBouquet(this.order.bouquetId).subscribe(
       (res) => {
-        console.log(res);
         this.bouquets = res.map(e => {
           return {
             _id: e.payload.doc.id,

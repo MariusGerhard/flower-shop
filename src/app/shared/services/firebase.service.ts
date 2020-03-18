@@ -219,6 +219,30 @@ export class FirebaseService {
         .orderBy('orderDate', 'desc')
     ).snapshotChanges();
   }
+  getOrdersByDate(date) {
+    return this.firestore.collection('order', ref =>
+      ref
+        .where('pickUpDate', '==', date)
+    ).snapshotChanges();
+  }
+  getOrdersByStartDate(startDate, dateTyp) {
+    console.log(new Date (startDate));
+    console.log(dateTyp);
+    if (dateTyp === 'PickUpDate') {
+      console.log('pick');
+      return this.firestore.collection('order', ref =>
+        ref
+          .where('pickUpDate', '>=', startDate)
+          .orderBy('pickUpDate', 'desc')
+      ).snapshotChanges();
+    } else {
+      return this.firestore.collection('order', ref =>
+        ref
+          .where('orderDate', '>=', startDate)
+          .orderBy('orderDate', 'desc')
+      ).snapshotChanges();
+    }
+  }
   getOrders() {
     return this.firestore.collection('order').snapshotChanges();
   }
