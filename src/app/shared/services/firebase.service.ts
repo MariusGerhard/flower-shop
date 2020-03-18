@@ -203,6 +203,12 @@ export class FirebaseService {
   getBouquets(columnType) {
     return this.firestore.collection(columnType).snapshotChanges();
   }
+  getBouquet(id) {
+    return this.firestore.collection('bouquets', ref =>
+      ref
+        .where('_id', '==', id)
+    ).snapshotChanges();
+  }
   getUsers() {
     return this.firestore.collection('user').snapshotChanges();
   }

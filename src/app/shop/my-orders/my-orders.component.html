@@ -12,7 +12,9 @@
         <mat-card-content fxLayout="column" fxLayoutAlign="center center">
           <mat-form-field>
             <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Flower">
+            <label>
+              <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Flower">
+            </label>
           </mat-form-field>
           <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
@@ -25,8 +27,8 @@
                 <td mat-cell *matCellDef="let row"> {{row.orderDate | date }} </td>
               </ng-container>
               <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef > Details </th>
-                <td mat-cell *matCellDef="let row" >
+                <th mat-header-cell *matHeaderCellDef class="action-col"> Details </th>
+                <td mat-cell *matCellDef="let row" class="action-col">
                     <mat-icon color="primary" (click)="onDetails(row._id);toggle('detailMode')">info</mat-icon>
                 </td>
               </ng-container>
@@ -53,8 +55,8 @@
        Thank you for buying our beautiful <b class="span-green">Flower Bouquet</b>.
      </p>
      <p>
-       The <b class="span-green">{{order.bouquetName}}</b> is waiting for you
-       in our Shop on <b class="span-red">{{order.pickUpDate}}</b> at 10am.
+       The <b class="span-green">{{order.bouquetName}}</b> costs only <b class="span-green">{{order.price | currency:'EUR'}}</b> and is waiting for you
+       in our Shop on <b class="span-red">{{order.pickUpDate}}</b> at <b style="color: crimson">10am</b>.
      </p>
      <p *ngIf="order.event">
        You included <b class="span-green">{{order.event}}</b> Event
@@ -74,5 +76,5 @@
      </p>
    </mat-card-content>
  </mat-card>
-  <button mat-raised-button color="warn" (click)="toggle('listMode')">back</button>
+  <button mat-raised-button color="warn" (click)="toggle('listMode');ngOnInit()">back</button>
 </ng-template>

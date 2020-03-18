@@ -10,13 +10,13 @@
       <mat-card-content>
         <form #searchFormData="ngForm"
               *ngIf="(toggleMode == 'searchMode')
-              else (toggleMode == 'detailedMode')?
-              showDetailedMode : ((toggleMode == 'editMode')?
-              showEditMode : showResMode)">
+              else (toggleMode == 'detailMode')?
+              showDetailedMode : ((toggleMode == 'graphMode')?
+              showGraphMode : showResMode)">
           <mat-card-actions>
             <button type="button" mat-raised-button color="accent" [disabled]="searchFormData.invalid" class="search-button" (click)="toggle('resMode');getSearchOrders(searchFormData.value);">Search</button>
-            <button type="button" mat-raised-button color="warn" (click)="toggle('resMode')" class="search-button">Soon</button>
-            <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
+            <button type="button" mat-raised-button color="warn" (click)="toggle('resMode');onNextDayOrders();" class="search-button">Soon</button>
+            <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="5%">
               <mat-icon  color="primary" (click)="toggle('resMode');getAllOrders()">cached</mat-icon>
             </div>
           </mat-card-actions>
@@ -53,27 +53,94 @@
     </mat-card>
   </div>
 </section>
+
 <ng-template #showDetailedMode>
-  <mat-card-actions>
-    action
+  <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="5%">
+    <mat-icon  color="primary" (click)="toggle('resMode');ngOnInit()">cached</mat-icon>
   </mat-card-actions>
+  <h1 style="color: forestgreen">Order Info</h1>
   <mat-card-content>
-    details
+    <p>
+      <span>Bouquet: </span> {{order.bouquetName}}
+    </p>
+    <p style="color: crimson">
+      <span>Price: </span> {{order.price| currency:'EUR'}}
+    </p>
+    <p>
+      <span>Customer: </span> {{order.userName}}
+    </p>
+    <p>
+      <span>OrderDate: </span> {{order.orderDate}}
+    </p>
+    <p style="color: crimson">
+      <span>PickupDate: </span> {{order.pickUpDate}}
+    </p>
+    <p *ngIf="order.event">
+      <span>Event: </span> {{order.event}}
+    </p>
+    <p *ngIf="order.message">
+      <span>Bouquet: </span> {{order.message}}
+    </p>
+  </mat-card-content>
+  <h1 style="color: forestgreen">Flower Info</h1>
+  <mat-card-content>
+    <p>
+      <span>Category: </span> {{bouquet.category}}
+    </p>
+    <p>
+      <span>OrderDate: </span> {{bouquet.flower}}
+    </p>
+    <p>
+      <span>SeasonStart: </span> {{bouquet.seasonStart}}
+    </p>
+    <p>
+      <span>SeasonEnd: </span> {{bouquet.seasonEnd}}
+    </p>
   </mat-card-content>
 </ng-template>
+
 <ng-template #showResMode>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="5%">
+    <mat-icon color="primary" (click)="toggle('graphMode')">timeline</mat-icon>
+    <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
+  </mat-card-actions>
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Flower">
+      </label>
+    </mat-form-field>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="bouquetName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Bouquet </th>
+          <td mat-cell *matCellDef="let row"> {{row.bouquetName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="orderDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> OrderDate </th>
+          <td mat-cell *matCellDef="let row"> {{row.orderDate | date }} </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="action-col"> Details </th>
+          <td mat-cell *matCellDef="let row" class="action-col">
+            <mat-icon color="primary" (click)="onDetails(row._id);toggle('detailMode')">info</mat-icon>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+  </mat-card-content>
+</ng-template>
+
+<ng-template #showGraphMode>
   <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
     <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
   </mat-card-actions>
   <mat-card-content>
-    content
-  </mat-card-content>
-</ng-template>
-<ng-template #showEditMode>
-  <mat-card-actions>
-    action
-  </mat-card-actions>
-  <mat-card-content>
-    edit
+
   </mat-card-content>
 </ng-template>

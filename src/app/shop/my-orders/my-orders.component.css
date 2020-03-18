@@ -18,7 +18,9 @@ p{
   font-size: 14px;
   width: 100%;
 }
-
+.action-col{
+  width: 5%;
+}
 td, th {
   width: 25%;
 }

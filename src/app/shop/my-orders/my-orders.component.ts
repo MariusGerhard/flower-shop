@@ -28,6 +28,7 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
     email: '',
     birth: '',
   };
+  ordersSave: any[];
   orders: any[];
   order: any;
   displayedColumns: string[] = ['bouquetName', 'orderDate', 'action'];
@@ -42,10 +43,14 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
     this.headerTitleService.setTitle('My Orders');
     this.userId = this.firebaseService.getCurrentUserId();
     this.isLoading = true;
+    this.dataSource = new MatTableDataSource(this.orders);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
     this.getUser();
   }
   onDetails(id) {
-    this.order = this.orders.find( x => x._id === id);
+    this.ordersSave = [...this.orders];
+    this.order = this.ordersSave.find( x => x._id === id);
   }
   toggle(filter?) {
     if (!filter) {

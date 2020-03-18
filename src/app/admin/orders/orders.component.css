@@ -13,3 +13,18 @@ mat-card{
   max-width: 500px;
   margin-bottom: 10px;
 }
+td, th {
+  width: 25%;
+}
+.action-col{
+  width: 5%;
+}
+span{
+  font-weight: bold;
+  display: inline-block;
+  width: 35%;
+}
+p{
+  margin: 0.5rem;
+  font-size: 1.1rem;
+}

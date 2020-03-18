@@ -1,6 +1,6 @@
 export class Bouquet {
   // tslint:disable-next-line:variable-name
-  _id: number;
+  _id: string;
   name: string;
   category: string;
   description: string | null;
