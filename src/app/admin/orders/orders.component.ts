@@ -4,6 +4,7 @@ import {FirebaseService} from '../../shared/services/firebase.service';
 import {Order} from '../../shared/models/order.model';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Bouquet} from '../../shared/models/bouquet.model';
+import {ngxCsv} from 'ngx-csv';
 
 @Component({
   selector: 'app-orders',
@@ -109,6 +110,18 @@ export class OrdersComponent implements OnInit, OnDestroy {
       filter = 'searchMode';
     }
     this.toggleMode = filter;
+  }
+  onCsv() {
+    const csv = new ngxCsv(this.orders, 'orders', {
+      fieldSeparator: ';',
+      quoteStrings: '"',
+      decimalseparator: ',',
+      showLabels: true,
+      showTitle: true,
+      useBom: true,
+      title: 'Orders',
+      headers: ['OrderID', 'BouquetID', 'Bouquet Name', 'Event', 'Message', 'OrderDate', 'PickUpDate', 'Price', 'UserId', 'UserName']
+    });
   }
   onDetails(id) {
     this.order = this.orders.find( x => x._id === id);
