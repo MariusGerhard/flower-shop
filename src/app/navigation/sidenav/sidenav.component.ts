@@ -34,7 +34,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.userStatus = authStatus;
     });
   }
-  ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
+  ngOnDestroy() {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 }

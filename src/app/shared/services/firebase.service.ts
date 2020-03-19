@@ -6,7 +6,7 @@ import {UIService} from './ui.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import {User} from 'firebase';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {Bouquet} from '../models/bouquet.model';
 import {UserModel} from '../models/userModel';
 import {Order} from '../models/order.model';
@@ -20,7 +20,7 @@ export class FirebaseService {
   private userRole: string;
   category: string;
   flower: string;
-  private users: UserModel[];
+  users: UserModel[];
   private currentUser: UserModel;
   private querySubscription;
   private newUser: UserModel;
@@ -57,11 +57,7 @@ export class FirebaseService {
           this.userRole = this.currentUser.role;
           this.uiService.showSnackbar('User was successful', null, 1500);
         }
-      },
-      (err) => {
-        console.log(err);
-        this.logoutUser();
-      },
+      }
     );
   }
   getCurrentUserId() {
@@ -78,7 +74,6 @@ export class FirebaseService {
       if ( user) {
         this.user = user;
         this.currentUserId = user.uid;
-        this.checkUser();
         this.userStatus = true;
         this.authChanged.next(true);
         this.router.navigate(['/shop']);
@@ -130,10 +125,27 @@ export class FirebaseService {
       );
   }
   async loginGoogle() {
-    await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const credentials = await this.afAuth.auth.signInWithPopup(provider);
+    return this.updateUserLogin(credentials.user);
+  }
+  updateUserLogin(user) {
+    console.log(user);
+    const userRef: AngularFirestoreDocument<UserModel> = this.firestore.doc('user/' + user.uid);
+    this.newUser = {
+      authId: user.uid,
+      firstName: user.displayName.split(' ')[0],
+      lastName: user.displayName.split(' ')[1],
+      email: user.email,
+      id: user.uid,
+    };
+    console.log(this.newUser);
+    userRef.set(this.newUser, {merge: true}).then();
 }
   async loginFacebook() {
-    await this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+    const provider = new firebase.auth.FacebookAuthProvider();
+    const credentials =  await this.afAuth.auth.signInWithPopup(provider);
+    return this.updateUserLogin(credentials.user);
   }
   async sendEmailVerification() {
     await this.afAuth.auth.currentUser.sendEmailVerification();
@@ -141,7 +153,10 @@ export class FirebaseService {
   }
   async logoutUser() {
     this.currentUserId = '';
-    await this.querySubscription.unsubscribe();
+    if (this.querySubscription) {
+      this.querySubscription.unsubscribe();
+    }
+    await this.router.navigate(['']);
     await this.afAuth.auth.signOut();
   }
   setUser(userData: UserModel) {
@@ -248,5 +263,8 @@ export class FirebaseService {
   }
   setOrder(columnType, data: Order) {
     return this.firestore.collection(columnType).add(data);
+  }
+  setProductPic(filePath, fileUrl, docId) {
+
   }
 }

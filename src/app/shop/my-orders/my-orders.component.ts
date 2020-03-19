@@ -71,9 +71,8 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
         this.getOrders();
         this.isLoading = false;
       },
-      (err) => {
+      () => {
         this.isLoading = false;
-        console.log(err);
       },
       () => {
         this.isLoading = false;
@@ -95,9 +94,8 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
         this.dataSource.sort = this.sort;
         this.isLoading = false;
       },
-      (err) => {
+      () => {
         this.isLoading = false;
-        console.log(err);
       },
       () => {
         this.isLoading = false;

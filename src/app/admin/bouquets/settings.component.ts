@@ -60,7 +60,6 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   }
   getFilterData(filter: any) {
     this.isLoading = true;
-    console.log(filter);
     if ( filter === '') {
       filter = 'a';
     }

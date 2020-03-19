@@ -18,6 +18,5 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.headerTitleService.setTitle('Home');
     this.isAuth = this.firebaseService.isAuth();
-    console.log(this.isAuth);
   }
 }

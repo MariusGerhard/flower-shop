@@ -4,7 +4,6 @@ import {UserModel} from '../../shared/models/userModel';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {User} from 'firebase';
 import {UIService} from '../../shared/services/ui.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -41,11 +40,6 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       filter = 'searchMode';
     }
     this.toggleMode = filter;
-  }
-  ngOnDestroy() {
-    if (this.querySubscription) {
-      this.querySubscription.unsubscribe();
-    }
   }
   onSearch(form) {
     this.isLoading = true;
@@ -133,5 +127,10 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+  ngOnDestroy() {
+    if (this.querySubscription) {
+      this.querySubscription.unsubscribe();
+    }
   }
 }

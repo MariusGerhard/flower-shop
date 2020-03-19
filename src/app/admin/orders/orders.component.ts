@@ -35,7 +35,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   isSearch: false;
   nextDay: Date;
   private querySubscription;
-  private bouquetSubscription;
   displayedColumns: string[] = ['bouquetName', 'orderDate', 'action'];
   dataSource: MatTableDataSource<Order>;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -52,7 +51,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   getAllOrders() {
     this.isSearch = false;
     this.isLoading = true;
-    this.firebaseService.getOrders().subscribe(
+    this.querySubscription = this.firebaseService.getOrders().subscribe(
       (res) => {
         this.orders = res.map(e => {
           return {
@@ -68,10 +67,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     );
   }
   getSearchOrders(form) {
-    console.log(form.dateType);
-    console.log(form.picker.toDateString());
     this.isLoading = true;
-    this.firebaseService.getOrdersByStartDate(form.picker.toDateString(), form.dateType).subscribe(
+    this.querySubscription = this.firebaseService.getOrdersByStartDate(form.picker.toDateString(), form.dateType).subscribe(
       (res) => {
         this.orders = res.map(e => {
           return {
@@ -90,7 +87,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.nextDay = new Date();
     this.nextDay.setDate(this.nextDay.getDate() + 1);
     this.isLoading = true;
-    this.firebaseService.getOrdersByDate(this.nextDay.toDateString()).subscribe(
+    this.querySubscription = this.firebaseService.getOrdersByDate(this.nextDay.toDateString()).subscribe(
       (res) => {
         this.orders = res.map(e => {
           return {
@@ -125,7 +122,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   onDetails(id) {
     this.order = this.orders.find( x => x._id === id);
-    this.bouquetSubscription = this.firebaseService.getBouquet(this.order.bouquetId).subscribe(
+    this.querySubscription = this.firebaseService.getBouquet(this.order.bouquetId).subscribe(
       (res) => {
         this.bouquets = res.map(e => {
           return {

@@ -38,7 +38,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.uiService.showSnackbar('Logout successful', null, 1500);
     this.userStatus = false;
   }
-  ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
+  ngOnDestroy() {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 }

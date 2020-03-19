@@ -64,9 +64,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.users[0].id = this.saveId;
         this.user = this.users[0];
         this.birthObject = this.user.birth;
-        this.birthday = new Date(this.birthObject.seconds * 1000);
+        if (this.birthObject === undefined) {
+          this.birthday = new Date(124456666);
+        } else {
+          this.birthday = new Date(this.birthObject.seconds * 1000);
+        }
         this.birthdayValue = this.birthday.toDateString();
-        this.counter = this.user.countOrders;
+        if (isNaN( this.user.countOrders)) {
+          this.counter = 0;
+        } else {
+          this.counter = this.user.countOrders;
+        }
         this.isLoading = false;
       },
       (err) => {

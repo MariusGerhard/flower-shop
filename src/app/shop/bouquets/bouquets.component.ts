@@ -85,7 +85,6 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.headerTitleService.setTitle('Bouquets');
-    console.log(this.firebaseService.getUserRole());
     this.max = new Date();
     this.min = new Date();
     this.min.setDate(this.min.getDate() + 1);
@@ -94,6 +93,26 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.getBouquets();
     this.getUser();
   }
+  onFilterRes(form) {
+    this.querySubscription = this.firebaseService.getFilterBouquets('bouquets', form).subscribe(
+      data => {
+        this.bouquets = data.map(e => {
+          return {
+            id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Bouquet;
+        });
+        this.isLoading = false;
+      },
+      (err) => {
+        this.isLoading = false;
+        console.log(err);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
+  }
   getBouquets() {
     this.querySubscription = this.firebaseService.getBouquets('bouquets').subscribe(data => {
         this.bouquets = data.map(e => {
@@ -101,12 +120,11 @@ export class BouquetsComponent implements OnInit, OnDestroy {
             _id: e.payload.doc.id,
             ...e.payload.doc.data(),
           }as Bouquet;
-          this.isLoading = false;
         });
-      },
-      (err) => {
         this.isLoading = false;
-        console.log(err);
+      },
+      () => {
+        this.isLoading = false;
       },
       () => {
         this.isLoading = false;

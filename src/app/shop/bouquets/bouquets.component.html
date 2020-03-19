@@ -10,20 +10,20 @@
         <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
         <form #searchFormData="ngForm">
           <mat-card-actions>
-            <button type="button" mat-raised-button color="accent" (click)="toggle('orderMode')" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <button type="button" mat-raised-button color="accent" (click)="toggle('resMode');onFilterRes(searchFormData.value)" [disabled]="!searchFormData.valid" class="search-button">Search</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
               <mat-icon (click)="toggle('resMode')" color="primary" >cached</mat-icon>
             </div>
           </mat-card-actions>
           <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
             <mat-form-field>
-              <mat-label>Bouquet Name</mat-label>
+              <mat-label>Category</mat-label>
               <label>
                 <input matInput [disabled]="flower.value > '' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
               </label>
             </mat-form-field>
             <mat-form-field>
-              <mat-label>Category</mat-label>
+              <mat-label>Flower</mat-label>
               <label>
                 <input matInput [disabled]="category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
               </label>

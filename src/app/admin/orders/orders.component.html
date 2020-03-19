@@ -88,7 +88,7 @@
       <span>Category: </span> {{bouquet.category}}
     </p>
     <p>
-      <span>OrderDate: </span> {{bouquet.flower}}
+      <span>Flower: </span> {{bouquet.flower}}
     </p>
     <p>
       <span>SeasonStart: </span> {{bouquet.seasonStart}}
@@ -133,7 +133,7 @@
       </table>
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
-    <button mat-raised-button color="warn" (click)="onCsv()">Create Csv</button>
+    <button mat-raised-button color="warn" style="margin-top: 20px; width: 250px" (click)="onCsv()">Create Csv</button>
   </mat-card-content>
 </ng-template>
 
