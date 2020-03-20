@@ -8,4 +8,5 @@ export class Bouquet {
   seasonStart: number;
   seasonEnd: number;
   price: number;
+  path?: string;
 }

@@ -33,6 +33,10 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   takeHostSelfie = false;
   showHostSelfie = false;
   myDocId;
+  ref;
+  task;
+  uploadProgress;
+  path: string;
   // database
   private queryConnection;
   bouquets: Bouquet[];
@@ -154,13 +158,37 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
     }
   }
   // pictures
-  getPic(picId) {
-    const ref = this.storage.ref(picId);
-    this.profileUrl = ref.getDownloadURL();
+  upload(event) {
+    this.path = Math.random().toString(36).substring(2);
+    this.getDoc(this.myDocId);
+    this.bouquet.path = this.path;
+    this.ref = this.storage.ref('bouquets/' + this.path);
+    this.task = this.ref.put(event.target.files[0]);
+    this.uploadProgress = this.task.percentageChanges();
+    this.isLoading = true;
+    this.firebaseService.updateBouquets('bouquets', this.myDocId, this.bouquet).then(
+      () => {
+        this.isLoading = false;
+        this.takeHostSelfie = false;
+        this.uiService.showSnackbar('Picture ready', null, 2000);
+      });
+  }
+  getPic(docId) {
+    this.getDoc(docId);
+    this.path = this.bouquet.path;
+    this.ref = this.storage.ref('bouquets/' + this.path);
+    this.profileUrl = this.ref.getDownloadURL();
   }
   deleteProductPic(docId) {
     if (confirm('Are you sure want to delete this picture ?')) {
-      this.firebaseService.delBouquetPic('bouquet', docId);
+      this.getDoc(docId);
+      this.path = this.bouquet.path;
+      this.ref = this.storage.ref('bouquets/' + this.path);
+      this.task = this.ref.delete();
+      this.firebaseService.delBouquetPic('bouquet', docId).then(
+        () => {
+         this.uiService.showSnackbar('Picture deleted', null, 2000);
+        });
     }
   }
   // data table methods

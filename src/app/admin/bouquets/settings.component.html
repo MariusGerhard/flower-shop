@@ -174,15 +174,17 @@
     <mat-icon color="primary" (click)="toggle('addMode')">add</mat-icon>
     <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
   </mat-card-actions>
-  <div *ngIf="takeHostSelfie">
+  <div *ngIf="takeHostSelfie" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
     <button type="reset" (click)="takeHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
-    <input type="file">
+    <mat-progress-bar *ngIf="uploadProgress" mode="buffer" [value]="(uploadProgress | async)"></mat-progress-bar>
+    <label for="file">
+      <mat-label>Choose File: </mat-label>
+      <input type="file" (change)="upload($event);toggle('resMode')" accept=".jpg" id="file" name="file"/>
+    </label>
   </div>
-  <div *ngIf="showHostSelfie">
+  <div *ngIf="showHostSelfie" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
     <button type="reset" (click)="showHostSelfie=false;" mat-icon-button color="primary" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
-    <br>
     <img [src]="profileUrl | async" width="300" height="300" alt="dummy"/>
-    <br>
   </div>
   <div>
     <mat-form-field>
@@ -213,14 +215,14 @@
       <ng-container matColumnDef="_id">
         <mat-header-cell *matHeaderCellDef> action </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button matTooltip="Show Picture" *ngIf="row.path" (click)="getPic(row.path);this.showHostSelfie=true;" [disabled]="isLoading">
+          <button mat-icon-button matTooltip="Show Picture" *ngIf="row.path" (click)="getPic(row._id);this.showHostSelfie=true;" [disabled]="isLoading">
             <mat-icon color="primary">photo_camera</mat-icon>
           </button>
           <button mat-icon-button matTooltip="Remove Picture" *ngIf="row.path" (click)="deleteProductPic(row._id);this.showHostSelfie=false;" [disabled]="isLoading">
             <mat-icon color="primary">camera_roll</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Take Picture" (click)="this.myDocId=row._id;this.takeHostSelfie=true;" color="primary"
-                  *ngIf="!row.path" class="label-error"[disabled]="isLoading">
+          <button mat-icon-button matTooltip="Take Picture" (click)="this.myDocId=row._id;this.takeHostSelfie=true;" color="warn"
+                  *ngIf="!row.path" class="label-error" [disabled]="isLoading">
             <mat-icon>camera_roll</mat-icon>
           </button>
           <button mat-icon-button (click)="getDoc(row._id)" [disabled]="isLoading">

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {Router} from '@angular/router';
 
 import {UIService} from './ui.service';
@@ -27,26 +27,32 @@ export class FirebaseService {
   private currentUserId: string;
   private user: User;
   authChanged = new Subject<boolean>();
+
   constructor(private router: Router,
               private uiService: UIService,
               private firestore: AngularFirestore,
-              private afAuth: AngularFireAuth) { }
+              private afAuth: AngularFireAuth) {
+  }
+
   isAuth() {
     return this.userStatus;
   }
+
   getUserRole() {
     return this.userRole;
   }
+
   getCurrentUserData() {
     return this.currentUser;
   }
+
   checkUser() {
     this.querySubscription = this.getCurrentUser(this.currentUserId).subscribe(
       res => {
         this.users = res.map(e => {
           return {
             ...e.payload.doc.data(),
-          }as UserModel;
+          } as UserModel;
         });
         this.currentUser = this.users[0];
         if (this.currentUser === undefined) {
@@ -60,18 +66,21 @@ export class FirebaseService {
       }
     );
   }
+
   getCurrentUserId() {
     return this.currentUserId;
   }
+
   getCurrentUser(authId) {
     return this.firestore.collection('user', ref =>
       ref
         .where('authId', '==', authId)
     ).snapshotChanges();
   }
+
   async initAuthListener() {
-     this.afAuth.authState.subscribe(user => {
-      if ( user) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
         this.user = user;
         this.currentUserId = user.uid;
         this.userStatus = true;
@@ -84,6 +93,7 @@ export class FirebaseService {
       }
     });
   }
+
   async registerUser(authData) {
     await this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).then(
       (res) => {
@@ -106,10 +116,12 @@ export class FirebaseService {
     await console.log('end', this.newUser);
     await this.setUser(this.newUser);
   }
+
   async sendPasswordResetEmail(passwordResetEmail: string) {
     await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
     await this.router.navigate(['login']).then(() => console.log('Password reset success'));
   }
+
   async loginUser(loginData) {
     this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password).then(
       (res) => {
@@ -120,15 +132,17 @@ export class FirebaseService {
         this.userStatus = false;
         console.log(err);
       })
-      .finally( () => {
+      .finally(() => {
         }
       );
   }
+
   async loginGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credentials = await this.afAuth.auth.signInWithPopup(provider);
     return this.updateUserLogin(credentials.user);
   }
+
   updateUserLogin(user) {
     console.log(user);
     const userRef: AngularFirestoreDocument<UserModel> = this.firestore.doc('user/' + user.uid);
@@ -141,16 +155,19 @@ export class FirebaseService {
     };
     console.log(this.newUser);
     userRef.set(this.newUser, {merge: true}).then();
-}
+  }
+
   async loginFacebook() {
     const provider = new firebase.auth.FacebookAuthProvider();
-    const credentials =  await this.afAuth.auth.signInWithPopup(provider);
+    const credentials = await this.afAuth.auth.signInWithPopup(provider);
     return this.updateUserLogin(credentials.user);
   }
+
   async sendEmailVerification() {
     await this.afAuth.auth.currentUser.sendEmailVerification();
     await this.router.navigate(['admin/verify-email']);
   }
+
   async logoutUser() {
     this.currentUserId = '';
     if (this.querySubscription) {
@@ -159,35 +176,43 @@ export class FirebaseService {
     await this.router.navigate(['']);
     await this.afAuth.auth.signOut();
   }
+
   setUser(userData: UserModel) {
-      this.currentUserId = userData.id;
-      return this.firestore.collection('user').add(userData);
+    this.currentUserId = userData.id;
+    return this.firestore.collection('user').add(userData);
   }
+
   updateUser(columnType, key, value) {
     return this.firestore.collection(columnType).doc(key).update(value);
   }
+
   setBouquets(columnType, data: Bouquet) {
-        return this.firestore.collection(columnType).add(data);
-    }
+    return this.firestore.collection(columnType).add(data);
+  }
+
   updateBouquets(columnType, key, value) {
     return this.firestore.collection(columnType).doc(key).update(value);
   }
+
   delBouquet(columnType, key) {
     return this.firestore.collection(columnType).doc(key).delete();
   }
+
   delUser(columnType, key) {
     return this.firestore.collection(columnType).doc(key).delete();
   }
-  delBouquetPic(wurst, wurst2) {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-        }, 2000);
-      }
-    );
+
+  delBouquetPic(coll, docId) {
+    console.log(coll);
+    console.log(docId);
+    coll = 'bouquets' + docId;
+    const docRef = this.firestore.collection('bouquets').doc(docId);
+    return docRef.set({
+        path: null
+      },
+      {merge: true});
   }
+
   getFilterBouquets(columnType: string, filters) {
     if (filters) {
       if (filters.name > '') {
@@ -204,7 +229,7 @@ export class FirebaseService {
             .orderBy('name', 'desc')
         ).snapshotChanges();
       }
-      if (filters.flower > '')  {
+      if (filters.flower > '') {
         return this.firestore.collection(columnType, ref =>
           ref
             .where('flower', '==', filters.flower)
@@ -215,18 +240,22 @@ export class FirebaseService {
       return this.firestore.collection(columnType).snapshotChanges();
     }
   }
+
   getBouquets(columnType) {
     return this.firestore.collection(columnType).snapshotChanges();
   }
+
   getBouquet(id) {
     return this.firestore.collection('bouquets', ref =>
       ref
         .where('_id', '==', id)
     ).snapshotChanges();
   }
+
   getUsers() {
     return this.firestore.collection('user').snapshotChanges();
   }
+
   getUserOrder(columnType: string, filter) {
     return this.firestore.collection(columnType, ref =>
       ref
@@ -234,14 +263,16 @@ export class FirebaseService {
         .orderBy('orderDate', 'desc')
     ).snapshotChanges();
   }
+
   getOrdersByDate(date) {
     return this.firestore.collection('order', ref =>
       ref
         .where('pickUpDate', '==', date)
     ).snapshotChanges();
   }
+
   getOrdersByStartDate(startDate, dateTyp) {
-    console.log(new Date (startDate));
+    console.log(new Date(startDate));
     console.log(dateTyp);
     if (dateTyp === 'PickUpDate') {
       console.log('pick');
@@ -258,13 +289,12 @@ export class FirebaseService {
       ).snapshotChanges();
     }
   }
+
   getOrders() {
     return this.firestore.collection('order').snapshotChanges();
   }
+
   setOrder(columnType, data: Order) {
     return this.firestore.collection(columnType).add(data);
-  }
-  setProductPic(filePath, fileUrl, docId) {
-
   }
 }
