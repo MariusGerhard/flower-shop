@@ -156,20 +156,25 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
     }
   }
   // pictures
-  upload(event) {
+ async upload(event) {
     this.path = Math.random().toString(36).substring(2);
     this.getDoc(this.myDocId);
+    this.isLoading = true;
     this.bouquet.path = this.path;
     this.ref = this.storage.ref('bouquets/' + this.path);
-    this.task = this.ref.put(event.target.files[0]);
-    this.uploadProgress = this.task.percentageChanges();
-    this.isLoading = true;
-    this.firebaseService.updateBouquets('bouquets', this.myDocId, this.bouquet).then(
+    this.task = this.ref.put(event.target.files[0]).then(
       () => {
-        this.isLoading = false;
-        this.takeHostSelfie = false;
-        this.uiService.showSnackbar('Picture ready', null, 2000);
-      });
+        this.firebaseService.updateBouquets('bouquets', this.myDocId, this.bouquet).then(
+          () => {
+            this.isLoading = false;
+            this.takeHostSelfie = false;
+            this.uiService.showSnackbar('Picture ready', null, 2000);
+          });
+      },
+      () => {
+        console.log('Upload stopped');
+      }
+    );
   }
   getPic(docId) {
     this.getDoc(docId);
@@ -183,7 +188,7 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
       this.path = this.bouquet.path;
       this.ref = this.storage.ref('bouquets/' + this.path);
       this.task = this.ref.delete();
-      this.firebaseService.delBouquetPic('bouquet', docId).then(
+      this.firebaseService.delBouquetPic(docId).then(
         () => {
          this.uiService.showSnackbar('Picture deleted', null, 2000);
         });

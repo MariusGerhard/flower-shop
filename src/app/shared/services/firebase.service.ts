@@ -202,10 +202,7 @@ export class FirebaseService {
     return this.firestore.collection(columnType).doc(key).delete();
   }
 
-  delBouquetPic(coll, docId) {
-    console.log(coll);
-    console.log(docId);
-    coll = 'bouquets' + docId;
+  delBouquetPic(docId) {
     const docRef = this.firestore.collection('bouquets').doc(docId);
     return docRef.set({
         path: null

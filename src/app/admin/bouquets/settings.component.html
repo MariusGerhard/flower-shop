@@ -49,7 +49,7 @@
     <div *ngIf="!savedChanges">
       <mat-error *ngIf="error">Error: {{ errorMessage }}</mat-error>
       <mat-card-actions align="start">
-        <button type="submit" mat-raised-button [disabled]="!addDataForm.valid" color="accent" [disabled]="isLoading">Add</button>
+        <button type="submit" mat-raised-button [disabled]="!addDataForm.valid || isLoading " color="accent">Add</button>
         <button type="reset" (click)="this.addDataForm.reset();" mat-raised-button color="warn" [disabled]="isLoading">Clear</button>
         <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="1%">
           <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
@@ -112,7 +112,7 @@
     <div *ngIf="!savedChanges">
       <mat-error *ngIf="error">Error: {{ errorMessage }}</mat-error>
       <mat-card-actions align="start">
-        <button type="submit" mat-raised-button [disabled]="!this.editDataForm.valid || this.editDataForm.pristine" color="accent" class="search-button" [disabled]="isLoading">Update</button>
+        <button type="submit" mat-raised-button [disabled]="!this.editDataForm.valid || this.editDataForm.pristine || isLoading" color="accent" class="search-button">Update</button>
         <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
           <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
           <mat-icon color="primary" (click)="toggle('resMode');getData();">cached</mat-icon>
@@ -171,26 +171,25 @@
 </ng-template>
 <ng-template #showResMode>
   <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="2%">
-    <mat-icon color="primary" (click)="toggle('addMode')">add</mat-icon>
+    <mat-icon color="primary" (click)="toggle('addMode')" >add</mat-icon>
     <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
   </mat-card-actions>
-  <div *ngIf="takeHostSelfie" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
-    <button type="reset" (click)="takeHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading">
-      <mat-icon>clear</mat-icon>
+  <div *ngIf="takeHostSelfie" fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="center center">
+    <button type="reset" (click)="takeHostSelfie=false;" mat-raised-button color="warn" [disabled]="isLoading">
+      Close
     </button>
-    <mat-progress-bar *ngIf="uploadProgress" mode="buffer" [value]="(uploadProgress | async)"></mat-progress-bar>
     <label for="file">
       <mat-label>Choose File: </mat-label>
-      <input type="file" (change)="upload($event);toggle('resMode')" accept=".jpg" id="file" name="file"/>
+      <input [disabled]="isLoading" type="file" style="margin: 10px" (change)="upload($event);toggle('resMode')" accept=".jpg" id="file" name="file"/>
     </label>
   </div>
-  <div *ngIf="showHostSelfie" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
-    <button type="reset" (click)="showHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading">
-      <mat-icon>clear</mat-icon>
+  <div *ngIf="showHostSelfie" fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="center center" style="margin: 10px">
+    <img [attr.src]="profileUrl | async" height="300" width="auto" alt="dummy"/>
+    <button type="reset" (click)="showHostSelfie=false;" mat-raised-button color="warn" [disabled]="isLoading">
+      Close
     </button>
-    <img [src]="profileUrl | async" width="300" height="300" alt="dummy"/>
   </div>
-  <div>
+  <div *ngIf="showHostSelfie == false && takeHostSelfie == false">
     <mat-form-field>
       <mat-label>Filter Results</mat-label>
       <label>
