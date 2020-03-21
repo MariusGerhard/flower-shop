@@ -142,7 +142,6 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   getDoc(id) {
     this.bouquet = this.bouquets.find(x => x._id === id);
     this.myDocData = this.bouquet;
-    this.toggle('editMode');
   }
   deleteDoc(id) {
     this.isLoading = true;
@@ -152,7 +151,6 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
            this.isLoading = false;
            this.uiService.showSnackbar('Bouquet was deleted', null, 2500);
          });
-       this.toggle('searchMode');
     } else {
       this.isLoading = false;
     }

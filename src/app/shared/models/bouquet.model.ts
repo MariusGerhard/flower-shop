@@ -1,3 +1,5 @@
+import {Observable} from 'rxjs';
+
 export class Bouquet {
   // tslint:disable-next-line:variable-name
   _id: string;
@@ -8,5 +10,6 @@ export class Bouquet {
   seasonStart: number;
   seasonEnd: number;
   price: number;
-  path?: string;
+  path ?= '';
+  url?: Observable<string | null>;
 }

@@ -12,7 +12,7 @@
           <mat-card-actions>
             <button type="button" mat-raised-button color="accent" (click)="toggle('resMode');onFilterRes(searchFormData.value)" [disabled]="!searchFormData.valid" class="search-button">Search</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
-              <mat-icon (click)="toggle('resMode')" color="primary" >cached</mat-icon>
+              <mat-icon (click)="toggle('resMode');getBouquets()" color="primary" >cached</mat-icon>
             </div>
           </mat-card-actions>
           <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
@@ -53,9 +53,9 @@
     </mat-form-field>
   </mat-card>
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-  <mat-card *ngFor="let bouquet of bouquets" (click)="toggle('detailMode'); onDetails(bouquet._id)" fxLayout="row"  fxLayoutGap="2%">
+  <mat-card *ngFor="let bouquet of bouquets" (click)="toggle('detailMode'); onDetails(bouquet._id)" fxLayout="row"  fxLayoutGap="2%" style="width:  100%">
     <mat-card-content class="pic-size" fxLayoutAlign="center center">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+      <img *ngIf="bouquet.url" [attr.src]="bouquet.url | async"  mat-card-image alt="Photo of {{bouquet.name}}">
     </mat-card-content>
     <div>
       <mat-card-header>
@@ -81,7 +81,7 @@
   </mat-card-actions>
   <mat-card>
     <mat-card-header>
-      <div mat-card-avatar class="header-image" style="background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');"></div>
+      <img *ngIf="bouquet.url" mat-card-avatar class="header-image" [attr.src]="bouquet.url | async"  alt="Photo of {{bouquet.name}}">
       <mat-card-title>{{bouquet.name}}</mat-card-title>
       <mat-card-subtitle>{{bouquet.flower}}</mat-card-subtitle>
     </mat-card-header>
@@ -91,7 +91,7 @@
       </h3>
     </mat-card-content>
     <mat-card-content class="pic-size-details">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+      <img mat-card-image *ngIf="bouquet.url" [attr.src]="bouquet.url | async"  alt="Photo of {{bouquet.name}}">
     </mat-card-content>
     <mat-card-content>
       <p>

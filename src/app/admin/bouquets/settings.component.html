@@ -175,7 +175,9 @@
     <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
   </mat-card-actions>
   <div *ngIf="takeHostSelfie" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
-    <button type="reset" (click)="takeHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
+    <button type="reset" (click)="takeHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading">
+      <mat-icon>clear</mat-icon>
+    </button>
     <mat-progress-bar *ngIf="uploadProgress" mode="buffer" [value]="(uploadProgress | async)"></mat-progress-bar>
     <label for="file">
       <mat-label>Choose File: </mat-label>
@@ -183,7 +185,9 @@
     </label>
   </div>
   <div *ngIf="showHostSelfie" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
-    <button type="reset" (click)="showHostSelfie=false;" mat-icon-button color="primary" [disabled]="isLoading"><mat-icon>clear</mat-icon></button>
+    <button type="reset" (click)="showHostSelfie=false;" mat-icon-button color="warn" [disabled]="isLoading">
+      <mat-icon>clear</mat-icon>
+    </button>
     <img [src]="profileUrl | async" width="300" height="300" alt="dummy"/>
   </div>
   <div>
@@ -221,11 +225,11 @@
           <button mat-icon-button matTooltip="Remove Picture" *ngIf="row.path" (click)="deleteProductPic(row._id);this.showHostSelfie=false;" [disabled]="isLoading">
             <mat-icon color="primary">camera_roll</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Take Picture" (click)="this.myDocId=row._id;this.takeHostSelfie=true;" color="warn"
+          <button mat-icon-button matTooltip="Take Picture" (click)="this.myDocId=row._id;this.takeHostSelfie=true;this.showHostSelfie=false" color="warn"
                   *ngIf="!row.path" class="label-error" [disabled]="isLoading">
             <mat-icon>camera_roll</mat-icon>
           </button>
-          <button mat-icon-button (click)="getDoc(row._id)" [disabled]="isLoading">
+          <button mat-icon-button (click)="getDoc(row._id);toggle('editMode')" [disabled]="isLoading">
             <mat-icon color="primary">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="deleteDoc(row._id)" [disabled]="isLoading">

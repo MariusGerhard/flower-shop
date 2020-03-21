@@ -51,6 +51,8 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   userId: string;
   saveId: string;
   users: UserModel[];
+  ref;
+  path: string;
   user: UserModel = {
     authId: '',
     id: '',
@@ -67,6 +69,17 @@ export class BouquetsComponent implements OnInit, OnDestroy {
               private uiService: UIService,
               private router: Router) {
     this.events = ['Birthday', 'Mothers Day', 'Christmas', 'Easter'];
+    this.bouquet = {
+      _id: ' ',
+      name: '',
+      description: '',
+      price: 0,
+      seasonStart: 1,
+      seasonEnd: 2,
+      category: '',
+      flower: ' '
+    }
+    this.bouquets = [this.bouquet];
     this.userId = this.firebaseService.getCurrentUserId();
     this.pickUpDate = new Date();
     this.orderDate = new Date();
@@ -90,7 +103,6 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.min.setDate(this.min.getDate() + 1);
     this.max.setDate(this.max.getDate() + 21);
     this.isLoading = true;
-    this.getBouquets();
     this.getUser();
   }
   onFilterRes(form) {
@@ -103,6 +115,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
           }as Bouquet;
         });
         this.isLoading = false;
+        this.getPics();
       },
       (err) => {
         this.isLoading = false;
@@ -121,6 +134,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
             ...e.payload.doc.data(),
           }as Bouquet;
         });
+        this.getPics();
         this.isLoading = false;
       },
       () => {
@@ -130,6 +144,15 @@ export class BouquetsComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
+  }
+  getPics() {
+    this.bouquets = this.bouquets.map(bouquet => {
+      return {
+        url: this.getPic(bouquet._id),
+          ...bouquet
+      }as Bouquet;
+    });
+    this.isLoading = false;
   }
   getUser() {
     this.querySubscription = this.firebaseService.getCurrentUser(this.userId).subscribe(
@@ -187,8 +210,16 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.order.bouquetId = this.bouquet._id;
   }
   getPic(picId) {
-    const ref = this.storage.ref(picId);
-    this.profileUrl = ref.getDownloadURL();
+    this.bouquet = this.bouquets.find(x => x._id === picId);
+    if ( this.bouquet.path === '' || this.bouquet.path === 'undefined') {
+      this.ref = this.storage.ref('bouquets/dummy.jpg');
+      this.profileUrl = this.ref.getDownloadURL();
+    } else {
+      this.path = this.bouquet.path;
+      this.ref = this.storage.ref('bouquets/' + this.path);
+      this.profileUrl = this.ref.getDownloadURL();
+    }
+    return this.profileUrl;
   }
   setExtras() {
     if (this.order.event !== '' && this.isExtra === false) {
