@@ -29,18 +29,15 @@ export class BouquetsComponent implements OnInit, OnDestroy {
   data;
   isExtra = false;
   isMessage = false;
-  currentDate;
-  currentDate7;
-  savedChanges = false;
   error = false;
-  errorMessage = '';
   private querySubscription;
   dataSource = new MatTableDataSource();
 
   profileUrl: Observable<string | null>;
-  takeHostSelfie = false;
-  showHostSelfie = false;
+  flowerList: string[] = [];
+  categoryList: string[] = [];
   counter = 5;
+  filter: string;
   bouquets: Bouquet[];
   bouquet: Bouquet;
   toggleMode: string;
@@ -78,7 +75,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
       seasonEnd: 2,
       category: '',
       flower: ' '
-    }
+    };
     this.bouquets = [this.bouquet];
     this.userId = this.firebaseService.getCurrentUserId();
     this.pickUpDate = new Date();
@@ -104,9 +101,16 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.max.setDate(this.max.getDate() + 21);
     this.isLoading = true;
     this.getUser();
+    this.flowerList = [];
+    this.categoryList = [];
+    this.getBouquets();
   }
-  onFilterRes(form) {
-    this.querySubscription = this.firebaseService.getFilterBouquets('bouquets', form).subscribe(
+  onFilterRes(filter) {
+    console.log(filter);
+    if ( filter === '') {
+      filter = 'a';
+    }
+    this.querySubscription = this.firebaseService.getFilterBouquets('bouquets', filter).subscribe(
       data => {
         this.bouquets = data.map(e => {
           return {
@@ -127,6 +131,7 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     );
   }
   getBouquets() {
+    this.isLoading = true;
     this.querySubscription = this.firebaseService.getBouquets('bouquets').subscribe(data => {
         this.bouquets = data.map(e => {
           return {
@@ -134,6 +139,12 @@ export class BouquetsComponent implements OnInit, OnDestroy {
             ...e.payload.doc.data(),
           }as Bouquet;
         });
+        this.bouquets.forEach((res) => {
+          this.flowerList.push(res.flower);
+          this.categoryList.push(res.category);
+        });
+        this.flowerList = [...new Set(this.flowerList)];
+        this.categoryList = [...new Set(this.categoryList)];
         this.getPics();
         this.isLoading = false;
       },

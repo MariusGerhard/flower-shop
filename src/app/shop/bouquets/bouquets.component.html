@@ -10,23 +10,25 @@
         <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
         <form #searchFormData="ngForm">
           <mat-card-actions>
-            <button type="button" mat-raised-button color="accent" (click)="toggle('resMode');onFilterRes(searchFormData.value)" [disabled]="!searchFormData.valid" class="search-button">Search</button>
+            <button type="button" mat-raised-button color="accent" (click)="toggle('resMode');onFilterRes(searchFormData.value)" class="search-button" [disabled]="selectFlower.empty && selectCategory.empty">Search</button>
             <div fxFlex="row" fxLayoutAlign="flex-end" fxLayoutGap="2%" >
-              <mat-icon (click)="toggle('resMode');getBouquets()" color="primary" >cached</mat-icon>
+              <mat-icon (click)="toggle('resMode')" color="primary" >cached</mat-icon>
             </div>
           </mat-card-actions>
           <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
-            <mat-form-field>
-              <mat-label>Category</mat-label>
-              <label>
-                <input matInput [disabled]="flower.value > '' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
+            <mat-form-field style="width: 250px">
+              <mat-label>Select Category</mat-label>
+              <mat-select #selectCategory [ngModel]="searchFormData" name="category" [disabled]="!selectFlower.empty">
+                <mat-option *ngFor="let category of categoryList" [value]="category">{{category}}</mat-option>
+              </mat-select>
+              <mat-hint align="end">Look for a category of specific persons</mat-hint>
             </mat-form-field>
-            <mat-form-field>
-              <mat-label>Flower</mat-label>
-              <label>
-                <input matInput [disabled]="category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
+            <mat-form-field style="width: 250px">
+              <mat-label>Select Flower</mat-label>
+              <mat-select #selectFlower [ngModel]="searchFormData" name="flower" [disabled]="!selectCategory.empty">
+                <mat-option *ngFor="let flower of flowerList" [value]="flower">{{flower}}</mat-option>
+              </mat-select>
+              <mat-hint align="end">Look for a specific flower</mat-hint>
             </mat-form-field>
           </div>
         </form>
