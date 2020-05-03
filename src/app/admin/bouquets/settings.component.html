@@ -23,21 +23,25 @@
             <mat-form-field style="width: 250px">
               <mat-label>Bouquet Name</mat-label>
               <label>
-                <input matInput [disabled]="category.value > '' || flower.value >'' " type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
+                <input matInput [disabled]="!selectFlower.empty || !selectCategory.empty" type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required>
               </label>
             </mat-form-field>
-            <mat-form-field style="width: 250px">
-              <mat-label>Category</mat-label>
-              <label>
-                <input matInput [disabled]="name.value > '' || flower.value >'' " type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
-            </mat-form-field>
-            <mat-form-field style="width: 250px">
-              <mat-label>Flower</mat-label>
-              <label>
-                <input matInput [disabled]="name.value > '' || category.value > '' " type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required>
-              </label>
-            </mat-form-field>
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+              <mat-form-field style="width: 250px">
+                <mat-label>Select Category</mat-label>
+                <mat-select #selectCategory [ngModel]="searchFormData" name="category" [disabled]="!selectFlower.empty || name.value !=  '' ">
+                  <mat-option *ngFor="let category of categoryList" [value]="category"> {{category}} </mat-option>
+                </mat-select>
+                <mat-hint align="end">Choose for a category</mat-hint>
+              </mat-form-field>
+              <mat-form-field style="width: 250px">
+                <mat-label>Select Flower</mat-label>
+                <mat-select #selectFlower [ngModel]="searchFormData" name="flower" [disabled]="!selectCategory.empty || name.value != '' ">
+                  <mat-option *ngFor="let flower of flowerList" [value]="flower">{{flower}}</mat-option>
+                </mat-select>
+                <mat-hint align="end">Choose a specific flower</mat-hint>
+              </mat-form-field>
+            </div>
           </div>
         </form>
       </mat-card-content>

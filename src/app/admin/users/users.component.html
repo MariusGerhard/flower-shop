@@ -76,10 +76,10 @@
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> action </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="onGetUser(row.id);toggle('editMode')" [disabled]="isLoading">
+          <button mat-icon-button (click)="onGetUser(row.id);toggle('editMode')" [disabled]="isLoading || row.role === 'admin'" *ngIf="row.role !== 'admin'">
             <mat-icon color="primary">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="onDeleteUser(row.id)" [disabled]="isLoading">
+          <button mat-icon-button (click)="onDeleteUser(row.id)" [disabled]="isLoading || row.role === 'admin'" *ngIf="row.role !== 'admin'">
             <mat-icon color="primary">delete</mat-icon>
           </button>
         </mat-cell>

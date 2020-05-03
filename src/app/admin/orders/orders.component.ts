@@ -17,11 +17,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
   bouquet: Bouquet = {
     _id: '',
     name: '',
-    category: '',
+    category: 'Flower bouquet was deleted',
     description: '',
     seasonEnd: 12,
     seasonStart: 1,
-    flower: '',
+    flower: 'Flower bouquet was deleted',
     price: 0,
   };
   bouquets: Bouquet[];
@@ -109,7 +109,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.toggleMode = filter;
   }
   onCsv() {
-    const csv = new ngxCsv(this.orders, 'orders', {
+    const today = new Date();
+    today.getDate();
+    const csv = new ngxCsv(this.orders, '0rders_' + today.toLocaleDateString(), {
       fieldSeparator: ';',
       quoteStrings: '"',
       decimalseparator: ',',
@@ -130,8 +132,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
             ...e.payload.doc.data(),
           }as Bouquet;
         });
-        this.bouquet = this.bouquets[0];
-      });
+        if ( this.bouquets[0] === undefined) {
+          console.log(this.bouquets[0]);
+        } else {
+          this.bouquet = this.bouquets[0];
+        }
+      },
+    () => {
+        console.log('This Bouquet was deleted');
+    }
+      );
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

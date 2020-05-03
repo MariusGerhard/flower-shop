@@ -105,6 +105,9 @@ export class BouquetsComponent implements OnInit, OnDestroy {
     this.categoryList = [];
     this.getBouquets();
   }
+  onNoFilter() {
+    this.getBouquets();
+  }
   onFilterRes(filter) {
     console.log(filter);
     if ( filter === '') {

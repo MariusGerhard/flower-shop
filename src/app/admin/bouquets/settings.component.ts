@@ -35,6 +35,9 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
   myDocId;
   ref;
   task;
+  // search drop down
+  flowerList: string[] = [];
+  categoryList: string[] = [];
   uploadProgress;
   path: string;
   // database
@@ -55,6 +58,31 @@ export class SettingsComponent implements OnInit,  AfterViewInit, OnDestroy {
     this.dataSource = new MatTableDataSource(this.bouquets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.flowerList = [];
+    this.categoryList = [];
+    this.isLoading = true;
+    this.queryConnection = this.firebaseService.getBouquets('bouquets').subscribe(data => {
+        this.bouquets = data.map(e => {
+          return {
+            _id: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          }as Bouquet;
+        });
+        this.bouquets.forEach((res) => {
+          this.flowerList.push(res.flower);
+          this.categoryList.push(res.category);
+        });
+        this.flowerList = [...new Set(this.flowerList)];
+        this.categoryList = [...new Set(this.categoryList)];
+        this.isLoading = false;
+      },
+      () => {
+        this.isLoading = false;
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
   }
   toggle(filter?) {
     if (!filter) {

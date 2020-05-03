@@ -79,7 +79,7 @@
       <span>Event: </span> {{order.event}}
     </p>
     <p *ngIf="order.message">
-      <span>Bouquet: </span> {{order.message}}
+      <span>Message: </span> {{order.message}}
     </p>
   </mat-card-content>
   <h1 style="color: forestgreen">Flower Info</h1>
@@ -101,7 +101,7 @@
 
 <ng-template #showResMode>
   <mat-card-actions fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="5%">
-    <mat-icon color="primary" (click)="toggle('graphMode')">timeline</mat-icon>
+    <mat-icon color="primary">timeline</mat-icon>
     <mat-icon color="primary" (click)="toggle('searchMode')">search</mat-icon>
   </mat-card-actions>
   <mat-card-content fxLayout="column" fxLayoutAlign="center center">
