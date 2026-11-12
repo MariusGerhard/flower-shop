@@ -1,0 +1,56 @@
+<section class="fall-in">
+  <div class="col-center gap-sm">
+    <h1>Account Settings</h1>
+    <button type="button" class="edit-button" matButton="filled" color="warn" routerLink="/shop">Back to Shop</button>
+    <button type="button" class="edit-button" matButton="filled" color="primary" (click)="toggleEdit()">
+      {{ isEdit() ? 'Stop Edit' : 'Edit Settings' }}
+    </button>
+  </div>
+
+  @if (user(); as user) {
+    <form class="col-center gap-sm" #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+      @if (isSaving()) {
+        <mat-progress-bar mode="indeterminate" />
+      }
+      <mat-card class="content-card">
+        <mat-card-content class="col-center gap-sm">
+          <mat-radio-group aria-label="Your gender" [ngModel]="user.gender" name="gender" [disabled]="!isEdit()">
+            <mat-radio-button value="Mr." color="primary">Male</mat-radio-button>
+            <mat-radio-button value="Mrs." color="warn">Female</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-form-field>
+            <mat-label>First name</mat-label>
+            <input type="text" matInput name="firstName" required [ngModel]="user.firstName" [disabled]="!isEdit()">
+            <mat-error>Field should not be empty</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Last name</mat-label>
+            <input type="text" matInput name="lastName" required [ngModel]="user.lastName" [disabled]="!isEdit()">
+            <mat-error>Field should not be empty</mat-error>
+          </mat-form-field>
+
+          <p>Your current birthday: {{ birthday() | date: 'mediumDate' }}</p>
+
+          <mat-form-field>
+            <mat-label>Set new Birthdate</mat-label>
+            <input matInput [matDatepicker]="picker" [min]="range.min" [max]="range.max" [ngModel]="birthday()" name="birth" required [disabled]="!isEdit()">
+            <mat-hint>You must be at least 16 years old</mat-hint>
+            <mat-error>Field should not be empty</mat-error>
+            <mat-datepicker-toggle matIconSuffix [for]="picker" />
+            <mat-datepicker #picker />
+          </mat-form-field>
+
+          <p>Number of Orders: {{ user.countOrders ?? 0 }}</p>
+
+          <button matButton="filled" color="accent" type="submit" [disabled]="isSaving() || f.invalid || f.pristine">Save Changes</button>
+        </mat-card-content>
+      </mat-card>
+    </form>
+  } @else {
+    <div class="col-center">
+      <mat-progress-bar mode="indeterminate" />
+    </div>
+  }
+</section>

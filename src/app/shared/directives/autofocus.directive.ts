@@ -1,29 +1,11 @@
-/*
-Our own directive which sets autofocus on html elements used in the result and login component
-called with appAutoFocus
-*/
-import {AfterViewInit, Directive, ElementRef, Input, OnInit} from '@angular/core';
+import { Directive, ElementRef, afterNextRender, inject } from '@angular/core';
 
-@Directive({
-  selector: '[appAutofocus]'
-})
-export class AutofocusDirective implements OnInit, AfterViewInit {
-  private autoFocus;
-  constructor( private el: ElementRef ) { }
-  // Checks if there is an autofocus
-  ngOnInit() {
-    if (this.autoFocus || typeof this.autoFocus === 'undefined') {
-      this.el.nativeElement.focus();
-    }
-  }
-  // Sets our window on a new focus
-  ngAfterViewInit() {
-    window.setTimeout(() => {
-      this.el.nativeElement.focus();
-    });
-  }
-  // Switch for autofocus
-  @Input() set autofocus(condition: boolean) {
-    this.autoFocus = condition !== false;
+/** Focuses the host element once it has been rendered. Usage: `<input appAutofocus>` */
+@Directive({ selector: '[appAutofocus]' })
+export class AutofocusDirective {
+  private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  constructor() {
+    afterNextRender(() => this.el.nativeElement.focus());
   }
 }

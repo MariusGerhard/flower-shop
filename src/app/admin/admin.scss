@@ -1,0 +1,52 @@
+// Shared styles of the three admin tabs (included via styleUrls)
+:host {
+  display: block;
+  padding-top: 10px;
+}
+
+h1 {
+  text-align: center;
+}
+
+mat-progress-bar {
+  width: 100%;
+  max-width: 500px;
+}
+
+mat-card {
+  width: calc(100% - 40px);
+  max-width: 500px;
+  margin-bottom: 10px;
+}
+
+mat-card-content {
+  padding-top: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.actions {
+  margin-bottom: 10px;
+}
+
+.search-button {
+  width: 250px;
+}
+
+table {
+  width: 100%;
+}
+
+.no-data {
+  padding: 16px;
+}
+
+.action-cell {
+  white-space: nowrap;
+}
+
+.crimson {
+  color: crimson;
+}

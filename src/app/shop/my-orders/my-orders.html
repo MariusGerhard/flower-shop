@@ -1,0 +1,62 @@
+<section class="col-center fall-in">
+  <h3>{{ user()?.firstName }} {{ user()?.lastName }} Orders</h3>
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  @if (selected(); as order) {
+    <mat-card class="content-card">
+      <mat-card-header>
+        <mat-card-title>{{ order.bouquetName }}</mat-card-title>
+        <mat-card-subtitle>Ordered on {{ order.orderDate | date }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><b>Pick-up day:</b> {{ order.pickUpDate | date }}</p>
+        <p><b>Price:</b> {{ order.price | currency: 'EUR' }}</p>
+        @if (order.event) {
+          <p><b>Event:</b> {{ order.event }}</p>
+        }
+        @if (order.message) {
+          <p><b>Greetings card:</b> {{ order.message }}</p>
+        }
+      </mat-card-content>
+    </mat-card>
+    <button matButton="filled" color="warn" (click)="selected.set(null)">back</button>
+  } @else {
+    <mat-card class="content-card">
+      <mat-card-content>
+        <mat-form-field class="full-width">
+          <mat-label>Filter</mat-label>
+          <input matInput appAutofocus (keyup)="applyFilter($event)" placeholder="Ex. Rose">
+        </mat-form-field>
+        <div class="mat-elevation-z2">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="bouquetName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Bouquet</th>
+              <td mat-cell *matCellDef="let row">{{ row.bouquetName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="orderDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Order date</th>
+              <td mat-cell *matCellDef="let row">{{ row.orderDate | date }}</td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Details</th>
+              <td mat-cell *matCellDef="let row">
+                <button matIconButton (click)="selected.set(row)" aria-label="Show details">
+                  <mat-icon color="primary">info</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">No orders yet.</td>
+            </tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" />
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <button matButton="filled" color="warn" routerLink="/shop">back</button>
+  }
+</section>

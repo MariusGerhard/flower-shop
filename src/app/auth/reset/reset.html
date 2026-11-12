@@ -1,0 +1,22 @@
+<section class="fall-in">
+  <form class="col-center gap-sm" #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <h1>Reset Flower Shop Password</h1>
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+    <mat-card class="content-card">
+      <mat-card-content class="col-center gap-sm">
+        <mat-form-field>
+          <mat-label>Please enter your E-Mail</mat-label>
+          <input type="email" matInput ngModel name="email" email required #email="ngModel" autocomplete="email">
+          @if (email.hasError('required')) {
+            <mat-error>Field should not be empty</mat-error>
+          } @else {
+            <mat-error>E-Mail is invalid</mat-error>
+          }
+        </mat-form-field>
+        <button matButton="filled" type="submit" color="accent" [disabled]="f.invalid || isLoading()">Submit</button>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</section>

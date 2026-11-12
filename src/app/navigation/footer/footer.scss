@@ -1,0 +1,25 @@
+.footer {
+  --mat-toolbar-standard-height: 30px;
+  --mat-toolbar-mobile-height: 30px;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  font-size: 14px;
+  gap: 5px;
+}
+
+mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  margin-right: 1%;
+}
+
+a:hover,
+a:active {
+  opacity: 0.65;
+}

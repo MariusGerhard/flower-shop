@@ -1,0 +1,35 @@
+<mat-toolbar class="toolbar">
+  <div class="row start">
+    <a routerLink="/" aria-label="Home">
+      <div class="brand"></div>
+    </a>
+    <button class="hide-gt-sm" matIconButton (click)="toggleNav.emit()" aria-label="Open menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="nav-item">{{ title() }}</div>
+  </div>
+
+  <div class="logo hide-xs"></div>
+
+  <nav class="row end hide-lt-md">
+    <ul class="navigation-bar">
+      @if (isAuth()) {
+        <li><a routerLink="/flowers" routerLinkActive="highlight">Custom</a></li>
+        <li><a routerLink="/bouquets" routerLinkActive="highlight">Bouquets</a></li>
+        <li><a routerLink="/control" routerLinkActive="highlight">Control</a></li>
+        <li><a routerLink="/profile" routerLinkActive="highlight">Profile</a></li>
+        <li><a routerLink="/orders" routerLinkActive="highlight">My Orders</a></li>
+        <li><a routerLink="/shop" routerLinkActive="highlight">Shop</a></li>
+      }
+      <li>
+        <a routerLink="/" routerLinkActive="highlight" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+      @if (isAuth()) {
+        <li><a href="" (click)="$event.preventDefault(); onLogout()">Logout</a></li>
+      } @else {
+        <li><a routerLink="/login" routerLinkActive="highlight">Login</a></li>
+        <li><a routerLink="/register" routerLinkActive="highlight">Register</a></li>
+      }
+    </ul>
+  </nav>
+</mat-toolbar>

@@ -1,12 +1,24 @@
 import { TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { UIService } from './ui.service';
+import { UiService } from './ui.service';
 
-describe('UIService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+describe('UiService', () => {
+  it('opens a snackbar with the app panel class', () => {
+    const snackbar = { open: vi.fn() };
+    TestBed.configureTestingModule({ providers: [{ provide: MatSnackBar, useValue: snackbar }] });
 
-  it('should be created', () => {
-    const service: UIService = TestBed.get(UIService);
-    expect(service).toBeTruthy();
+    TestBed.inject(UiService).showSnackbar('Saved', 'OK', 1500);
+
+    expect(snackbar.open).toHaveBeenCalledWith('Saved', 'OK', { duration: 1500, panelClass: ['snackbar'] });
+  });
+
+  it('uses 2 seconds as default duration', () => {
+    const snackbar = { open: vi.fn() };
+    TestBed.configureTestingModule({ providers: [{ provide: MatSnackBar, useValue: snackbar }] });
+
+    TestBed.inject(UiService).showSnackbar('Hi');
+
+    expect(snackbar.open).toHaveBeenCalledWith('Hi', undefined, { duration: 2000, panelClass: ['snackbar'] });
   });
 });

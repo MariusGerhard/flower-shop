@@ -1,220 +1,287 @@
-import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {Router} from '@angular/router';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import {UIService} from './ui.service';
-import {AngularFireAuth} from '@angular/fire/auth';
-import * as firebase from 'firebase/app';
-import {User} from 'firebase';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {Bouquet} from '../models/bouquet.model';
-import {UserModel} from '../models/userModel';
-import {Order} from '../models/order.model';
+import { initializeApp } from 'firebase/app';
+import {
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  User,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+import {
+  DocumentData,
+  Query,
+  Unsubscribe,
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  getFirestore,
+  increment,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import { deleteObject, getDownloadURL, getStorage, ref } from 'firebase/storage';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class FirebaseService {
-  fakeResponse = false;
-  private userStatus = false;
-  private userRole: string;
-  category: string;
-  flower: string;
-  private users: UserModel[];
-  private currentUser: UserModel;
-  private querySubscription;
-  private newUser: UserModel;
-  private currentUserId: string;
-  private user: User;
-  authChanged = new Subject<boolean>();
-  constructor(private router: Router,
-              private uiService: UIService,
-              private firestore: AngularFirestore,
-              private afAuth: AngularFireAuth) { }
-  isAuth() {
-    return this.userStatus;
-  }
-  getUserRole() {
-    return this.userRole;
-  }
-  getCurrentUserData() {
-    return this.currentUser;
-  }
-  checkUser() {
-    this.querySubscription = this.getCurrentUser(this.currentUserId).subscribe(
-      res => {
-        this.users = res.map(e => {
-          return {
-            ...e.payload.doc.data(),
-          }as UserModel;
-        });
-        this.currentUser = this.users[0];
-        if (this.currentUser === undefined) {
-          console.log('Your account was disabled');
-          this.logoutUser();
-          this.uiService.showSnackbar('Login disabled', null, 1500);
-        } else {
-          this.userRole = this.currentUser.role;
-          this.uiService.showSnackbar('User was successful', null, 1500);
-        }
-      },
-      (err) => {
-        console.log(err);
-        this.logoutUser();
-      },
+import { environment } from '../../../environments/environment';
+import { Bouquet, BouquetFilter, BouquetInput } from '../models/bouquet.model';
+import { Order } from '../models/order.model';
+import { UserModel } from '../models/user.model';
+import { UiService } from './ui.service';
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterData extends LoginData {
+  gender: string;
+  firstName: string;
+  lastName: string;
+  birth: Date;
+}
+
+const USERS = 'user';
+const BOUQUETS = 'bouquets';
+const ORDERS = 'order';
+const FLOWERS = 'flowers';
+
+/** Live query as Observable. The Firestore document id is put into `id`. */
+function watch<T>(q: Query<DocumentData>): Observable<T[]> {
+  return new Observable<T[]>((subscriber) => {
+    const unsubscribe: Unsubscribe = onSnapshot(
+      q,
+      (snapshot) => subscriber.next(snapshot.docs.map((d) => ({ ...d.data(), id: d.id }) as T)),
+      (error) => subscriber.error(error),
     );
-  }
-  getCurrentUserId() {
-    return this.currentUserId;
-  }
-  getCurrentUser(authId) {
-    return this.firestore.collection('user', ref =>
-      ref
-        .where('authId', '==', authId)
-    ).snapshotChanges();
-  }
-  async initAuthListener() {
-     this.afAuth.authState.subscribe(user => {
-      if ( user) {
-        this.user = user;
-        this.currentUserId = user.uid;
-        this.userStatus = true;
-        this.authChanged.next(true);
-        this.router.navigate(['/shop']);
-      } else {
-        this.userStatus = false;
-        this.authChanged.next(false);
-        this.router.navigate(['']);
-      }
+    return unsubscribe;
+  });
+}
+
+/** Wraps the Firebase JS SDK (modular API) for the whole app. */
+@Injectable({ providedIn: 'root' })
+export class FirebaseService {
+  private readonly router = inject(Router);
+  private readonly ui = inject(UiService);
+
+  private readonly app = initializeApp(environment.firebase);
+  private readonly auth = getAuth(this.app);
+  private readonly db = getFirestore(this.app);
+  private readonly storage = getStorage(this.app);
+
+  private readonly _authUser = signal<User | null>(null);
+  private readonly _profile = signal<UserModel | null>(null);
+  private profileUnsubscribe: Unsubscribe | null = null;
+  private resolveAuthReady!: () => void;
+
+  /** Logged-in Firebase Auth user (or null). */
+  readonly authUser = this._authUser.asReadonly();
+  /** User document from the `user` collection for the logged-in user. */
+  readonly profile = this._profile.asReadonly();
+  readonly isAuth = computed(() => this._authUser() !== null);
+  readonly userRole = computed(() => this._profile()?.role ?? null);
+  /** Resolves once Firebase has restored (or not) the previous session. */
+  readonly authReady = new Promise<void>((resolve) => (this.resolveAuthReady = resolve));
+
+  constructor() {
+    onAuthStateChanged(this.auth, (user) => {
+      this._authUser.set(user);
+      this.watchProfile(user);
+      this.resolveAuthReady();
     });
   }
-  async registerUser(authData) {
-    await this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).then(
-      (res) => {
-        this.newUser = {
-          id: res.user.uid,
-          authId: res.user.uid,
-          gender: authData.gender,
-          firstName: authData.firstName,
-          lastName: authData.lastName,
-          email: authData.email,
-          birth: authData.birth,
-          role: 'user',
-          countOrders: 0,
-        };
-        this.uiService.showSnackbar('Account created. Login successful', null, 1500);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    await console.log('end', this.newUser);
-    await this.setUser(this.newUser);
-  }
-  async sendPasswordResetEmail(passwordResetEmail: string) {
-    await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
-    await this.router.navigate(['login']).then(() => console.log('Password reset success'));
-  }
-  async loginUser(loginData) {
-    this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password).then(
-      (res) => {
-        this.currentUserId = res.user.uid;
-        this.checkUser();
-      })
-      .catch(err => {
-        this.userStatus = false;
-        console.log(err);
-      })
-      .finally( () => {
-        }
-      );
-  }
-  async loginGoogle() {
-    await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-}
-  async loginFacebook() {
-    await this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
-  }
-  async sendEmailVerification() {
-    await this.afAuth.auth.currentUser.sendEmailVerification();
-    await this.router.navigate(['admin/verify-email']);
-  }
-  async logoutUser() {
-    this.currentUserId = '';
-    await this.afAuth.auth.signOut();
-  }
-  setUser(userData: UserModel) {
-      this.currentUserId = userData.id;
-      return this.firestore.collection('user').add(userData);
-  }
-  updateUser(columnType, key, value) {
-    return this.firestore.collection(columnType).doc(key).update(value);
-  }
-  setBouquets(columnType, data: Bouquet) {
-        return this.firestore.collection(columnType).add(data);
+
+  // ---------- Auth ----------
+
+  async registerUser(data: RegisterData): Promise<void> {
+    try {
+      const { user } = await createUserWithEmailAndPassword(this.auth, data.email, data.password);
+      const newUser: UserModel = {
+        id: user.uid,
+        authId: user.uid,
+        gender: data.gender,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        birth: data.birth,
+        role: 'user',
+        countOrders: 0,
+      };
+      // The document id is the auth uid, so `id` and `authId` are identical for new users.
+      await setDoc(doc(this.db, USERS, user.uid), newUser);
+      this.ui.showSnackbar('Account created. Login successful', undefined, 1500);
+      await this.router.navigate(['/shop']);
+    } catch (err) {
+      this.handleError(err);
+      throw err;
     }
-  updateBouquets(columnType, key, value) {
-    return this.firestore.collection(columnType).doc(key).update(value);
   }
-  delBouquet(columnType, key) {
-    return this.firestore.collection(columnType).doc(key).delete();
-  }
-  delUser(columnType, key) {
-    return this.firestore.collection(columnType).doc(key).delete();
-  }
-  delBouquetPic(wurst, wurst2) {
-    this.fakeResponse = true;
-    return Observable.create(
-      observer => {
-        setTimeout(() => {
-          observer.next(this.fakeResponse);
-        }, 2000);
+
+  async loginUser(data: LoginData): Promise<void> {
+    try {
+      const { user } = await signInWithEmailAndPassword(this.auth, data.email, data.password);
+      const snapshot = await getDocs(query(collection(this.db, USERS), where('authId', '==', user.uid)));
+      if (snapshot.empty) {
+        await signOut(this.auth);
+        this.ui.showSnackbar('Login disabled', undefined, 1500);
+        return;
       }
+      this.ui.showSnackbar('Login successful', undefined, 1500);
+      await this.router.navigate(['/shop']);
+    } catch (err) {
+      this.handleError(err);
+      throw err;
+    }
+  }
+
+  loginGoogle(): Promise<void> {
+    return this.loginWithPopup(new GoogleAuthProvider());
+  }
+
+  loginFacebook(): Promise<void> {
+    return this.loginWithPopup(new FacebookAuthProvider());
+  }
+
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      this.ui.showSnackbar('E-Mail was sent', undefined, 2000);
+      await this.router.navigate(['/login']);
+    } catch (err) {
+      this.handleError(err);
+      throw err;
+    }
+  }
+
+  async logoutUser(): Promise<void> {
+    await signOut(this.auth);
+    this.ui.showSnackbar('Logout successful', undefined, 1500);
+    await this.router.navigate(['']);
+  }
+
+  // ---------- Users ----------
+
+  watchUsers(): Observable<UserModel[]> {
+    return watch<UserModel>(collection(this.db, USERS));
+  }
+
+  updateUser(id: string, value: Partial<UserModel>): Promise<void> {
+    return updateDoc(doc(this.db, USERS, id), value);
+  }
+
+  deleteUser(id: string): Promise<void> {
+    return deleteDoc(doc(this.db, USERS, id));
+  }
+
+  // ---------- Bouquets ----------
+
+  watchBouquets(filter?: BouquetFilter | null): Observable<Bouquet[]> {
+    const col = collection(this.db, BOUQUETS);
+    if (filter?.name) {
+      return watch<Bouquet>(query(col, where('name', '>=', filter.name), orderBy('name', 'desc')));
+    }
+    if (filter?.category) {
+      return watch<Bouquet>(query(col, where('category', '==', filter.category), orderBy('name', 'desc')));
+    }
+    if (filter?.flower) {
+      return watch<Bouquet>(query(col, where('flower', '==', filter.flower), orderBy('name', 'desc')));
+    }
+    return watch<Bouquet>(col);
+  }
+
+  addBouquet(data: BouquetInput): Promise<unknown> {
+    return addDoc(collection(this.db, BOUQUETS), data);
+  }
+
+  updateBouquet(id: string, value: Partial<BouquetInput>): Promise<void> {
+    return updateDoc(doc(this.db, BOUQUETS, id), value);
+  }
+
+  deleteBouquet(id: string): Promise<void> {
+    return deleteDoc(doc(this.db, BOUQUETS, id));
+  }
+
+  getPictureUrl(path: string): Promise<string> {
+    return getDownloadURL(ref(this.storage, path));
+  }
+
+  /** Deletes the bouquet picture in Storage and removes the reference from the bouquet. */
+  async deleteBouquetPicture(bouquet: Bouquet): Promise<void> {
+    if (bouquet.path) {
+      await deleteObject(ref(this.storage, bouquet.path));
+    }
+    await this.updateBouquet(bouquet.id, { path: null });
+  }
+
+  // ---------- Flowers ----------
+
+  watchFlowers(): Observable<{ id: string; name: string; color: string; price: number }[]> {
+    return watch(collection(this.db, FLOWERS));
+  }
+
+  // ---------- Orders ----------
+
+  watchOrders(): Observable<Order[]> {
+    return watch<Order>(query(collection(this.db, ORDERS), orderBy('orderDate', 'desc')));
+  }
+
+  watchUserOrders(userId: string): Observable<Order[]> {
+    return watch<Order>(
+      query(collection(this.db, ORDERS), where('userId', '==', userId), orderBy('orderDate', 'desc')),
     );
   }
-  getFilterBouquets(columnType: string, filters) {
-    if (filters) {
-      if (filters.name > '') {
-        return this.firestore.collection(columnType, ref =>
-          ref
-            .where('name', '>=', filters.name)
-            .orderBy('name', 'desc')
-        ).snapshotChanges();
-      }
-      if (filters.category > '') {
-        return this.firestore.collection(columnType, ref =>
-          ref
-            .where('category', '==', filters.category)
-            .orderBy('name', 'desc')
-        ).snapshotChanges();
-      }
-      if (filters.flower > '')  {
-        return this.firestore.collection(columnType, ref =>
-          ref
-            .where('flower', '==', filters.flower)
-            .orderBy('name', 'desc')
-        ).snapshotChanges();
-      }
-    } else {
-      return this.firestore.collection(columnType).snapshotChanges();
+
+  /** Saves the order and increments the order counter of the user. */
+  async placeOrder(order: Order): Promise<void> {
+    await addDoc(collection(this.db, ORDERS), order);
+    await updateDoc(doc(this.db, USERS, order.userId), { countOrders: increment(1) });
+  }
+
+  // ---------- internal ----------
+
+  private async loginWithPopup(provider: GoogleAuthProvider | FacebookAuthProvider): Promise<void> {
+    try {
+      await signInWithPopup(this.auth, provider);
+      this.ui.showSnackbar('Login successful', undefined, 1500);
+      await this.router.navigate(['/shop']);
+    } catch (err) {
+      this.handleError(err);
+      throw err;
     }
   }
-  getBouquets(columnType) {
-    return this.firestore.collection(columnType).snapshotChanges();
+
+  private watchProfile(user: User | null): void {
+    this.profileUnsubscribe?.();
+    this.profileUnsubscribe = null;
+    this._profile.set(null);
+    if (!user) {
+      return;
+    }
+    this.profileUnsubscribe = onSnapshot(
+      query(collection(this.db, USERS), where('authId', '==', user.uid)),
+      (snapshot) => {
+        const d = snapshot.docs[0];
+        this._profile.set(d ? ({ ...d.data(), id: d.id } as UserModel) : null);
+      },
+      (error) => console.error(error),
+    );
   }
-  getUsers() {
-    return this.firestore.collection('user').snapshotChanges();
-  }
-  getUserOrder(columnType: string, filter) {
-    return this.firestore.collection(columnType, ref =>
-      ref
-        .where('userId', '==', filter)
-        .orderBy('orderDate', 'desc')
-    ).snapshotChanges();
-  }
-  getOrders() {
-    return this.firestore.collection('order').snapshotChanges();
-  }
-  setOrder(columnType, data: Order) {
-    return this.firestore.collection(columnType).add(data);
+
+  private handleError(err: unknown): void {
+    console.error(err);
+    const message = err instanceof Error ? err.message : String(err);
+    this.ui.showSnackbar(message, undefined, 3000);
   }
 }

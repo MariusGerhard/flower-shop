@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import { Injectable, inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class UIService {
-  constructor(private snackbar: MatSnackBar) {
-  }
-  showSnackbar(message, action, durationInput) {
+@Injectable({ providedIn: 'root' })
+export class UiService {
+  private readonly snackbar = inject(MatSnackBar);
+
+  showSnackbar(message: string, action?: string, duration = 2000): void {
     this.snackbar.open(message, action, {
-      duration: durationInput,
-      panelClass: ['snackbar']
+      duration,
+      panelClass: ['snackbar'],
     });
   }
 }

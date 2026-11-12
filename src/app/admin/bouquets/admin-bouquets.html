@@ -1,0 +1,137 @@
+<section class="col-center">
+  <h1>Administrate Bouquets</h1>
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+  <mat-card>
+    <mat-card-content>
+      @switch (mode()) {
+        @case ('search') {
+          <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">
+            <div class="row actions">
+              <button type="submit" matButton="filled" color="accent" class="search-button" [disabled]="!searchForm.valid">Search</button>
+              <span class="spacer"></span>
+              <button type="button" matIconButton (click)="startAdd()" aria-label="Add bouquet"><mat-icon color="primary">add</mat-icon></button>
+              <button type="button" matIconButton (click)="load(null)" aria-label="Show all"><mat-icon color="primary">cached</mat-icon></button>
+            </div>
+            <mat-form-field>
+              <mat-label>Bouquet Name</mat-label>
+              <input matInput type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required [disabled]="!!category.value || !!flower.value">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Category</mat-label>
+              <input matInput type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required [disabled]="!!name.value || !!flower.value">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Flower</mat-label>
+              <input matInput type="text" name="flower" #flower="ngModel" ngModel minlength="3" maxlength="50" required [disabled]="!!name.value || !!category.value">
+            </mat-form-field>
+          </form>
+        }
+
+        @case ('list') {
+          <div class="row actions">
+            <span class="spacer"></span>
+            <button type="button" matIconButton (click)="startAdd()" aria-label="Add bouquet"><mat-icon color="primary">add</mat-icon></button>
+            <button type="button" matIconButton (click)="mode.set('search')" aria-label="Search"><mat-icon color="primary">search</mat-icon></button>
+          </div>
+          @if (pictureUrl(); as url) {
+            <div class="picture">
+              <button matIconButton color="primary" (click)="pictureUrl.set(null)" aria-label="Close picture"><mat-icon>clear</mat-icon></button>
+              <img [src]="url" width="300" height="300" alt="Bouquet picture">
+            </div>
+          }
+          <mat-form-field>
+            <mat-label>Filter Results</mat-label>
+            <input matInput (keyup)="applyFilter($event)">
+          </mat-form-field>
+          <div class="mat-elevation-z2">
+            <table mat-table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+                <td mat-cell *matCellDef="let row">{{ row.category }}</td>
+              </ng-container>
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                <td mat-cell *matCellDef="let row">{{ row.price | currency: 'EUR' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let row" class="action-cell">
+                  @if (row.path) {
+                    <button matIconButton matTooltip="Show Picture" (click)="showPicture(row)"><mat-icon color="primary">photo_camera</mat-icon></button>
+                    <button matIconButton matTooltip="Remove Picture" (click)="deletePicture(row)"><mat-icon color="primary">camera_roll</mat-icon></button>
+                  }
+                  <button matIconButton matTooltip="Edit" (click)="onEdit(row)"><mat-icon color="primary">edit</mat-icon></button>
+                  <button matIconButton matTooltip="Delete" (click)="onDelete(row)"><mat-icon color="warn">delete</mat-icon></button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">No bouquets found.</td>
+              </tr>
+            </table>
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" />
+          </div>
+        }
+
+        @default {
+          <!-- "add" and "edit" share one form; editing() is null when adding -->
+          <form #bouquetForm="ngForm" (ngSubmit)="mode() === 'add' ? onAdd(bouquetForm) : onUpdate(bouquetForm)">
+            <div class="row actions gap-sm">
+              @if (mode() === 'add') {
+                <button type="submit" matButton="filled" color="accent" [disabled]="!bouquetForm.valid || isLoading()">Add</button>
+                <button type="button" matButton="filled" color="warn" (click)="bouquetForm.resetForm()" [disabled]="isLoading()">Clear</button>
+              } @else {
+                <button type="submit" matButton="filled" color="accent" class="search-button"
+                        [disabled]="!bouquetForm.valid || bouquetForm.pristine || isLoading()">Update</button>
+              }
+              <span class="spacer"></span>
+              <button type="button" matIconButton (click)="mode.set('search')" aria-label="Search"><mat-icon color="primary">search</mat-icon></button>
+              <button type="button" matIconButton (click)="load(null)" aria-label="Show all"><mat-icon color="primary">cached</mat-icon></button>
+            </div>
+            <div class="col-center">
+              <mat-form-field>
+                <mat-label>Bouquet Name</mat-label>
+                <input matInput name="name" [ngModel]="editing()?.name" required type="text">
+                <mat-hint align="end">e.g. Rose-Bouquet</mat-hint>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Category</mat-label>
+                <input matInput name="category" [ngModel]="editing()?.category" required type="text">
+                <mat-hint align="end">e.g. Mum</mat-hint>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput name="description" [ngModel]="editing()?.description"></textarea>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Flower</mat-label>
+                <input matInput name="flower" [ngModel]="editing()?.flower" required minlength="3" type="text">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Season Start</mat-label>
+                <input matInput name="seasonStart" [ngModel]="editing()?.seasonStart" required pattern="([1-9]|1[0-2])" inputmode="numeric">
+                <mat-hint align="end">e.g. 1 for January</mat-hint>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Season End</mat-label>
+                <input matInput name="seasonEnd" [ngModel]="editing()?.seasonEnd" required pattern="([1-9]|1[0-2])" inputmode="numeric">
+                <mat-hint align="end">e.g. 12 for December</mat-hint>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Price</mat-label>
+                <input matInput name="price" [ngModel]="editing()?.price" required pattern="[0-9]+(\.[0-9]{1,2})?" inputmode="decimal">
+              </mat-form-field>
+            </div>
+          </form>
+        }
+      }
+    </mat-card-content>
+  </mat-card>
+</section>
