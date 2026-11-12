@@ -1,4 +1,6 @@
 @use '@angular/material' as mat;
+// animate.css: only the effects we use (instead of the whole 70 KB file)
+@use 'animate.css/source/fading_entrances/fadeIn.css';
 
 // Material 3 theme. Blue as primary, green as tertiary ("accent"), the built-in error palette as "warn".
 $flower-shop-theme: mat.define-theme((
@@ -41,24 +43,13 @@ body {
   text-align: center;
 }
 
-/* ---------- Page enter animation (replaces @angular/animations "fallIn") ---------- */
-@keyframes fall-in {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fall-in {
-  animation: fall-in 0.4s 0.2s ease-in-out both;
+/* ---------- Page enter animation: subtle fade with animate.css ---------- */
+.fade-in {
+  animation: fadeIn 0.35s ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fall-in {
+  .fade-in {
     animation: none;
   }
 }
