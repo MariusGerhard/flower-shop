@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 import { HeaderTitleService } from '../../shared/services/header-title.service';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-main-menu',
@@ -12,7 +13,10 @@ import { HeaderTitleService } from '../../shared/services/header-title.service';
   styleUrl: './main-menu.scss',
 })
 export class MainMenu {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   constructor() {
-    inject(HeaderTitleService).setTitle('Shop');
+    inject(HeaderTitleService).setTitle('titles.shop');
   }
 }

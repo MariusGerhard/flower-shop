@@ -1,5 +1,5 @@
 <section class="col-center gap-md fade-in">
-  <h1>Custom Bouquets</h1>
+  <h1>{{ t('flowers.title') }}</h1>
   @if (isLoading()) {
     <mat-progress-bar mode="indeterminate" />
   }
@@ -10,12 +10,12 @@
         <mat-card-subtitle>{{ flower.color }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>Price: {{ flower.price | currency: 'EUR' }}</p>
+        <p>{{ t('flowers.price') }} {{ flower.price | currency: 'EUR' : 'symbol' : undefined : i18n.locale() }}</p>
       </mat-card-content>
     </mat-card>
   } @empty {
     @if (!isLoading()) {
-      <p>No flowers available.</p>
+      <p>{{ t('flowers.empty') }}</p>
     }
   }
 </section>

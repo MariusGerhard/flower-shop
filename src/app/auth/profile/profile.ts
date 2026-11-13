@@ -4,7 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerIntl, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -14,6 +14,8 @@ import { birthdateRange, toDate } from '../../shared/models/user.model';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { HeaderTitleService } from '../../shared/services/header-title.service';
 import { UiService } from '../../shared/services/ui.service';
+import { I18nDatepickerIntl } from '../../i18n/i18n-datepicker-intl';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,9 +32,13 @@ import { UiService } from '../../shared/services/ui.service';
     MatRadioModule,
   ],
   templateUrl: './profile.html',
+  providers: [{ provide: MatDatepickerIntl, useClass: I18nDatepickerIntl }],
   styleUrl: './profile.scss',
 })
 export class Profile {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
   private readonly ui = inject(UiService);
   private readonly router = inject(Router);
@@ -44,7 +50,7 @@ export class Profile {
   protected readonly range = birthdateRange();
 
   constructor() {
-    inject(HeaderTitleService).setTitle('Profile');
+    inject(HeaderTitleService).setTitle('titles.profile');
   }
 
   protected toggleEdit(): void {
@@ -60,10 +66,10 @@ export class Profile {
     this.isSaving.set(true);
     try {
       await this.firebase.updateUser(user.id, { gender, firstName, lastName, birth });
-      this.ui.showSnackbar(`${firstName} ${lastName} was updated`, undefined, 2500);
+      this.ui.notify('profile.updated', { name: `${firstName} ${lastName}` });
       await this.router.navigate(['/shop']);
     } catch (err) {
-      this.ui.showSnackbar(`${lastName} has error ${err}`, undefined, 2500);
+      this.ui.showError(err, 'profile.saveFailed');
     } finally {
       this.isSaving.set(false);
     }

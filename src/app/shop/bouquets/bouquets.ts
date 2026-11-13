@@ -5,7 +5,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerIntl, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -15,9 +15,12 @@ import { catchError, of, switchMap } from 'rxjs';
 
 import { AutofocusDirective } from '../../shared/directives/autofocus.directive';
 import { Bouquet, BouquetFilter } from '../../shared/models/bouquet.model';
+import { ORDER_EVENTS } from '../../shared/models/order.model';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { HeaderTitleService } from '../../shared/services/header-title.service';
 import { UiService } from '../../shared/services/ui.service';
+import { I18nDatepickerIntl } from '../../i18n/i18n-datepicker-intl';
+import { I18nService } from '../../i18n/i18n.service';
 
 type Mode = 'search' | 'list' | 'detail' | 'order' | 'extras';
 
@@ -40,14 +43,18 @@ const MESSAGE_PRICE = 3;
     MatSelectModule,
   ],
   templateUrl: './bouquets.html',
+  providers: [{ provide: MatDatepickerIntl, useClass: I18nDatepickerIntl }],
   styleUrl: './bouquets.scss',
 })
 export class Bouquets {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
   private readonly ui = inject(UiService);
   private readonly router = inject(Router);
 
-  protected readonly events = ['Birthday', 'Mothers Day', 'Christmas', 'Easter'];
+  protected readonly events = ORDER_EVENTS;
   protected readonly mode = signal<Mode>('search');
 
   // ----- list -----
@@ -59,7 +66,7 @@ export class Bouquets {
       switchMap((filter) =>
         this.firebase.watchBouquets(filter).pipe(
           catchError((err) => {
-            this.ui.showSnackbar(`Could not load bouquets: ${err.message ?? err}`, undefined, 3000);
+            this.ui.showError(err, 'bouquets.loadFailed');
             return of([] as Bouquet[]);
           }),
         ),
@@ -91,7 +98,7 @@ export class Bouquets {
   protected readonly maxDate = this.addDays(new Date(), 21);
 
   constructor() {
-    inject(HeaderTitleService).setTitle('Bouquets');
+    inject(HeaderTitleService).setTitle('titles.bouquets');
   }
 
   protected onSearch(form: NgForm): void {
@@ -122,7 +129,7 @@ export class Bouquets {
     const user = this.firebase.profile();
     const pickUpDate = this.pickUpDate();
     if (!bouquet || !user || !pickUpDate) {
-      this.ui.showSnackbar('Please login and choose a pick-up day', undefined, 2500);
+      this.ui.notify('bouquets.needPickUp');
       return;
     }
     this.isOrdering.set(true);
@@ -138,11 +145,10 @@ export class Bouquets {
         event: this.event(),
         message: this.message(),
       });
-      this.ui.showSnackbar(`Your order of ${bouquet.name} was successful`, undefined, 2500);
+      this.ui.notify('bouquets.orderSuccess', { name: bouquet.name });
       await this.router.navigate(['/shop']);
     } catch (err) {
-      console.error(err);
-      this.ui.showSnackbar(`Order failed: ${err}`, undefined, 3000);
+      this.ui.showError(err, 'bouquets.orderFailed');
     } finally {
       this.isOrdering.set(false);
     }

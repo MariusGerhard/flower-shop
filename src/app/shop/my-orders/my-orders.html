@@ -1,5 +1,5 @@
 <section class="col-center fade-in">
-  <h3>{{ user()?.firstName }} {{ user()?.lastName }} Orders</h3>
+  <h3>{{ t('myOrders.title', { name: (user()?.firstName ?? '') + ' ' + (user()?.lastName ?? '') }) }}</h3>
   @if (isLoading()) {
     <mat-progress-bar mode="indeterminate" />
   }
@@ -8,41 +8,41 @@
     <mat-card class="content-card">
       <mat-card-header>
         <mat-card-title>{{ order.bouquetName }}</mat-card-title>
-        <mat-card-subtitle>Ordered on {{ order.orderDate | date }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ t('myOrders.orderedOn', { date: (order.orderDate | date: 'mediumDate' : undefined : i18n.locale()) ?? '' }) }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p><b>Pick-up day:</b> {{ order.pickUpDate | date }}</p>
-        <p><b>Price:</b> {{ order.price | currency: 'EUR' }}</p>
+        <p><b>{{ t('myOrders.pickUp') }}</b> {{ order.pickUpDate | date: 'mediumDate' : undefined : i18n.locale() }}</p>
+        <p><b>{{ t('myOrders.price') }}</b> {{ order.price | currency: 'EUR' : 'symbol' : undefined : i18n.locale() }}</p>
         @if (order.event) {
-          <p><b>Event:</b> {{ order.event }}</p>
+          <p><b>{{ t('myOrders.event') }}</b> {{ eventLabel(order.event) }}</p>
         }
         @if (order.message) {
-          <p><b>Greetings card:</b> {{ order.message }}</p>
+          <p><b>{{ t('myOrders.card') }}</b> {{ order.message }}</p>
         }
       </mat-card-content>
     </mat-card>
-    <button matButton="filled" color="warn" (click)="selected.set(null)">back</button>
+    <button matButton="filled" color="warn" (click)="selected.set(null)">{{ t('common.back') }}</button>
   } @else {
     <mat-card class="content-card">
       <mat-card-content>
         <mat-form-field class="full-width">
-          <mat-label>Filter</mat-label>
-          <input matInput appAutofocus (keyup)="applyFilter($event)" placeholder="Ex. Rose">
+          <mat-label>{{ t('common.filter') }}</mat-label>
+          <input matInput appAutofocus (keyup)="applyFilter($event)" [placeholder]="t('myOrders.filterPlaceholder')">
         </mat-form-field>
         <div class="mat-elevation-z2">
           <table mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="bouquetName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Bouquet</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('myOrders.bouquet') }}</th>
               <td mat-cell *matCellDef="let row">{{ row.bouquetName }}</td>
             </ng-container>
             <ng-container matColumnDef="orderDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Order date</th>
-              <td mat-cell *matCellDef="let row">{{ row.orderDate | date }}</td>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('myOrders.orderDate') }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.orderDate | date: 'mediumDate' : undefined : i18n.locale() }}</td>
             </ng-container>
             <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef>Details</th>
+              <th mat-header-cell *matHeaderCellDef>{{ t('myOrders.details') }}</th>
               <td mat-cell *matCellDef="let row">
-                <button matIconButton (click)="selected.set(row)" aria-label="Show details">
+                <button matIconButton (click)="selected.set(row)" [attr.aria-label]="t('myOrders.showDetails')">
                   <mat-icon color="primary">info</mat-icon>
                 </button>
               </td>
@@ -50,13 +50,13 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">No orders yet.</td>
+              <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">{{ t('myOrders.empty') }}</td>
             </tr>
           </table>
           <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" />
         </div>
       </mat-card-content>
     </mat-card>
-    <button matButton="filled" color="warn" routerLink="/shop">back</button>
+    <button matButton="filled" color="warn" routerLink="/shop">{{ t('common.back') }}</button>
   }
 </section>

@@ -137,7 +137,7 @@ describe('Bouquets', () => {
         event: 'Birthday',
         message: 'Alles Gute',
       });
-      expect(ui.showSnackbar).toHaveBeenCalledWith('Your order of Rose Dream was successful', undefined, 2500);
+      expect(ui.notify).toHaveBeenCalledWith('bouquets.orderSuccess', { name: 'Rose Dream' });
       expect(navigate).toHaveBeenCalledWith(['/shop']);
       expect(component['isOrdering']()).toBe(false);
     });
@@ -149,21 +149,21 @@ describe('Bouquets', () => {
       await component['onOrder']();
 
       expect(firebase.placeOrder).not.toHaveBeenCalled();
-      expect(ui.showSnackbar).toHaveBeenCalled();
+      expect(ui.notify).toHaveBeenCalledWith('bouquets.needPickUp');
     });
 
     it('shows an error and stays on the page when the order fails', async () => {
       firebase.profile.set(testUser());
-      firebase.placeOrder.mockRejectedValue(new Error('offline'));
+      const error = { code: 'unavailable' };
+      firebase.placeOrder.mockRejectedValue(error);
       const navigate = vi.spyOn(TestBed.inject(Router), 'navigate');
-      vi.spyOn(console, 'error').mockImplementation(() => undefined);
       component['onDetails'](rose);
       component['pickUpDate'].set(new Date());
 
       await component['onOrder']();
 
       expect(navigate).not.toHaveBeenCalled();
-      expect(ui.showSnackbar).toHaveBeenCalledWith(expect.stringContaining('Order failed'), undefined, 3000);
+      expect(ui.showError).toHaveBeenCalledWith(error, 'bouquets.orderFailed');
       expect(component['isOrdering']()).toBe(false);
     });
   });

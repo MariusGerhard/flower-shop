@@ -71,7 +71,7 @@ describe('Profile', () => {
       lastName: 'Blume',
       birth,
     });
-    expect(ui.showSnackbar).toHaveBeenCalledWith('Anne Blume was updated', undefined, 2500);
+    expect(ui.notify).toHaveBeenCalledWith('profile.updated', { name: 'Anne Blume' });
     expect(navigate).toHaveBeenCalledWith(['/shop']);
   });
 });

@@ -121,7 +121,7 @@ export class FirebaseService {
       };
       // The document id is the auth uid, so `id` and `authId` are identical for new users.
       await setDoc(doc(this.db, USERS, user.uid), newUser);
-      this.ui.showSnackbar('Account created. Login successful', undefined, 1500);
+      this.ui.notify('auth.accountCreated');
       await this.router.navigate(['/shop']);
     } catch (err) {
       this.handleError(err);
@@ -135,10 +135,10 @@ export class FirebaseService {
       const snapshot = await getDocs(query(collection(this.db, USERS), where('authId', '==', user.uid)));
       if (snapshot.empty) {
         await signOut(this.auth);
-        this.ui.showSnackbar('Login disabled', undefined, 1500);
+        this.ui.notify('auth.loginDisabled');
         return;
       }
-      this.ui.showSnackbar('Login successful', undefined, 1500);
+      this.ui.notify('auth.loginSuccessful');
       await this.router.navigate(['/shop']);
     } catch (err) {
       this.handleError(err);
@@ -157,7 +157,7 @@ export class FirebaseService {
   async sendPasswordResetEmail(email: string): Promise<void> {
     try {
       await sendPasswordResetEmail(this.auth, email);
-      this.ui.showSnackbar('E-Mail was sent', undefined, 2000);
+      this.ui.notify('auth.resetSent');
       await this.router.navigate(['/login']);
     } catch (err) {
       this.handleError(err);
@@ -167,7 +167,7 @@ export class FirebaseService {
 
   async logoutUser(): Promise<void> {
     await signOut(this.auth);
-    this.ui.showSnackbar('Logout successful', undefined, 1500);
+    this.ui.notify('auth.logoutSuccessful');
     await this.router.navigate(['']);
   }
 
@@ -254,7 +254,7 @@ export class FirebaseService {
   private async loginWithPopup(provider: GoogleAuthProvider | FacebookAuthProvider): Promise<void> {
     try {
       await signInWithPopup(this.auth, provider);
-      this.ui.showSnackbar('Login successful', undefined, 1500);
+      this.ui.notify('auth.loginSuccessful');
       await this.router.navigate(['/shop']);
     } catch (err) {
       this.handleError(err);
@@ -280,8 +280,6 @@ export class FirebaseService {
   }
 
   private handleError(err: unknown): void {
-    console.error(err);
-    const message = err instanceof Error ? err.message : String(err);
-    this.ui.showSnackbar(message, undefined, 3000);
+    this.ui.showError(err);
   }
 }

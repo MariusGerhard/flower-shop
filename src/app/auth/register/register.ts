@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerIntl, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -13,6 +13,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { birthdateRange } from '../../shared/models/user.model';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { HeaderTitleService } from '../../shared/services/header-title.service';
+import { I18nDatepickerIntl } from '../../i18n/i18n-datepicker-intl';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-register',
@@ -29,16 +31,20 @@ import { HeaderTitleService } from '../../shared/services/header-title.service';
     MatRadioModule,
   ],
   templateUrl: './register.html',
+  providers: [{ provide: MatDatepickerIntl, useClass: I18nDatepickerIntl }],
   styleUrl: './register.scss',
 })
 export class Register {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
 
   protected readonly isLoading = signal(false);
   protected readonly range = birthdateRange();
 
   constructor() {
-    inject(HeaderTitleService).setTitle('Register');
+    inject(HeaderTitleService).setTitle('titles.register');
   }
 
   protected async onSubmit(form: NgForm): Promise<void> {

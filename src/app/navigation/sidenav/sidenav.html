@@ -1,45 +1,45 @@
 <mat-nav-list>
   <a mat-list-item routerLink="/" (click)="closeNav.emit()">
     <mat-icon matListItemIcon>home</mat-icon>
-    <span matListItemTitle>Home</span>
+    <span matListItemTitle>{{ t('nav.home') }}</span>
   </a>
   @if (isAuth()) {
     <a mat-list-item routerLink="/shop" (click)="closeNav.emit()">
       <mat-icon matListItemIcon>shop</mat-icon>
-      <span matListItemTitle>Shop</span>
+      <span matListItemTitle>{{ t('nav.shop') }}</span>
     </a>
     <a mat-list-item routerLink="/bouquets" (click)="closeNav.emit()">
       <mat-icon matListItemIcon svgIcon="bouquet"></mat-icon>
-      <span matListItemTitle>Bouquets</span>
+      <span matListItemTitle>{{ t('nav.bouquets') }}</span>
     </a>
     <a mat-list-item routerLink="/flowers" (click)="closeNav.emit()">
       <mat-icon matListItemIcon svgIcon="flower"></mat-icon>
-      <span matListItemTitle>Custom Bouquets</span>
+      <span matListItemTitle>{{ t('nav.customBouquets') }}</span>
     </a>
     <a mat-list-item routerLink="/profile" (click)="closeNav.emit()">
       <mat-icon matListItemIcon>account_box</mat-icon>
-      <span matListItemTitle>Profile</span>
+      <span matListItemTitle>{{ t('nav.profile') }}</span>
     </a>
     <a mat-list-item routerLink="/orders" (click)="closeNav.emit()">
       <mat-icon matListItemIcon>receipt</mat-icon>
-      <span matListItemTitle>My Orders</span>
+      <span matListItemTitle>{{ t('nav.myOrders') }}</span>
     </a>
     <a mat-list-item routerLink="/control" (click)="closeNav.emit()">
       <mat-icon matListItemIcon>settings</mat-icon>
-      <span matListItemTitle>Admin Control</span>
+      <span matListItemTitle>{{ t('nav.adminControl') }}</span>
     </a>
     <button mat-list-item type="button" (click)="onLogout()">
       <mat-icon matListItemIcon>logout</mat-icon>
-      <span matListItemTitle>Logout</span>
+      <span matListItemTitle>{{ t('nav.logout') }}</span>
     </button>
   } @else {
     <a mat-list-item routerLink="/login" (click)="closeNav.emit()">
       <mat-icon matListItemIcon>input</mat-icon>
-      <span matListItemTitle>Login</span>
+      <span matListItemTitle>{{ t('nav.login') }}</span>
     </a>
     <a mat-list-item routerLink="/register" (click)="closeNav.emit()">
       <mat-icon matListItemIcon>assignment</mat-icon>
-      <span matListItemTitle>Register</span>
+      <span matListItemTitle>{{ t('nav.register') }}</span>
     </a>
   }
 </mat-nav-list>

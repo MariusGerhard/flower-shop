@@ -29,7 +29,7 @@ describe('Login', () => {
   });
 
   it('sets the header title', () => {
-    expect(TestBed.inject(HeaderTitleService).title()).toBe('Login');
+    expect(TestBed.inject(HeaderTitleService).title()).toBe('titles.login');
   });
 
   it('keeps Submit disabled until e-mail and password are valid', async () => {

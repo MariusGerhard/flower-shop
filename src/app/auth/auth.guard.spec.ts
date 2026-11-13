@@ -31,7 +31,7 @@ describe('authGuard', () => {
 
     expect(result).toBeInstanceOf(UrlTree);
     expect(TestBed.inject(Router).serializeUrl(result as UrlTree)).toBe('/login');
-    expect(ui.showSnackbar).toHaveBeenCalledWith('Please login first', undefined, 2000);
+    expect(ui.notify).toHaveBeenCalledWith('auth.pleaseLogin');
   });
 
   it('waits until Firebase has restored the session', async () => {

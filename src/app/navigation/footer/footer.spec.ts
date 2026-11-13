@@ -20,7 +20,7 @@ describe('Footer', () => {
     const fixture = TestBed.createComponent(Footer);
     await fixture.whenStable();
 
-    TestBed.inject(HeaderTitleService).setTitle('Legal-Notice');
+    TestBed.inject(HeaderTitleService).setTitle('titles.legalNotice');
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('a[href="/notice"]')).toBeNull();

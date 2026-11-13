@@ -1,39 +1,39 @@
 <section class="fade-in">
   <form class="col-center gap-sm" #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <h1>Login to Flower Shop</h1>
+    <h1>{{ t('login.title') }}</h1>
     @if (isLoading()) {
       <mat-progress-bar mode="indeterminate" />
     }
     <mat-card class="content-card">
       <mat-card-content class="col-center gap-sm">
         <mat-form-field>
-          <mat-label>Please enter your E-Mail</mat-label>
+          <mat-label>{{ t('login.email') }}</mat-label>
           <input type="email" matInput ngModel name="email" email required #email="ngModel" autocomplete="email">
           @if (email.hasError('required')) {
-            <mat-error>Field should not be empty</mat-error>
+            <mat-error>{{ t('common.fieldRequired') }}</mat-error>
           } @else {
-            <mat-error>E-Mail is invalid</mat-error>
+            <mat-error>{{ t('common.emailInvalid') }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Please enter your Password</mat-label>
+          <mat-label>{{ t('login.password') }}</mat-label>
           <input type="password" matInput ngModel name="password" required autocomplete="current-password">
-          <mat-error>Field should not be empty</mat-error>
+          <mat-error>{{ t('common.fieldRequired') }}</mat-error>
         </mat-form-field>
-        <button matButton="filled" type="submit" color="accent" [disabled]="f.invalid || isLoading()">Submit</button>
+        <button matButton="filled" type="submit" color="accent" [disabled]="f.invalid || isLoading()">{{ t('common.submit') }}</button>
       </mat-card-content>
     </mat-card>
   </form>
 
   <div class="col-center gap-sm">
-    <h1>Social Media</h1>
+    <h1>{{ t('login.socialMedia') }}</h1>
     <mat-card class="content-card">
       <mat-card-content class="col-center gap-sm">
-        <button matButton="filled" color="warn" (click)="onLogin('Google')" [disabled]="isLoading()">Login with Google</button>
-        <button matButton="filled" color="primary" (click)="onLogin('Facebook')" [disabled]="isLoading()">Login with Facebook</button>
+        <button matButton="filled" color="warn" (click)="onLogin('Google')" [disabled]="isLoading()">{{ t('login.google') }}</button>
+        <button matButton="filled" color="primary" (click)="onLogin('Facebook')" [disabled]="isLoading()">{{ t('login.facebook') }}</button>
       </mat-card-content>
     </mat-card>
-    <p>No Account? You can create one <a routerLink="/register">here</a></p>
-    <p>Forgot your password? You can reset it <a routerLink="/reset">here</a></p>
+    <p>{{ t('login.noAccount') }} <a routerLink="/register">{{ t('login.here') }}</a></p>
+    <p>{{ t('login.forgotPassword') }} <a routerLink="/reset">{{ t('login.here') }}</a></p>
   </div>
 </section>

@@ -1,46 +1,46 @@
 <section class="fade-in">
   <form class="col-center gap-sm" #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <h1>Register to Flower Shop</h1>
+    <h1>{{ t('register.title') }}</h1>
     @if (isLoading()) {
       <mat-progress-bar mode="indeterminate" />
     }
     <mat-card class="content-card">
       <mat-card-content class="col-center gap-sm">
-        <mat-radio-group aria-label="Your gender" ngModel name="gender" required #gender="ngModel">
-          <mat-radio-button value="Mr." color="primary">Male</mat-radio-button>
-          <mat-radio-button value="Mrs." color="warn">Female</mat-radio-button>
+        <mat-radio-group [attr.aria-label]="t('register.gender')" ngModel name="gender" required #gender="ngModel">
+          <mat-radio-button value="Mr." color="primary">{{ t('register.male') }}</mat-radio-button>
+          <mat-radio-button value="Mrs." color="warn">{{ t('register.female') }}</mat-radio-button>
         </mat-radio-group>
         @if (gender.touched && gender.hasError('required')) {
-          <mat-error>Please select your gender</mat-error>
+          <mat-error>{{ t('register.genderRequired') }}</mat-error>
         }
 
         <mat-form-field>
-          <mat-label>Please enter your first name</mat-label>
+          <mat-label>{{ t('register.firstName') }}</mat-label>
           <input type="text" matInput ngModel name="firstName" required autocomplete="given-name">
-          <mat-error>Field should not be empty</mat-error>
+          <mat-error>{{ t('common.fieldRequired') }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Please enter your last name</mat-label>
+          <mat-label>{{ t('register.lastName') }}</mat-label>
           <input type="text" matInput ngModel name="lastName" required autocomplete="family-name">
-          <mat-error>Field should not be empty</mat-error>
+          <mat-error>{{ t('common.fieldRequired') }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Please enter your E-Mail</mat-label>
+          <mat-label>{{ t('register.email') }}</mat-label>
           <input type="email" matInput ngModel name="email" email required #email="ngModel" autocomplete="email">
           @if (email.hasError('required')) {
-            <mat-error>Field should not be empty</mat-error>
+            <mat-error>{{ t('common.fieldRequired') }}</mat-error>
           } @else {
-            <mat-error>E-Mail is invalid</mat-error>
+            <mat-error>{{ t('common.emailInvalid') }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Please enter your Password</mat-label>
+          <mat-label>{{ t('register.password') }}</mat-label>
           <input type="password" matInput ngModel name="password" required minlength="8" #pw="ngModel" autocomplete="new-password">
           @if ((pw.value?.length ?? 0) < 8) {
-            <mat-hint align="start">Please enter a minimum of 8 characters</mat-hint>
+            <mat-hint align="start">{{ t('register.passwordMin') }}</mat-hint>
           }
           @if ((pw.value?.length ?? 0) < 8) {
             <mat-hint align="end">{{ pw.value?.length ?? 0 }} / 8</mat-hint>
@@ -48,19 +48,19 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Please enter your Birthdate</mat-label>
+          <mat-label>{{ t('register.birthdate') }}</mat-label>
           <input matInput [matDatepicker]="picker" [min]="range.min" [max]="range.max" ngModel name="birthdate" required>
-          <mat-hint>You must be at least 16 years old</mat-hint>
-          <mat-error>Field should not be empty</mat-error>
+          <mat-hint>{{ t('register.ageHint') }}</mat-hint>
+          <mat-error>{{ t('common.fieldRequired') }}</mat-error>
           <mat-datepicker-toggle matIconSuffix [for]="picker" />
           <mat-datepicker #picker />
         </mat-form-field>
 
         <mat-checkbox ngModel name="conditions" color="warn" required>
-          Agree to <a routerLink="/terms">Terms and Conditions</a>.
+          {{ t('register.agree') }} <a routerLink="/terms">{{ t('register.terms') }}</a>.
         </mat-checkbox>
 
-        <button matButton="filled" type="submit" color="accent" [disabled]="isLoading() || f.invalid">Submit</button>
+        <button matButton="filled" type="submit" color="accent" [disabled]="isLoading() || f.invalid">{{ t('common.submit') }}</button>
       </mat-card-content>
     </mat-card>
   </form>

@@ -14,6 +14,6 @@ export const authGuard: CanActivateFn = async () => {
   if (firebase.isAuth()) {
     return true;
   }
-  ui.showSnackbar('Please login first', undefined, 2000);
+  ui.notify('auth.pleaseLogin');
   return router.createUrlTree(['/login']);
 };

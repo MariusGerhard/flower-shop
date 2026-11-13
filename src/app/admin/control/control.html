@@ -1,16 +1,16 @@
 <section class="fade-in">
   <mat-tab-group>
-    <mat-tab label="Bouquets">
+    <mat-tab [label]="t('admin.tabBouquets')">
       <ng-template matTabContent>
         <app-admin-bouquets />
       </ng-template>
     </mat-tab>
-    <mat-tab label="Orders">
+    <mat-tab [label]="t('admin.tabOrders')">
       <ng-template matTabContent>
         <app-admin-orders />
       </ng-template>
     </mat-tab>
-    <mat-tab label="Users">
+    <mat-tab [label]="t('admin.tabUsers')">
       <ng-template matTabContent>
         <app-admin-users />
       </ng-template>

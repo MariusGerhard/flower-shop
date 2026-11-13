@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { FirebaseMock, createFirebaseMock, provideFirebaseMock } from '../../../testing/firebase-mock';
+import { I18nService } from '../../i18n/i18n.service';
 import { HeaderTitleService } from '../../shared/services/header-title.service';
 import { Header } from './header';
 
@@ -20,7 +21,7 @@ describe('Header', () => {
   });
 
   it('shows the current page title', async () => {
-    TestBed.inject(HeaderTitleService).setTitle('Bouquets');
+    TestBed.inject(HeaderTitleService).setTitle('titles.bouquets');
     const fixture = TestBed.createComponent(Header);
     await fixture.whenStable();
 
@@ -73,5 +74,37 @@ describe('Header', () => {
     fixture.nativeElement.querySelector('button[aria-label="Open menu"]').click();
 
     expect(toggled).toHaveBeenCalledOnce();
+  });
+
+  describe('language switch', () => {
+    beforeEach(() => TestBed.inject(I18nService).setLanguage('en'));
+
+    it('shows the flag of the current language', async () => {
+      const fixture = TestBed.createComponent(Header);
+      await fixture.whenStable();
+
+      const flag = (fixture.nativeElement as HTMLElement).querySelector<HTMLImageElement>('.language-button img')!;
+      expect(flag.getAttribute('src')).toBe('/assets/flags/en.svg');
+      expect(flag.alt).toBe('English');
+    });
+
+    it('switches all texts to German via the flag menu', async () => {
+      const fixture = TestBed.createComponent(Header);
+      await fixture.whenStable();
+      const el: HTMLElement = fixture.nativeElement;
+
+      el.querySelector<HTMLButtonElement>('.language-button')!.click();
+      await fixture.whenStable();
+      const items = Array.from(document.querySelectorAll<HTMLButtonElement>('.mat-mdc-menu-item'));
+      expect(items.map((i) => i.textContent?.trim())).toEqual(['Deutsch', 'English']);
+
+      items[0].click();
+      await fixture.whenStable();
+
+      expect(linkTexts(el)).toEqual(['Start', 'Anmelden', 'Registrieren']);
+      expect(el.querySelector('.nav-item')!.textContent!.trim()).toBe('Start');
+      expect(el.querySelector('.language-button img')!.getAttribute('src')).toBe('/assets/flags/de.svg');
+      expect(el.querySelector('.language-button')!.getAttribute('aria-label')).toBe('Sprache wechseln');
+    });
   });
 });

@@ -7,17 +7,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { catchError, of, switchMap } from 'rxjs';
 
 import { AutofocusDirective } from '../../shared/directives/autofocus.directive';
-import { Order } from '../../shared/models/order.model';
+import { Order, orderEventLabel } from '../../shared/models/order.model';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { HeaderTitleService } from '../../shared/services/header-title.service';
 import { UiService } from '../../shared/services/ui.service';
+import { I18nPaginatorIntl } from '../../i18n/i18n-paginator-intl';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-my-orders',
@@ -37,9 +39,14 @@ import { UiService } from '../../shared/services/ui.service';
     MatTableModule,
   ],
   templateUrl: './my-orders.html',
+  // Translated paginator labels (provided here, so the paginator is not part of the start bundle)
+  providers: [{ provide: MatPaginatorIntl, useClass: I18nPaginatorIntl }],
   styleUrl: './my-orders.scss',
 })
 export class MyOrders {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
   private readonly ui = inject(UiService);
 
@@ -51,7 +58,7 @@ export class MyOrders {
         user
           ? this.firebase.watchUserOrders(user.id).pipe(
               catchError((err) => {
-                this.ui.showSnackbar(`Could not load orders: ${err.message ?? err}`, undefined, 3000);
+                this.ui.showError(err, 'myOrders.loadFailed');
                 return of([] as Order[]);
               }),
             )
@@ -68,12 +75,18 @@ export class MyOrders {
   private readonly sort = viewChild(MatSort);
 
   constructor() {
-    inject(HeaderTitleService).setTitle('My Orders');
+    inject(HeaderTitleService).setTitle('titles.myOrders');
     effect(() => (this.dataSource.data = this.orders() ?? []));
     effect(() => {
       this.dataSource.paginator = this.paginator() ?? null;
       this.dataSource.sort = this.sort() ?? null;
     });
+  }
+
+  /** Translated name of a stored event like "Birthday" (unknown values are shown as stored) */
+  protected eventLabel(value: string): string {
+    const key = orderEventLabel(value);
+    return key ? this.t(key) : value;
   }
 
   protected applyFilter(event: Event): void {

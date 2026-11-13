@@ -1,12 +1,15 @@
 <section class="fade-in">
   <h1>FlowerShop Terms and Conditions</h1>
+  @if (i18n.lang() === 'de') {
+    <p class="english-only">{{ t('terms.englishOnly') }}</p>
+  }
     <p><b>Last updated [1 1, 2020]</b></p>
   <h4 class="college">
     THIS IS ONLY A TEST-PAGE FOR A COLLEGE PROJECT!
   </h4>
   @if (!isAuth()) {
     <div class="row-center">
-      <button matButton="filled" color="accent" routerLink="/register">Back to Register</button>
+      <button matButton="filled" color="accent" routerLink="/register">{{ t('terms.backToRegister') }}</button>
     </div>
   }
   <h4>AGREEMENT TO TERMS</h4>
@@ -871,9 +874,9 @@
     please contact us at:
   </p>
   <div class="row-center gap-sm bottom-button">
-    <button matButton="filled" color="warn" routerLink="/notice">Legal-Notice</button>
+    <button matButton="filled" color="warn" routerLink="/notice">{{ t('terms.legalNotice') }}</button>
     @if (!isAuth()) {
-      <button matButton="filled" color="accent" routerLink="/register">Back to Register</button>
+      <button matButton="filled" color="accent" routerLink="/register">{{ t('terms.backToRegister') }}</button>
     }
   </div>
 </section>

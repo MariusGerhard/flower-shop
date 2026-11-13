@@ -8,6 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { HeaderTitleService } from '../../shared/services/header-title.service';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-reset',
@@ -16,12 +17,15 @@ import { HeaderTitleService } from '../../shared/services/header-title.service';
   styleUrl: './reset.scss',
 })
 export class Reset {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
 
   protected readonly isLoading = signal(false);
 
   constructor() {
-    inject(HeaderTitleService).setTitle('Reset');
+    inject(HeaderTitleService).setTitle('titles.reset');
   }
 
   protected async onSubmit(form: NgForm): Promise<void> {

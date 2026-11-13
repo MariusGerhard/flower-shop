@@ -47,7 +47,7 @@ export function createFirebaseMock() {
 export type FirebaseMock = ReturnType<typeof createFirebaseMock>;
 
 export function createUiMock() {
-  return { showSnackbar: vi.fn() };
+  return { showSnackbar: vi.fn(), showError: vi.fn(), notify: vi.fn() };
 }
 
 export type UiMock = ReturnType<typeof createUiMock>;

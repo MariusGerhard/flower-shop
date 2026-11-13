@@ -1,9 +1,9 @@
 <mat-toolbar class="footer">
   <mat-icon>copyright</mat-icon>
   <div>2020</div>
-  <div class="hide-xs">Marius Gerhard. All rights reserved.</div>
+  <div class="hide-xs">{{ t('footer.rights') }}</div>
   <span class="spacer"></span>
   @if (!isNotice()) {
-    <a routerLink="/notice">Legal Notice</a>
+    <a routerLink="/notice">{{ t('footer.legalNotice') }}</a>
   }
 </mat-toolbar>

@@ -71,7 +71,7 @@ describe('AdminBouquets', () => {
       price: 15.5,
     });
     expect(form.resetForm).toHaveBeenCalled();
-    expect(ui.showSnackbar).toHaveBeenCalledWith('Tulip Joy was added', undefined, 2500);
+    expect(ui.notify).toHaveBeenCalledWith('adminBouquets.added', { name: 'Tulip Joy' });
   });
 
   it('keeps the form filled when adding fails', async () => {
@@ -114,6 +114,27 @@ describe('AdminBouquets', () => {
     await component['deletePicture'](rose);
     expect(firebase.deleteBouquet).toHaveBeenCalledWith('b1');
     expect(firebase.deleteBouquetPicture).toHaveBeenCalledWith(rose);
+  });
+
+  it('shows a friendly error when deleting is not allowed', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    const error = { code: 'permission-denied' };
+    firebase.deleteBouquet.mockRejectedValue(error);
+
+    await component['onDelete'](rose);
+
+    expect(ui.showError).toHaveBeenCalledWith(error, 'adminBouquets.deleteFailed');
+    expect(ui.notify).not.toHaveBeenCalledWith('adminBouquets.deleted');
+  });
+
+  it('shows a friendly error when the picture cannot be loaded', async () => {
+    const error = { code: 'storage/object-not-found' };
+    firebase.getPictureUrl.mockRejectedValue(error);
+
+    await component['showPicture'](rose);
+
+    expect(ui.showError).toHaveBeenCalledWith(error, 'adminBouquets.pictureLoadFailed');
+    expect(component['pictureUrl']()).toBeNull();
   });
 
   it('loads the picture URL from storage', async () => {

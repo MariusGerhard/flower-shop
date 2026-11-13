@@ -78,7 +78,7 @@ describe('AdminUsers', () => {
     await component['onChangeRole']();
 
     expect(firebase.updateUser).toHaveBeenCalledWith('u2', { role: 'user' });
-    expect(ui.showSnackbar).toHaveBeenCalledWith('Ben Stiel was updated', undefined, 2500);
+    expect(ui.notify).toHaveBeenCalledWith('adminUsers.updated', { name: 'Ben Stiel' });
     expect(component['mode']()).toBe('list');
   });
 

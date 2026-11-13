@@ -9,6 +9,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { HeaderTitleService } from '../../shared/services/header-title.service';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-login',
@@ -25,12 +26,15 @@ import { HeaderTitleService } from '../../shared/services/header-title.service';
   styleUrl: './login.scss',
 })
 export class Login {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
 
   protected readonly isLoading = signal(false);
 
   constructor() {
-    inject(HeaderTitleService).setTitle('Login');
+    inject(HeaderTitleService).setTitle('titles.login');
   }
 
   protected async onSubmit(form: NgForm): Promise<void> {

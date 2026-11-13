@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -17,6 +17,9 @@ import { catchError, of, switchMap, tap } from 'rxjs';
 import { UserModel } from '../../shared/models/user.model';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { UiService } from '../../shared/services/ui.service';
+import { I18nPaginatorIntl } from '../../i18n/i18n-paginator-intl';
+import { I18nService } from '../../i18n/i18n.service';
+import { TranslationKey } from '../../i18n/i18n.types';
 
 type Mode = 'search' | 'list' | 'edit';
 
@@ -42,14 +45,25 @@ interface UserCriteria {
     MatTableModule,
   ],
   templateUrl: './admin-users.html',
+  // Translated paginator labels (provided here, so the paginator is not part of the start bundle)
+  providers: [{ provide: MatPaginatorIntl, useClass: I18nPaginatorIntl }],
   styleUrl: '../admin.scss',
 })
 export class AdminUsers {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
   private readonly ui = inject(UiService);
 
   protected readonly roles = ['User', 'Employee', 'Admin'];
   protected readonly updateRoles = ['User', 'Employee'];
+  /** Translated label for a role value like 'User' or 'admin' */
+  protected roleLabel(role: string | undefined): string {
+    const key = `adminUsers.roles.${(role ?? '').toLowerCase()}` as TranslationKey;
+    const text = this.t(key);
+    return text === key ? (role ?? '') : text;
+  }
 
   protected readonly mode = signal<Mode>('search');
   protected readonly isLoading = signal(false);
@@ -66,7 +80,7 @@ export class AdminUsers {
               tap(() => this.isLoading.set(false)),
               catchError((err) => {
                 this.isLoading.set(false);
-                this.ui.showSnackbar(`Could not load users: ${err.message ?? err}`, undefined, 3000);
+                this.ui.showError(err, 'adminUsers.loadFailed');
                 return of([] as UserModel[]);
               }),
             )
@@ -125,19 +139,23 @@ export class AdminUsers {
     }
     try {
       await this.firebase.updateUser(user.id, { role: role.toLowerCase() });
-      this.ui.showSnackbar(`${user.firstName} ${user.lastName} was updated`, undefined, 2500);
+      this.ui.notify('adminUsers.updated', { name: `${user.firstName} ${user.lastName}` });
       this.mode.set('list');
     } catch (err) {
-      this.ui.showSnackbar(`${user.lastName} has error ${err}`, undefined, 3000);
+      this.ui.showError(err, 'adminUsers.updateFailed', { name: `${user.firstName} ${user.lastName}` });
     }
   }
 
   protected async onDelete(user: UserModel): Promise<void> {
-    if (!confirm(`Are you sure to delete ${user.firstName} ${user.lastName}?`)) {
+    if (!confirm(this.t('adminUsers.confirmDelete', { name: `${user.firstName} ${user.lastName}` }))) {
       return;
     }
-    await this.firebase.deleteUser(user.id);
-    this.ui.showSnackbar('User was deleted', undefined, 2500);
+    try {
+      await this.firebase.deleteUser(user.id);
+      this.ui.notify('adminUsers.deleted');
+    } catch (err) {
+      this.ui.showError(err, 'adminUsers.deleteFailed', { name: `${user.firstName} ${user.lastName}` });
+    }
   }
 
   protected applyFilter(event: Event): void {

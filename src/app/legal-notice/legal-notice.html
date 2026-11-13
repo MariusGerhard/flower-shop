@@ -1,21 +1,21 @@
 <section class="col-center fade-in">
-  <h1>Legal-Notice</h1>
+  <h1>{{ t('legal.title') }}</h1>
   <mat-card class="content-card">
     <mat-card-content>
-      <b>The Service on <span>ng-flower-shop</span> is provided by:</b><br>
+      <b>{{ t('legal.providedBy') }} <span>ng-flower-shop</span> {{ t('legal.providedBy2') }}</b><br>
       <br>
-      <b>Postal Address:</b><br><br>
+      <b>{{ t('legal.postalAddress') }}</b><br><br>
       Marius Gerhard <br>
       Griffith College <br>
       TLt11188 <br>
       Cork <br>
       Ireland <br>
       <br>
-      <b>Phone: </b> <br>01601111111 <br><br>
-      <b>Fax: </b><br> 01602222222 <br><br>
-      <b>Email: </b> <br>dummy&#64;gmx.com <br><br>
-      <b>Look into: </b> <br>
-      <a routerLink="/terms"><b>Terms and Conditions</b></a>
+      <b>{{ t('legal.phone') }}</b> <br>01601111111 <br><br>
+      <b>{{ t('legal.fax') }}</b><br> 01602222222 <br><br>
+      <b>{{ t('legal.email') }}</b> <br>dummy&#64;gmx.com <br><br>
+      <b>{{ t('legal.lookInto') }}</b> <br>
+      <a routerLink="/terms"><b>{{ t('legal.terms') }}</b></a>
     </mat-card-content>
   </mat-card>
 </section>

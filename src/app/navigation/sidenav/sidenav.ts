@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 
 import { FirebaseService } from '../../shared/services/firebase.service';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -12,6 +13,9 @@ import { FirebaseService } from '../../shared/services/firebase.service';
   styleUrl: './sidenav.scss',
 })
 export class Sidenav {
+  protected readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   private readonly firebase = inject(FirebaseService);
 
   readonly closeNav = output<void>();

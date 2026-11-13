@@ -29,6 +29,17 @@ pnpm build             # output: dist/flower-shop/browser
 firebase deploy        # hosting serves dist/flower-shop/browser
 ```
 
+## Languages (German / English)
+
+The flag in the header switches the language at runtime; the choice is saved in the browser, otherwise the
+browser language is used. Texts live in `src/app/i18n/translations/en.ts` and `de.ts`:
+
+- `en.ts` defines all keys; `de.ts` must have the same structure (compile error otherwise)
+- in templates: `{{ t('login.title') }}`, with placeholders `t('profile.updated', { name })`
+- wrong keys are compile errors (`TranslationKey` type), a test checks both languages for missing or empty texts
+- dates, prices and numbers use the locale of the current language (`i18n.locale()`)
+- the terms and conditions text itself is only available in English
+
 ## Structure
 
 - `src/app/shared/services/firebase.service.ts`: all Firebase access (modular JS SDK), auth state as signals

@@ -49,6 +49,26 @@ a:hover {
   background: url('/assets/logos/brand.png') no-repeat;
 }
 
+.language-button {
+  flex: 0 0 auto;
+}
+
+.flag {
+  width: 24px;
+  height: 16px;
+  display: block;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 15%);
+  object-fit: cover;
+}
+
+// Flags inside the language menu (the menu items are declared in this template, so styles apply)
+.mat-mdc-menu-item .flag {
+  display: inline-block;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
 .logo {
   flex: 0 0 131px;
   height: 50px;
