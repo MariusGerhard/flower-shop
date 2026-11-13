@@ -1,0 +1,13 @@
+<section class="col-center fade-in">
+  <h1>{{ t('menu.title') }}</h1>
+  <mat-card>
+    <mat-card-content class="col-center gap-md">
+      <button matButton="filled" color="accent" routerLink="/">{{ t('menu.home') }}</button>
+      <button matButton="filled" color="primary" routerLink="/bouquets">{{ t('menu.allBouquets') }}</button>
+      <button matButton="filled" color="primary" routerLink="/flowers">{{ t('menu.createCustom') }}</button>
+      <button matButton="filled" color="warn" routerLink="/control">{{ t('menu.adminControl') }}</button>
+      <button matButton="filled" color="warn" routerLink="/profile">{{ t('menu.profile') }}</button>
+      <button matButton="filled" color="accent" routerLink="/orders" class="orders-button">{{ t('menu.myOrders') }}</button>
+    </mat-card-content>
+  </mat-card>
+</section>

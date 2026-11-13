@@ -1,0 +1,145 @@
+<section class="col-center gap-sm fade-in">
+  @switch (mode()) {
+    @case ('search') {
+      <h1>{{ t('bouquets.title') }}</h1>
+      <mat-card class="content-card">
+        <mat-card-content>
+          <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">
+            <div class="row actions">
+              <button type="submit" matButton="filled" color="accent" class="search-button" [disabled]="!searchForm.valid">{{ t('common.search') }}</button>
+              <span class="spacer"></span>
+              <button type="button" matIconButton (click)="showAll()" [attr.aria-label]="t('bouquets.showAll')">
+                <mat-icon color="primary">cached</mat-icon>
+              </button>
+            </div>
+            <div class="col-center">
+              <mat-form-field>
+                <mat-label>{{ t('bouquets.name') }}</mat-label>
+                <input matInput type="text" name="name" #name="ngModel" ngModel minlength="3" maxlength="50" required [disabled]="!!category.value">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>{{ t('bouquets.category') }}</mat-label>
+                <input matInput type="text" name="category" #category="ngModel" ngModel minlength="3" maxlength="50" required [disabled]="!!name.value">
+              </mat-form-field>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @case ('list') {
+      <mat-card class="content-card">
+        <mat-card-content>
+          <mat-form-field class="full-width">
+            <mat-label>{{ t('common.filter') }}</mat-label>
+            <input matInput appAutofocus [placeholder]="t('bouquets.filterPlaceholder')" [value]="listFilter()" (input)="listFilter.set($any($event.target).value)">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+      @if (isLoading()) {
+        <mat-progress-bar mode="indeterminate" />
+      }
+      @for (bouquet of visibleBouquets(); track bouquet.id) {
+        <mat-card class="content-card clickable bouquet-card" (click)="onDetails(bouquet)">
+          <img class="thumb" src="/assets/images/home_pic_2_small.jpg" [alt]="t('bouquets.picture', { name: bouquet.name })">
+          <div>
+            <mat-card-header>
+              <mat-card-title>{{ bouquet.name }}</mat-card-title>
+              <mat-card-subtitle>{{ bouquet.flower }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>
+                <b class="category">{{ t('bouquets.loves', { category: bouquet.category }) }}</b><br>
+                <span class="price-label">{{ t('bouquets.price') }}</span> {{ bouquet.price | currency: 'EUR' : 'symbol' : undefined : i18n.locale() }}
+              </p>
+            </mat-card-content>
+          </div>
+        </mat-card>
+      } @empty {
+        @if (!isLoading()) {
+          <p>{{ t('bouquets.empty') }}</p>
+        }
+      }
+    }
+
+    @case ('detail') {
+      @if (selected(); as bouquet) {
+        <mat-card class="content-card">
+          <mat-card-header>
+            <mat-card-title>{{ bouquet.name }}</mat-card-title>
+            <mat-card-subtitle>{{ bouquet.flower }}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="/assets/images/home_pic_2_small.jpg" [alt]="t('bouquets.picture', { name: bouquet.name })">
+          <mat-card-content>
+            <h3 class="category">{{ t('bouquets.willLove', { category: bouquet.category }) }}</h3>
+            <p>{{ bouquet.description }}</p>
+            <h2>{{ t('bouquets.available', { start: bouquet.seasonStart, end: bouquet.seasonEnd }) }}</h2>
+            <h2>{{ t('bouquets.price') }} <span class="green">{{ bouquet.price | currency: 'EUR' : 'symbol' : undefined : i18n.locale() }}</span></h2>
+          </mat-card-content>
+          <mat-card-actions class="row-center gap-sm">
+            <button matButton="filled" color="primary" (click)="mode.set('order')">{{ t('bouquets.order') }}</button>
+            <button matButton="filled" color="accent" (click)="mode.set('extras')">{{ t('bouquets.extras') }}</button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    }
+
+    @case ('order') {
+      <h1>{{ t('bouquets.order') }}</h1>
+      @if (isOrdering()) {
+        <mat-progress-bar mode="indeterminate" />
+      }
+      <mat-card class="content-card">
+        <mat-card-content class="col-center gap-md">
+          <h2>{{ selected()?.name }}</h2>
+          <h4 class="green">{{ t('bouquets.price') }} {{ totalPrice() | currency: 'EUR' : 'symbol' : undefined : i18n.locale() }}</h4>
+          <div class="row-center gap-lg">
+            <p class="crimson">{{ t('bouquets.moreUnique') }}</p>
+            <button matButton="filled" color="accent" (click)="mode.set('extras')">{{ t('bouquets.customise') }}</button>
+          </div>
+          <mat-form-field class="narrow">
+            <mat-label>{{ t('bouquets.pickUp') }}</mat-label>
+            <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" required
+                   [ngModel]="pickUpDate()" (ngModelChange)="pickUpDate.set($event)" name="pickUpDate">
+            <mat-hint>{{ t('bouquets.pickUpHint') }}</mat-hint>
+            <mat-error>{{ t('common.fieldRequired') }}</mat-error>
+            <mat-datepicker-toggle matIconSuffix [for]="picker" />
+            <mat-datepicker #picker />
+          </mat-form-field>
+          <button class="narrow" matButton="filled" color="primary" (click)="onOrder()" [disabled]="isOrdering() || !pickUpDate()">{{ t('bouquets.sendOrder') }}</button>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @case ('extras') {
+      <h1>{{ t('bouquets.extrasTitle') }}</h1>
+      <mat-card class="content-card">
+        <mat-card-content class="col-center gap-sm">
+          <h3 class="crimson">{{ t('bouquets.specialEvent') }} (+ {{ 2.5 | currency: 'EUR' : 'symbol' : undefined : i18n.locale() }})</h3>
+          <mat-form-field class="narrow">
+            <mat-label>{{ t('bouquets.selectEvent') }}</mat-label>
+            <mat-select [value]="event()" (valueChange)="event.set($event ?? '')">
+              <mat-option value="">{{ t('common.none') }}</mat-option>
+              @for (e of events; track e.value) {
+                <mat-option [value]="e.value">{{ t(e.label) }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint align="end">{{ t('bouquets.eventHint') }}</mat-hint>
+          </mat-form-field>
+          <h3 class="green">{{ t('bouquets.greetingsCard') }} (+ {{ 3 | currency: 'EUR' : 'symbol' : undefined : i18n.locale() }})</h3>
+          <mat-form-field class="full-width">
+            <mat-label>{{ t('bouquets.message') }}</mat-label>
+            <textarea appAutofocus matInput rows="4" maxlength="250"
+                      [value]="message()" (input)="message.set($any($event.target).value)"></textarea>
+            <mat-hint align="end">{{ message().length }} / 250</mat-hint>
+          </mat-form-field>
+          <button matButton="filled" color="primary" (click)="mode.set('order')">{{ t('bouquets.order') }}</button>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+
+  @if (mode() !== 'search') {
+    <button matButton="filled" color="warn" class="back-button" (click)="back()">{{ t('common.back') }}</button>
+  }
+</section>

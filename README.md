@@ -1,27 +1,52 @@
 # FlowerShop
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
+Angular 22 flower shop with Firebase (Auth, Firestore, Storage) and Angular Material 3.
 
-## Development server
+## Setup
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. `pnpm install` (pnpm 12, Node 26: `npm install -g pnpm` once)
+2. Copy `src/environments/environment.example.ts` to `src/environments/environment.ts` and fill in the
+   Firebase web config (Firebase console → Project settings → General → Your apps). This file is git-ignored.
+3. `pnpm start` and open http://localhost:4200/
 
-## Code scaffolding
+## Tests
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Unit tests run with [Vitest](https://vitest.dev) via the Angular `unit-test` builder (jsdom, no browser needed):
 
-## Build
+```bash
+pnpm test                # watch mode
+pnpm ng test --watch=false
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Firebase is never called in tests: `src/testing/firebase-mock.ts` provides a test double of
+`FirebaseService` (same signals, all methods are `vi.fn()`). Tests still need `src/environments/environment.ts`
+to exist (copy the example file).
 
-## Running unit tests
+## Build & deploy
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+pnpm build             # output: dist/flower-shop/browser
+firebase deploy        # hosting serves dist/flower-shop/browser
+```
 
-## Running end-to-end tests
+## Languages (German / English)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+The flag in the header switches the language at runtime; the choice is saved in the browser, otherwise the
+browser language is used. Texts live in `src/app/i18n/translations/en.ts` and `de.ts`:
 
-## Further help
+- `en.ts` defines all keys; `de.ts` must have the same structure (compile error otherwise)
+- in templates: `{{ t('login.title') }}`, with placeholders `t('profile.updated', { name })`
+- wrong keys are compile errors (`TranslationKey` type), a test checks both languages for missing or empty texts
+- dates, prices and numbers use the locale of the current language (`i18n.locale()`)
+- the terms and conditions text itself is only available in English
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Structure
+
+- `src/app/shared/services/firebase.service.ts`: all Firebase access (modular JS SDK), auth state as signals
+- `src/app/auth`: login, register, password reset, profile, `authGuard`
+- `src/app/shop`: menu, bouquets (search, details, order, extras), custom flowers, my orders
+- `src/app/admin`: control page with tabs for bouquets, orders and users
+- `src/styles.scss`: Material 3 theme and small layout helpers (replace the old `@angular/flex-layout`)
+
+Components are standalone, use signals and the built-in control flow (`@if`, `@for`, `@switch`),
+routes are lazy loaded and the app runs zoneless.

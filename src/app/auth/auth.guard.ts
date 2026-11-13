@@ -1,26 +1,19 @@
-import { Injectable } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
-import { Observable } from 'rxjs';
-import {FirebaseService} from '../shared/services/firebase.service';
-import {UIService} from '../shared/services/ui.service';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate {
-  constructor(private firebaseService: FirebaseService, private router: Router, private uiService: UIService) {
+import { FirebaseService } from '../shared/services/firebase.service';
+import { UiService } from '../shared/services/ui.service';
+
+/** Only lets logged-in users through; others are sent to the login page. */
+export const authGuard: CanActivateFn = async () => {
+  const firebase = inject(FirebaseService);
+  const router = inject(Router);
+  const ui = inject(UiService);
+
+  await firebase.authReady;
+  if (firebase.isAuth()) {
+    return true;
   }
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.firebaseService.isAuth()) {
-      return true;
-    }
-    /*
-    this.router.navigate(['/login']).then(
-      () => {
-        this.uiService.showSnackbar('Please Login first', null, 2000);
-      });
-     */
-  }
-}
+  ui.notify('auth.pleaseLogin');
+  return router.createUrlTree(['/login']);
+};

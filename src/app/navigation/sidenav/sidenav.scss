@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  min-height: 100%;
+  background: var(--mat-sys-primary);
+  --mat-list-list-item-label-text-color: var(--mat-sys-on-primary);
+  --mat-list-list-item-leading-icon-color: var(--mat-sys-on-primary);
+  --mat-list-list-item-hover-label-text-color: var(--mat-sys-on-primary);
+  --mat-list-list-item-focus-label-text-color: var(--mat-sys-on-primary);
+}
+
+// Also in hover/focus state (Material would switch to a dark icon color there)
+mat-icon {
+  color: var(--mat-sys-on-primary) !important;
+}

@@ -1,0 +1,14 @@
+allowBuilds:
+  '@firebase/util': false
+  '@parcel/watcher': false
+  esbuild: false
+  lmdb: false
+  msgpackr-extract: false
+  protobufjs: false
+minimumReleaseAgeExclude:
+  - '@angular-devkit/architect@0.2202.7'
+  - '@angular-devkit/core@22.2.7'
+  - '@angular-devkit/schematics@22.2.7'
+  - '@angular/build@22.2.7'
+  - '@angular/cli@22.2.7'
+  - '@schematics/angular@22.2.7'

@@ -1,0 +1,49 @@
+<mat-toolbar class="toolbar">
+  <div class="row start">
+    <a routerLink="/" [attr.aria-label]="t('nav.home')">
+      <div class="brand"></div>
+    </a>
+    <button class="hide-gt-sm" matIconButton (click)="toggleNav.emit()" [attr.aria-label]="t('nav.openMenu')">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="nav-item">{{ t(title()) }}</div>
+  </div>
+
+  <div class="logo hide-xs"></div>
+
+  <nav class="row end hide-lt-md">
+    <ul class="navigation-bar">
+      @if (isAuth()) {
+        <li><a routerLink="/flowers" routerLinkActive="highlight">{{ t('nav.custom') }}</a></li>
+        <li><a routerLink="/bouquets" routerLinkActive="highlight">{{ t('nav.bouquets') }}</a></li>
+        <li><a routerLink="/control" routerLinkActive="highlight">{{ t('nav.control') }}</a></li>
+        <li><a routerLink="/profile" routerLinkActive="highlight">{{ t('nav.profile') }}</a></li>
+        <li><a routerLink="/orders" routerLinkActive="highlight">{{ t('nav.myOrders') }}</a></li>
+        <li><a routerLink="/shop" routerLinkActive="highlight">{{ t('nav.shop') }}</a></li>
+      }
+      <li>
+        <a routerLink="/" routerLinkActive="highlight" [routerLinkActiveOptions]="{ exact: true }">{{ t('nav.home') }}</a>
+      </li>
+      @if (isAuth()) {
+        <li><a href="" (click)="$event.preventDefault(); onLogout()">{{ t('nav.logout') }}</a></li>
+      } @else {
+        <li><a routerLink="/login" routerLinkActive="highlight">{{ t('nav.login') }}</a></li>
+        <li><a routerLink="/register" routerLinkActive="highlight">{{ t('nav.register') }}</a></li>
+      }
+    </ul>
+  </nav>
+
+  <button matIconButton class="language-button" [matMenuTriggerFor]="languageMenu"
+          [attr.aria-label]="t('language.switch')" [title]="t('language.switch')">
+    <img class="flag" [src]="'/assets/flags/' + i18n.lang() + '.svg'" [alt]="t(i18n.lang() === 'de' ? 'language.de' : 'language.en')">
+  </button>
+  <mat-menu #languageMenu="matMenu" xPosition="before">
+    @for (lang of i18n.languages; track lang) {
+      <button mat-menu-item (click)="i18n.setLanguage(lang)" [class.active-language]="lang === i18n.lang()"
+              [attr.aria-current]="lang === i18n.lang()">
+        <img class="flag" [src]="'/assets/flags/' + lang + '.svg'" alt="">
+        <span>{{ t(lang === 'de' ? 'language.de' : 'language.en') }}</span>
+      </button>
+    }
+  </mat-menu>
+</mat-toolbar>

@@ -1,0 +1,76 @@
+.toolbar {
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  margin-bottom: 10px;
+  gap: 10px;
+  --mat-icon-button-icon-color: var(--mat-sys-on-primary);
+}
+
+.start {
+  flex: 1 1 0;
+  justify-content: flex-start;
+}
+
+.end {
+  flex: 1 1 0;
+  justify-content: flex-end;
+  margin-right: 1%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  opacity: 0.65;
+}
+
+.highlight {
+  color: black;
+}
+
+.navigation-bar {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 5px;
+}
+
+.brand {
+  width: 50px;
+  height: 50px;
+  background: url('/assets/logos/brand.png') no-repeat;
+}
+
+.language-button {
+  flex: 0 0 auto;
+}
+
+.flag {
+  width: 24px;
+  height: 16px;
+  display: block;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 15%);
+  object-fit: cover;
+}
+
+// Flags inside the language menu (the menu items are declared in this template, so styles apply)
+.mat-mdc-menu-item .flag {
+  display: inline-block;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+.logo {
+  flex: 0 0 131px;
+  height: 50px;
+  background: url('/assets/logos/logo_small.png') no-repeat;
+}

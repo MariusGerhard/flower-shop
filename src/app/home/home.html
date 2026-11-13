@@ -1,0 +1,38 @@
+<section class="fade-in">
+  <div class="row-center">
+    <div class="logo-big hide-xs" role="img" aria-label="Flower Shop"></div>
+    <div class="logo-medium only-xs" role="img" aria-label="Flower Shop"></div>
+  </div>
+
+  <div class="cards">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ t('home.card1Before') }}<span>{{ t('home.card1Highlight') }}</span>{{ t('home.card1After') }}</mat-card-title>
+      </mat-card-header>
+      <div class="pic pic-2"></div>
+      <mat-card-content>
+        <b>{{ t('home.card1Text') }}<a routerLink="/register">{{ t('home.card1Link') }}</a>{{ t('home.card1TextAfter') }}</b>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ t('home.card2Before') }}<span>{{ t('home.card2Highlight') }}</span>{{ t('home.card2After') }}</mat-card-title>
+      </mat-card-header>
+      <div class="pic pic-1"></div>
+      <mat-card-content>
+        <b>{{ t('home.card2Text') }}<a routerLink="/login">{{ t('home.card2Link') }}</a>{{ t('home.card2TextAfter') }}</b>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ t('home.card3Before') }}<span>{{ t('home.card3Highlight') }}</span>{{ t('home.card3After') }}</mat-card-title>
+      </mat-card-header>
+      <div class="pic pic-3"></div>
+      <mat-card-content>
+        <b>{{ t('home.card3Text') }}<a routerLink="/flowers">{{ t('home.card3Link') }}</a>{{ t('home.card3TextAfter') }}</b>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

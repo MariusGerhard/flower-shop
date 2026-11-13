@@ -3,10 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { HeaderTitleService } from './header-title.service';
 
 describe('HeaderTitleService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  it('starts with "Home" and updates the title signal', () => {
+    const service = TestBed.inject(HeaderTitleService);
+    expect(service.title()).toBe('titles.home');
 
-  it('should be created', () => {
-    const service: HeaderTitleService = TestBed.get(HeaderTitleService);
-    expect(service).toBeTruthy();
+    service.setTitle('titles.bouquets');
+
+    expect(service.title()).toBe('titles.bouquets');
   });
 });

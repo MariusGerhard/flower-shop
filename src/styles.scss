@@ -1,0 +1,154 @@
+@use '@angular/material' as mat;
+// animate.css: only the effects we use (instead of the whole 70 KB file)
+@use 'animate.css/source/fading_entrances/fadeIn.css';
+
+// Material 3 theme. Blue as primary, green as tertiary ("accent"), the built-in error palette as "warn".
+$flower-shop-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$blue-palette,
+    tertiary: mat.$green-palette,
+  ),
+  typography: (
+    brand-family: 'Roboto',
+    plain-family: 'Roboto',
+  ),
+  density: (
+    scale: 0,
+  ),
+));
+
+html {
+  @include mat.all-component-themes($flower-shop-theme);
+  @include mat.system-level-colors($flower-shop-theme);
+  @include mat.system-level-typography($flower-shop-theme);
+  // Keeps color="primary" | "accent" | "warn" working on buttons, icons, radios, ...
+  @include mat.color-variants-backwards-compatibility($flower-shop-theme);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+/* ---------- Snackbar ---------- */
+.snackbar {
+  text-align: center;
+}
+
+/* ---------- Page enter animation: subtle fade with animate.css ---------- */
+.fade-in {
+  animation: fadeIn 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    animation: none;
+  }
+}
+
+/* ---------- Layout helpers (replace @angular/flex-layout) ---------- */
+/* Doubled class = higher specificity, so they win over Material defaults like mat-card-content {display: block} */
+.col-center.col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.row.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.row-center.row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.gap-xs {
+  gap: 5px;
+}
+
+.gap-sm {
+  gap: 10px;
+}
+
+.gap-md {
+  gap: 15px;
+}
+
+.gap-lg {
+  gap: 25px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* Card that holds a form or a list: centered, max 500px wide */
+.content-card {
+  width: 90%;
+  max-width: 500px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.content-card .mat-mdc-form-field {
+  width: 90%;
+}
+
+/* Breakpoints as in flex-layout: xs < 600, sm < 960, md < 1280 */
+@media (max-width: 599.98px) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 600px) {
+  .only-xs {
+    display: none !important;
+  }
+}
+
+@media (max-width: 959.98px) {
+  .hide-lt-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .hide-gt-sm {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1279.98px) {
+  .hide-lt-lg {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hide-gt-md {
+    display: none !important;
+  }
+}

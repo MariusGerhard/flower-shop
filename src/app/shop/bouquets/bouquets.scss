@@ -1,0 +1,51 @@
+mat-progress-bar {
+  width: 90%;
+  max-width: 500px;
+}
+
+mat-card-content {
+  padding-top: 16px;
+}
+
+.actions {
+  margin-bottom: 10px;
+}
+
+.search-button,
+.back-button,
+.narrow {
+  width: 250px;
+}
+
+.bouquet-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2%;
+}
+
+.thumb {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.category {
+  color: crimson;
+}
+
+.crimson {
+  color: crimson;
+}
+
+.green {
+  color: forestgreen;
+}
+
+.price-label {
+  display: inline-block;
+  width: 75px;
+  color: forestgreen;
+}
